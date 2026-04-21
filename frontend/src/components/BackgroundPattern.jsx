@@ -33,24 +33,14 @@ const BackgroundPattern = ({ alwaysOn = false }) => {
         if (videoRef.current) {
           videoRef.current.play().catch(e => console.log('Play interrupted'));
         }
-        
-        clearTimeout(timeout);
-        timeout = setTimeout(() => setShowVideo(false), 8000);
       }
     };
     
     window.addEventListener('taskCompleted', handleTaskCompleted);
     return () => {
       window.removeEventListener('taskCompleted', handleTaskCompleted);
-      clearTimeout(timeout);
     };
-  }, [alwaysOn]);
-
-  const handleTimeUpdate = (e) => {
-    if (e.target.currentTime >= 8) {
-      e.target.currentTime = 0;
-    }
-  };
+  }, [alwaysOn, showVideo]);
 
   return (
     <div 
@@ -64,10 +54,10 @@ const BackgroundPattern = ({ alwaysOn = false }) => {
     >
       <video 
         ref={videoRef}
-        loop 
+        loop={alwaysOn} 
         muted 
         playsInline
-        onTimeUpdate={handleTimeUpdate}
+        onEnded={() => !alwaysOn && setShowVideo(false)}
         style={{
           width: '100vw',
           height: '100vh',
