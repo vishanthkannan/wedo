@@ -911,20 +911,142 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-primary);
 }
 
+/* --- Midnight Sky Background --- */
+.uiverse-midnight-sky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  overflow: hidden;
+  background-color: #050505;
+  pointer-events: none;
+}
+
+.uiverse-midnight-sky .sky-canvas {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  background: #050505;
+}
+
+.uiverse-midnight-sky .stars {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+  pointer-events: none;
+}
+
+.uiverse-midnight-sky .stars-1 {
+  background-image: radial-gradient(1px 1px at 10% 10%, #fff, transparent),
+    radial-gradient(1px 1px at 30% 20%, #fff, transparent),
+    radial-gradient(1px 1px at 50% 50%, #fff, transparent),
+    radial-gradient(1px 1px at 70% 30%, #fff, transparent),
+    radial-gradient(1px 1px at 90% 10%, #fff, transparent);
+  background-size: 200px 200px;
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+.uiverse-midnight-sky .stars-2 {
+  background-image: radial-gradient(1.5px 1.5px at 20% 40%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 60% 85%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 85% 65%, #fff, transparent);
+  background-size: 300px 300px;
+  animation: twinkle 5s ease-in-out infinite 1s;
+}
+
+.uiverse-midnight-sky .stars-3 {
+  background-image: radial-gradient(2px 2px at 40% 70%, #fff, transparent),
+    radial-gradient(2px 2px at 10% 80%, #fff, transparent),
+    radial-gradient(2px 2px at 80% 40%, #fff, transparent);
+  background-size: 400px 400px;
+  animation: twinkle 7s ease-in-out infinite 2s;
+}
+
+.uiverse-midnight-sky .meteor {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.uiverse-midnight-sky .meteor::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, #fff, transparent);
+}
+
+.uiverse-midnight-sky .m1 {
+  top: 10%;
+  left: 110%;
+  animation: shoot 8s linear infinite;
+}
+.uiverse-midnight-sky .m2 {
+  top: 30%;
+  left: 110%;
+  animation: shoot 12s linear infinite 4s;
+}
+.uiverse-midnight-sky .m3 {
+  top: 50%;
+  left: 110%;
+  animation: shoot 10s linear infinite 2s;
+}
+
+.uiverse-midnight-sky .moon {
+  position: absolute;
+  top: 15%;
+  right: 15%;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: 15px 15px 0 0 #fdfbd3;
+  filter: drop-shadow(0 0 15px rgba(253, 251, 211, 0.4));
+  z-index: 10;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+@keyframes shoot {
+  0% {
+    transform: translateX(0) translateY(0) rotate(-35deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  15% {
+    transform: translateX(-1500px) translateY(1000px) rotate(-35deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(-1500px) translateY(1000px) rotate(-35deg);
+    opacity: 0;
+  }
+}
+
+.drag-handle {
+  color: var(--accent-color) !important;
+  opacity: 0.8 !important;
+  margin-right: 8px;
+  cursor: grab;
+}
+
 .drag-handle:active {
   cursor: grabbing !important;
-}
-
-.tracker-row.header-row {
-  position: sticky;
-  top: 0;
-  z-index: 4;
-}
-
-.tracker-empty-cell {
-  color: var(--text-secondary);
-  font-size: 12px;
-  opacity: 0.3;
 }
 
 .tracker-cell.disabled-cell {

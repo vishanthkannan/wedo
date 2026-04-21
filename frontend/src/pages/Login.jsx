@@ -3,7 +3,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import BackgroundPattern from '../components/BackgroundPattern';
-import JpMatrixBackground from '../components/JpMatrixBackground';
+import MidnightSkyBackground from '../components/MidnightSkyBackground';
 import UiverseButton from '../components/UiverseButton';
 
 const Login = () => {
@@ -24,7 +24,7 @@ const Login = () => {
 
   return (
     <div className="auth-container">
-      <JpMatrixBackground />
+      <MidnightSkyBackground />
       <motion.div 
         className="premium-card auth-card"
         initial={{ opacity: 0, y: 20 }}

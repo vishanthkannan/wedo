@@ -4,6 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import api from '../utils/api';
 import TaskItem from '../components/TaskItem';
 import ProductivityChart from '../components/ProductivityChart';
+import MidnightSkyBackground from '../components/MidnightSkyBackground';
 import { playSound } from '../utils/audio';
 import { motion, AnimatePresence, Reorder } from 'framer-motion';
 import { Plus, Flame, Volume2, VolumeX, LogOut, Check, Edit2, Trash2, Sun, Moon, GripVertical } from 'lucide-react';
@@ -212,6 +213,7 @@ const Dashboard = () => {
 
   return (
     <div className="app-container">
+      <MidnightSkyBackground />
       <header className="app-header">
         <div className="user-info">
           <div className="avatar">{user?.name?.charAt(0).toUpperCase()}</div>
@@ -322,7 +324,7 @@ const Dashboard = () => {
                         ) : (
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                             <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
-                              <GripVertical size={14} className="drag-handle" style={{ cursor: 'grab', color: 'var(--text-secondary)', opacity: 0.5 }} />
+                              <GripVertical size={18} className="drag-handle" />
                               <span>{task.title}</span>
                             </div>
                             <div style={{ display: 'flex', gap: '4px' }}>
