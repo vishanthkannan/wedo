@@ -216,7 +216,12 @@ const Dashboard = () => {
       <MidnightSkyBackground />
       <header className="app-header">
         <div className="user-info">
-          <div className="avatar">{user?.name?.charAt(0).toUpperCase()}</div>
+          <div className="loading" style={{ marginRight: '10px' }}>
+            <svg height="48px" width="64px">
+              <polyline id="back" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"></polyline>
+              <polyline id="front" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"></polyline>
+            </svg>
+          </div>
           <div className="user-details" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
             <h3>
               <div className="liquid-text-container">
@@ -273,8 +278,14 @@ const Dashboard = () => {
               value={newTaskTitle}
               onChange={(e) => setNewTaskTitle(e.target.value)}
             />
-            <button type="submit" className="premium-btn">
-              <Plus size={18} />
+            <button type="submit" className="add-item-btn">
+              <span className="button__text">Add Habit</span>
+              <span className="button__icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" stroke="currentColor" height="24" fill="none" className="svg">
+                  <line y2="19" y1="5" x2="12" x1="12"></line>
+                  <line y2="12" y1="12" x2="19" x1="5"></line>
+                </svg>
+              </span>
             </button>
           </form>
 

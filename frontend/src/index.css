@@ -1045,8 +1045,91 @@ h1, h2, h3, h4, h5, h6 {
   cursor: grab;
 }
 
-.drag-handle:active {
-  cursor: grabbing !important;
+/* --- Pulse Logo Loader --- */
+.loading svg polyline {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke: var(--text-secondary);
+}
+
+.loading svg polyline#back {
+  fill: none;
+  opacity: 0.2;
+}
+
+.loading svg polyline#front {
+  fill: none;
+  stroke: var(--accent-color);
+  stroke-dasharray: 48, 144;
+  stroke-dashoffset: 192;
+  animation: dash_682 1.4s linear infinite;
+}
+
+@keyframes dash_682 {
+  72.5% { opacity: 0; }
+  to { stroke-dashoffset: 0; }
+}
+
+/* --- Premium Add Button --- */
+.add-item-btn {
+  position: relative;
+  width: 150px;
+  height: 48px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--accent-hover);
+  background-color: var(--accent-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.add-item-btn .button__text {
+  transform: translateX(25px);
+  color: #fff;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.add-item-btn .button__icon {
+  position: absolute;
+  transform: translateX(109px);
+  height: 100%;
+  width: 39px;
+  background-color: var(--accent-hover);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.add-item-btn .svg {
+  width: 24px;
+  stroke: #fff;
+}
+
+.add-item-btn:hover {
+  background: var(--accent-hover);
+}
+
+.add-item-btn:hover .button__text {
+  color: transparent;
+}
+
+.add-item-btn:hover .button__icon {
+  width: 100%;
+  transform: translateX(0);
+}
+
+.add-item-btn:active .button__icon {
+  background-color: var(--accent-color);
+}
+
+.add-item-btn:active {
+  transform: scale(0.98);
 }
 
 .tracker-cell.disabled-cell {
