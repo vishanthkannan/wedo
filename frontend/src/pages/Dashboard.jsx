@@ -160,12 +160,18 @@ const Dashboard = () => {
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    // Generate dates (10 days total: 3 past, today, 6 future)
+    // Generate dates for the entire current month
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const lastDay = new Date(year, month + 1, 0).getDate();
+    
     const dates = [];
-    for(let i = -3; i <= 6; i++) {
-      const d = new Date();
-      d.setDate(d.getDate() + i);
-      dates.push(d.toISOString().split('T')[0]);
+    for(let i = 1; i <= lastDay; i++) {
+      const d = new Date(year, month, i);
+      // Use local date string to avoid timezone shifts
+      const dateStr = d.toLocaleDateString('en-CA'); // YYYY-MM-DD format
+      dates.push(dateStr);
     }
     setDateRange(dates);
     
