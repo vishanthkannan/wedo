@@ -58,13 +58,14 @@ const BackgroundPattern = ({ alwaysOn = false }) => {
           width: '100vw',
           height: '100vh',
           objectFit: 'cover',
+          objectPosition: window.innerWidth < 768 ? 'right' : 'center',
           filter: 'brightness(1.2)',
           ...(alwaysOn ? {} : {
             WebkitMaskImage: window.innerWidth < 768 
-              ? 'linear-gradient(to bottom, transparent 0%, transparent 20%, black 50%, black 100%)'
+              ? 'linear-gradient(to right, transparent 0%, black 100%)'
               : 'linear-gradient(to right, transparent 0%, transparent 30%, black 80%, black 100%)',
             maskImage: window.innerWidth < 768 
-              ? 'linear-gradient(to bottom, transparent 0%, transparent 20%, black 50%, black 100%)'
+              ? 'linear-gradient(to right, transparent 0%, black 100%)'
               : 'linear-gradient(to right, transparent 0%, transparent 30%, black 80%, black 100%)'
           })
         }}
