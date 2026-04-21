@@ -403,7 +403,6 @@ const Dashboard = () => {
                 </Reorder.Group>
               )}
             </div>
-            </div>
           </div>
         </div>
 
