@@ -14,7 +14,7 @@ const CustomTooltip = ({ active, payload, label }) => {
         boxShadow: '0 0 10px var(--shadow-glow)'
       }}>
         <p style={{ fontWeight: 600, marginBottom: '4px' }}>[ {label} ]</p>
-        <p>SYS.COMPLETED: {payload[0].value}</p>
+        <p>COMPLETED: {payload[0].value}</p>
       </div>
     );
   }

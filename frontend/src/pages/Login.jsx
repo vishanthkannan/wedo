@@ -32,7 +32,7 @@ const Login = () => {
         transition={{ duration: 0.5 }}
       >
         <h2 className="auth-title">Welcome Back</h2>
-        <p className="auth-subtitle">Sign in to continue your productivity journey.</p>
+        <p className="auth-subtitle">Sign in to continue your wedo.</p>
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form__group field" style={{ maxWidth: '100%' }}>
             <input 
