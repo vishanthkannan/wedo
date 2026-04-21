@@ -15,20 +15,28 @@ const BackgroundPattern = ({ alwaysOn = false }) => {
     }
 
     let timeout;
+    let clickCount = 0;
+    
     const handleTaskCompleted = () => {
-      // Only reset if not already showing to avoid "looping" glitch
-      if (!showVideo && videoRef.current) {
-        videoRef.current.currentTime = 0;
+      clickCount++;
+      
+      // Only show video every 3 clicks
+      if (clickCount >= 3) {
+        clickCount = 0; // Reset counter
+        
+        if (!showVideo && videoRef.current) {
+          videoRef.current.currentTime = 0;
+        }
+        
+        setShowVideo(true);
+        
+        if (videoRef.current) {
+          videoRef.current.play().catch(e => console.log('Play interrupted'));
+        }
+        
+        clearTimeout(timeout);
+        timeout = setTimeout(() => setShowVideo(false), 8000);
       }
-      
-      setShowVideo(true);
-      
-      if (videoRef.current) {
-        videoRef.current.play().catch(e => console.log('Play interrupted'));
-      }
-      
-      clearTimeout(timeout);
-      timeout = setTimeout(() => setShowVideo(false), 6000); // Increased duration
     };
     
     window.addEventListener('taskCompleted', handleTaskCompleted);
