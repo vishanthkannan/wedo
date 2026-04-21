@@ -847,15 +847,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .tracker-grid {
-  display: table;
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  border-collapse: collapse;
+  min-width: max-content;
 }
 
 .tracker-row {
-  display: table-row;
+  display: flex;
   border-bottom: 1px solid var(--card-border-blur);
   transition: background-color 0.2s ease;
+  width: 100%;
+  background-color: var(--bg-secondary);
 }
 
 .tracker-row:hover {
@@ -867,11 +870,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .tracker-cell {
-  display: table-cell;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 16px;
-  vertical-align: middle;
-  text-align: center;
   border-right: 1px solid var(--card-border-blur);
+  min-width: 60px;
 }
 
 .tracker-cell:last-child {
@@ -888,9 +892,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .tracker-task-name {
-  text-align: left;
+  justify-content: flex-start;
   font-weight: 500;
   font-size: 15px;
+  width: 220px;
   min-width: 220px;
   position: sticky;
   left: 0;
@@ -901,9 +906,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .tracker-header.tracker-task-name {
-  z-index: 3;
+  z-index: 5;
   background-color: var(--tracker-header-bg-solid);
   color: var(--text-primary);
+}
+
+.drag-handle:active {
+  cursor: grabbing !important;
+}
+
+.tracker-row.header-row {
+  position: sticky;
+  top: 0;
+  z-index: 4;
 }
 
 .tracker-empty-cell {

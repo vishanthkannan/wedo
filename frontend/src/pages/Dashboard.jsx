@@ -5,8 +5,8 @@ import api from '../utils/api';
 import TaskItem from '../components/TaskItem';
 import ProductivityChart from '../components/ProductivityChart';
 import { playSound } from '../utils/audio';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Flame, Volume2, VolumeX, LogOut, Check, Edit2, Trash2, Sun, Moon } from 'lucide-react';
+import { motion, AnimatePresence, Reorder } from 'framer-motion';
+import { Plus, Flame, Volume2, VolumeX, LogOut, Check, Edit2, Trash2, Sun, Moon, GripVertical } from 'lucide-react';
 
 const Dashboard = () => {
   const { user, logout } = useContext(AuthContext);
@@ -278,7 +278,7 @@ const Dashboard = () => {
 
           <div className="tracker-grid-container">
             <div className="tracker-grid">
-              <div className="tracker-row">
+              <div className="tracker-row header-row">
                 <div className="tracker-cell tracker-header tracker-task-name">Tasks</div>
                 {dateRange.map(d => (
                   <div key={d} className={`tracker-cell tracker-header ${d > today ? 'disabled-header' : ''}`}>
@@ -288,111 +288,119 @@ const Dashboard = () => {
               </div>
               {uniqueTasks.length === 0 ? (
                 <div className="tracker-row">
-                  <div className="tracker-cell" colSpan={dateRange.length + 1} style={{ padding: '40px', color: 'var(--text-secondary)' }}>
+                  <div className="tracker-cell" colSpan={dateRange.length + 1} style={{ padding: '40px', color: 'var(--text-secondary)', textAlign: 'center', width: '100%' }}>
                     No tasks found. Add one above!
                   </div>
                 </div>
               ) : (
-                uniqueTasks.map(task => (
-                  <div key={task.title} className="tracker-row">
-                    <div className="tracker-cell tracker-task-name tracker-task-name-cell">
-                      {editingTask === task.title ? (
-                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', width: '100%' }}>
-                          <input 
-                            type="text" 
-                            className="premium-input" 
-                            style={{ padding: '4px 8px', fontSize: '13px', width: '100%', minWidth: '100px' }}
-                            value={editingValue} 
-                            onChange={(e) => setEditingValue(e.target.value)} 
-                            autoFocus
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter') handleRenameTask(task.title);
-                              if (e.key === 'Escape') setEditingTask(null);
-                            }}
-                          />
-                          <button onClick={() => handleRenameTask(task.title)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-color)' }}>
-                            <Check size={16} />
-                          </button>
-                        </div>
-                      ) : (
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
-                            <span>{task.title}</span>
-                          </div>
-                          <div style={{ display: 'flex', gap: '4px' }}>
-                            <button 
-                              className="tracker-edit-btn"
-                              onClick={() => { setEditingTask(task.title); setEditingValue(task.title); }}
-                            >
-                              <Edit2 size={14} />
-                            </button>
-                            <button 
-                              className="tracker-edit-btn tracker-delete-btn"
-                              onClick={() => handleDeleteBulkTask(task.title)}
-                            >
-                              <Trash2 size={14} />
+                <Reorder.Group axis="y" values={uniqueTasks} onReorder={setUniqueTasks}>
+                  {uniqueTasks.map(task => (
+                    <Reorder.Item 
+                      key={task.title} 
+                      value={task} 
+                      className="tracker-row"
+                    >
+                      <div className="tracker-cell tracker-task-name tracker-task-name-cell">
+                        {editingTask === task.title ? (
+                          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', width: '100%' }}>
+                            <input 
+                              type="text" 
+                              className="premium-input" 
+                              style={{ padding: '4px 8px', fontSize: '13px', width: '100%', minWidth: '100px' }}
+                              value={editingValue} 
+                              onChange={(e) => setEditingValue(e.target.value)} 
+                              autoFocus
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') handleRenameTask(task.title);
+                                if (e.key === 'Escape') setEditingTask(null);
+                              }}
+                            />
+                            <button onClick={() => handleRenameTask(task.title)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-color)' }}>
+                              <Check size={16} />
                             </button>
                           </div>
-                        </div>
-                      )}
-                    </div>
-                    {dateRange.map(d => {
-                      const t = matrixData[task.title]?.[d];
-                      return (
-                        <div key={d} className={`tracker-cell ${d > today ? 'disabled-cell' : ''}`}>
-                          {t ? (
-                            <div className="checkbox-container" onClick={() => d <= today && handleToggleTask(t._id, !t.completed)}>
-                              <input 
-                                className="checkbox-input" 
-                                id={`checkbox-${t._id}`} 
-                                type="checkbox" 
-                                checked={t.completed} 
-                                readOnly 
-                              />
-                              <label className="checkbox-label" htmlFor={`checkbox-${t._id}`} onClick={(e) => e.preventDefault()}>
-                                <span className="checkmark"></span>
-                                <div className="grid-bg"></div>
-                                <div className="glitch-overlay-h"></div>
-                                <div className="glitch-overlay-v"></div>
-                                <div className="binary-particles">
-                                  <span style={{ left: '10%', animationDelay: '0s' }} className="particle">1</span>
-                                  <span style={{ left: '30%', animationDelay: '-0.2s' }} className="particle">0</span>
-                                  <span style={{ left: '50%', animationDelay: '-0.4s' }} className="particle">1</span>
-                                  <span style={{ left: '70%', animationDelay: '-0.6s' }} className="particle">0</span>
-                                  <span style={{ left: '90%', animationDelay: '-0.8s' }} className="particle">1</span>
-                                </div>
-                              </label>
+                        ) : (
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
+                              <GripVertical size={14} className="drag-handle" style={{ cursor: 'grab', color: 'var(--text-secondary)', opacity: 0.5 }} />
+                              <span>{task.title}</span>
                             </div>
-                          ) : (
-                            <div className="checkbox-container" onClick={() => d <= today && handleCreateAndToggleTask(task.title, d)}>
-                              <input 
-                                className="checkbox-input" 
-                                id={`checkbox-new-${task.title}-${d}`} 
-                                type="checkbox" 
-                                checked={false} 
-                                readOnly 
-                              />
-                              <label className="checkbox-label" htmlFor={`checkbox-new-${task.title}-${d}`} onClick={(e) => e.preventDefault()}>
-                                <span className="checkmark"></span>
-                                <div className="grid-bg"></div>
-                                <div className="glitch-overlay-h"></div>
-                                <div className="glitch-overlay-v"></div>
-                                <div className="binary-particles">
-                                  <span style={{ left: '10%', animationDelay: '0s' }} className="particle">1</span>
-                                  <span style={{ left: '30%', animationDelay: '-0.2s' }} className="particle">0</span>
-                                  <span style={{ left: '50%', animationDelay: '-0.4s' }} className="particle">1</span>
-                                  <span style={{ left: '70%', animationDelay: '-0.6s' }} className="particle">0</span>
-                                  <span style={{ left: '90%', animationDelay: '-0.8s' }} className="particle">1</span>
-                                </div>
-                              </label>
+                            <div style={{ display: 'flex', gap: '4px' }}>
+                              <button 
+                                className="tracker-edit-btn"
+                                onClick={() => { setEditingTask(task.title); setEditingValue(task.title); }}
+                              >
+                                <Edit2 size={14} />
+                              </button>
+                              <button 
+                                className="tracker-edit-btn tracker-delete-btn"
+                                onClick={() => handleDeleteBulkTask(task.title)}
+                              >
+                                <Trash2 size={14} />
+                              </button>
                             </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                ))
+                          </div>
+                        )}
+                      </div>
+                      {dateRange.map(d => {
+                        const t = matrixData[task.title]?.[d];
+                        return (
+                          <div key={d} className={`tracker-cell ${d > today ? 'disabled-cell' : ''}`}>
+                            {t ? (
+                              <div className="checkbox-container" onClick={() => d <= today && handleToggleTask(t._id, !t.completed)}>
+                                <input 
+                                  className="checkbox-input" 
+                                  id={`checkbox-${t._id}`} 
+                                  type="checkbox" 
+                                  checked={t.completed} 
+                                  readOnly 
+                                />
+                                <label className="checkbox-label" htmlFor={`checkbox-${t._id}`} onClick={(e) => e.preventDefault()}>
+                                  <span className="checkmark"></span>
+                                  <div className="grid-bg"></div>
+                                  <div className="glitch-overlay-h"></div>
+                                  <div className="glitch-overlay-v"></div>
+                                  <div className="binary-particles">
+                                    <span style={{ left: '10%', animationDelay: '0s' }} className="particle">1</span>
+                                    <span style={{ left: '30%', animationDelay: '-0.2s' }} className="particle">0</span>
+                                    <span style={{ left: '50%', animationDelay: '-0.4s' }} className="particle">1</span>
+                                    <span style={{ left: '70%', animationDelay: '-0.6s' }} className="particle">0</span>
+                                    <span style={{ left: '90%', animationDelay: '-0.8s' }} className="particle">1</span>
+                                  </div>
+                                </label>
+                              </div>
+                            ) : (
+                              <div className="checkbox-container" onClick={() => d <= today && handleCreateAndToggleTask(task.title, d)}>
+                                <input 
+                                  className="checkbox-input" 
+                                  id={`checkbox-new-${task.title}-${d}`} 
+                                  type="checkbox" 
+                                  checked={false} 
+                                  readOnly 
+                                />
+                                <label className="checkbox-label" htmlFor={`checkbox-new-${task.title}-${d}`} onClick={(e) => e.preventDefault()}>
+                                  <span className="checkmark"></span>
+                                  <div className="grid-bg"></div>
+                                  <div className="glitch-overlay-h"></div>
+                                  <div className="glitch-overlay-v"></div>
+                                  <div className="binary-particles">
+                                    <span style={{ left: '10%', animationDelay: '0s' }} className="particle">1</span>
+                                    <span style={{ left: '30%', animationDelay: '-0.2s' }} className="particle">0</span>
+                                    <span style={{ left: '50%', animationDelay: '-0.4s' }} className="particle">1</span>
+                                    <span style={{ left: '70%', animationDelay: '-0.6s' }} className="particle">0</span>
+                                    <span style={{ left: '90%', animationDelay: '-0.8s' }} className="particle">1</span>
+                                  </div>
+                                </label>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </Reorder.Item>
+                  ))}
+                </Reorder.Group>
               )}
+            </div>
             </div>
           </div>
         </div>
