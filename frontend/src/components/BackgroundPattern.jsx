@@ -74,14 +74,6 @@ const BackgroundPattern = ({ alwaysOn = false }) => {
           objectFit: 'cover',
           objectPosition: window.innerWidth < 768 ? 'right' : 'center',
           filter: 'brightness(1.2)',
-          ...(alwaysOn ? {} : {
-            WebkitMaskImage: window.innerWidth < 768 
-              ? 'linear-gradient(to right, transparent 0%, black 100%)'
-              : 'linear-gradient(to right, transparent 0%, transparent 30%, black 80%, black 100%)',
-            maskImage: window.innerWidth < 768 
-              ? 'linear-gradient(to right, transparent 0%, black 100%)'
-              : 'linear-gradient(to right, transparent 0%, transparent 30%, black 80%, black 100%)'
-          })
         }}
       >
         <source src="/video/girl-behind-curtains-3.1920x1080.mp4" type="video/mp4" />
