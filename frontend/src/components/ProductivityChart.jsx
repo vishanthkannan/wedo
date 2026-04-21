@@ -21,7 +21,7 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-const ProductivityChart = ({ data }) => {
+const ProductivityChart = React.memo(({ data }) => {
   return (
     <motion.div 
       className="premium-card chart-container"
@@ -74,6 +74,6 @@ const ProductivityChart = ({ data }) => {
       </div>
     </motion.div>
   );
-};
+});
 
 export default ProductivityChart;

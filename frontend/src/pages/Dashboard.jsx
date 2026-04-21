@@ -9,11 +9,51 @@ import { playSound } from '../utils/audio';
 import { motion, AnimatePresence, Reorder, useDragControls } from 'framer-motion';
 import { Plus, Flame, Volume2, VolumeX, LogOut, Check, Edit2, Trash2, Sun, Moon, GripVertical } from 'lucide-react';
 
+const HackerCheckbox = React.memo(({ id, checked, onChange, disabled }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div 
+      className="checkbox-container" 
+      onClick={() => !disabled && onChange(!checked)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <input 
+        className="checkbox-input" 
+        id={id} 
+        type="checkbox" 
+        checked={checked} 
+        readOnly 
+      />
+      <label className="checkbox-label" htmlFor={id} onClick={(e) => e.preventDefault()}>
+        <span className="checkmark"></span>
+        <div className="grid-bg"></div>
+        
+        {/* Only render expensive glitch overlays and particles when active/hovered */}
+        {(isHovered || checked) && (
+          <>
+            <div className="glitch-overlay-h"></div>
+            <div className="glitch-overlay-v"></div>
+            <div className="binary-particles">
+              <span style={{ left: '10%', animationDelay: '0s' }} className="particle">1</span>
+              <span style={{ left: '30%', animationDelay: '-0.2s' }} className="particle">0</span>
+              <span style={{ left: '50%', animationDelay: '-0.4s' }} className="particle">1</span>
+              <span style={{ left: '70%', animationDelay: '-0.6s' }} className="particle">0</span>
+              <span style={{ left: '90%', animationDelay: '-0.8s' }} className="particle">1</span>
+            </div>
+          </>
+        )}
+      </label>
+    </div>
+  );
+});
+
 const HabitRow = React.memo(({ 
   task, 
   today, 
   dateRange, 
-  rowData, // Pass only this task's data
+  rowData, 
   editingTask, 
   setEditingTask, 
   editingValue, 
@@ -80,55 +120,23 @@ const HabitRow = React.memo(({
         )}
       </div>
       {dateRange.map(d => {
-        const t = rowData?.[d]; // Use rowData instead of matrixData
+        const t = rowData?.[d];
         return (
           <div key={d} className={`tracker-cell ${d > today ? 'disabled-cell' : ''}`}>
             {t ? (
-              <div className="checkbox-container" onClick={() => d <= today && handleToggleTask(t._id, !t.completed)}>
-                <input 
-                  className="checkbox-input" 
-                  id={`checkbox-${t._id}`} 
-                  type="checkbox" 
-                  checked={t.completed} 
-                  readOnly 
-                />
-                <label className="checkbox-label" htmlFor={`checkbox-${t._id}`} onClick={(e) => e.preventDefault()}>
-                  <span className="checkmark"></span>
-                  <div className="grid-bg"></div>
-                  <div className="glitch-overlay-h"></div>
-                  <div className="glitch-overlay-v"></div>
-                  <div className="binary-particles">
-                    <span style={{ left: '10%', animationDelay: '0s' }} className="particle">1</span>
-                    <span style={{ left: '30%', animationDelay: '-0.2s' }} className="particle">0</span>
-                    <span style={{ left: '50%', animationDelay: '-0.4s' }} className="particle">1</span>
-                    <span style={{ left: '70%', animationDelay: '-0.6s' }} className="particle">0</span>
-                    <span style={{ left: '90%', animationDelay: '-0.8s' }} className="particle">1</span>
-                  </div>
-                </label>
-              </div>
+              <HackerCheckbox 
+                id={`checkbox-${t._id}`}
+                checked={t.completed}
+                onChange={(completed) => handleToggleTask(t._id, completed)}
+                disabled={d > today}
+              />
             ) : (
-              <div className="checkbox-container" onClick={() => d <= today && handleCreateAndToggleTask(task.title, d)}>
-                <input 
-                  className="checkbox-input" 
-                  id={`checkbox-new-${task.title}-${d}`} 
-                  type="checkbox" 
-                  checked={false} 
-                  readOnly 
-                />
-                <label className="checkbox-label" htmlFor={`checkbox-new-${task.title}-${d}`} onClick={(e) => e.preventDefault()}>
-                  <span className="checkmark"></span>
-                  <div className="grid-bg"></div>
-                  <div className="glitch-overlay-h"></div>
-                  <div className="glitch-overlay-v"></div>
-                  <div className="binary-particles">
-                    <span style={{ left: '10%', animationDelay: '0s' }} className="particle">1</span>
-                    <span style={{ left: '30%', animationDelay: '-0.2s' }} className="particle">0</span>
-                    <span style={{ left: '50%', animationDelay: '-0.4s' }} className="particle">1</span>
-                    <span style={{ left: '70%', animationDelay: '-0.6s' }} className="particle">0</span>
-                    <span style={{ left: '90%', animationDelay: '-0.8s' }} className="particle">1</span>
-                  </div>
-                </label>
-              </div>
+              <HackerCheckbox 
+                id={`checkbox-new-${task.title}-${d}`}
+                checked={false}
+                onChange={() => handleCreateAndToggleTask(task.title, d)}
+                disabled={d > today}
+              />
             )}
           </div>
         );
