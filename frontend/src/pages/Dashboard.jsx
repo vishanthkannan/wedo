@@ -9,11 +9,11 @@ import { playSound } from '../utils/audio';
 import { motion, AnimatePresence, Reorder, useDragControls } from 'framer-motion';
 import { Plus, Flame, Volume2, VolumeX, LogOut, Check, Edit2, Trash2, Sun, Moon, GripVertical } from 'lucide-react';
 
-const HabitRow = ({ 
+const HabitRow = React.memo(({ 
   task, 
   today, 
   dateRange, 
-  matrixData, 
+  rowData, // Pass only this task's data
   editingTask, 
   setEditingTask, 
   editingValue, 
@@ -80,7 +80,7 @@ const HabitRow = ({
         )}
       </div>
       {dateRange.map(d => {
-        const t = matrixData[task.title]?.[d];
+        const t = rowData?.[d]; // Use rowData instead of matrixData
         return (
           <div key={d} className={`tracker-cell ${d > today ? 'disabled-cell' : ''}`}>
             {t ? (
@@ -135,7 +135,7 @@ const HabitRow = ({
       })}
     </Reorder.Item>
   );
-};
+});
 
 const Dashboard = () => {
   const { user, logout } = useContext(AuthContext);
@@ -447,7 +447,7 @@ const Dashboard = () => {
                       task={task}
                       today={today}
                       dateRange={dateRange}
-                      matrixData={matrixData}
+                      rowData={matrixData[task.title]}
                       editingTask={editingTask}
                       setEditingTask={setEditingTask}
                       editingValue={editingValue}

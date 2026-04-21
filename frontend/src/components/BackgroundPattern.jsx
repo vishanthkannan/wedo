@@ -74,18 +74,20 @@ const BackgroundPattern = ({ alwaysOn = false }) => {
           objectFit: 'cover',
           objectPosition: window.innerWidth < 768 ? 'right' : 'center',
           filter: 'brightness(1.2)',
-          ...(alwaysOn ? {} : {
-            WebkitMaskImage: window.innerWidth < 768 
-              ? 'linear-gradient(to right, transparent 0%, black 100%)'
-              : 'linear-gradient(to right, transparent 0%, transparent 30%, black 80%, black 100%)',
-            maskImage: window.innerWidth < 768 
-              ? 'linear-gradient(to right, transparent 0%, black 100%)'
-              : 'linear-gradient(to right, transparent 0%, transparent 30%, black 80%, black 100%)'
-          })
         }}
       >
         <source src="/video/girl-behind-curtains-3.1920x1080.mp4" type="video/mp4" />
       </video>
+      {!alwaysOn && (
+        <div style={{
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          background: window.innerWidth < 768 
+            ? 'linear-gradient(to right, var(--bg-primary) 0%, transparent 100%)'
+            : 'linear-gradient(to right, var(--bg-primary) 0%, var(--bg-primary) 30%, transparent 80%)',
+          zIndex: 1
+        }} />
+      )}
     </div>
   );
 };
