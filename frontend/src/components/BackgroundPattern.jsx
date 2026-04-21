@@ -42,7 +42,7 @@ const BackgroundPattern = ({ alwaysOn = false }) => {
     <div 
       className="jp-matrix-wrapper" 
       style={{ 
-        opacity: showVideo ? (alwaysOn ? 0.35 : 1) : 0,
+        opacity: showVideo ? (alwaysOn ? 0.7 : 1) : 0,
         transition: 'opacity 0.8s ease-in-out',
         pointerEvents: 'none',
         zIndex: alwaysOn ? -1 : 9999
@@ -58,6 +58,7 @@ const BackgroundPattern = ({ alwaysOn = false }) => {
           width: '100vw',
           height: '100vh',
           objectFit: 'cover',
+          filter: 'brightness(1.2)',
           ...(alwaysOn ? {} : {
             WebkitMaskImage: 'linear-gradient(to right, transparent 0%, transparent 30%, black 80%, black 100%)',
             maskImage: 'linear-gradient(to right, transparent 0%, transparent 30%, black 80%, black 100%)'
