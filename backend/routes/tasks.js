@@ -191,7 +191,11 @@ router.get('/analytics/weekly', protect, async (req, res) => {
     const completionPercent = totalTasks === 0 ? 0 : Math.round((totalCompleted / totalTasks) * 100);
 
     const chartData = dates.map(d => ({
-      name: new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      name: new Date(d).toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric',
+        timeZone: 'UTC' // Force UTC to match our YYYY-MM-DD storage format
+      }),
       date: d,
       completed: completionByDay[d].completed,
       total: completionByDay[d].total

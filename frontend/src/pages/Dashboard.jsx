@@ -178,7 +178,9 @@ const Dashboard = () => {
     for(let i = 1; i <= lastDay; i++) {
       const d = new Date(year, month, i);
       // Use local date string to avoid timezone shifts
-      const dateStr = d.toLocaleDateString('en-CA'); // YYYY-MM-DD format
+      const dateStr = d.getFullYear() + '-' + 
+                     String(d.getMonth() + 1).padStart(2, '0') + '-' + 
+                     String(d.getDate()).padStart(2, '0');
       dates.push(dateStr);
     }
     setDateRange(dates);
