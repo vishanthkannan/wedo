@@ -177,12 +177,15 @@ h1, h2, h3, h4, h5, h6 {
   max-width: 420px;
   padding: 48px 40px;
   text-align: center;
+  position: relative;
+  z-index: 10;
 }
 
 .auth-title {
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 8px;
+  color: #FFFFFF;
   background: linear-gradient(135deg, #FFF, #A1A1AA);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1086,7 +1089,7 @@ h1, h2, h3, h4, h5, h6 {
   display: block;
   transition: 0.2s;
   font-size: 17px;
-  color: #9b9b9b;
+  color: var(--text-secondary);
   pointer-events: none;
 }
 
