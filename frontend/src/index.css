@@ -39,39 +39,7 @@
   --hacker-checkbox-bg: #1a1a1a;
 }
 
-[data-theme="light"] {
-  --bg-primary: #FBF8F1;
-  --bg-secondary: #F7ECDE;
-  --border-color: #E9DAC1;
-  --text-primary: #2C2C2C;
-  --text-secondary: #737373;
-  --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.04);
-  --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.08);
-  --shadow-glow: 0 0 15px rgba(84, 186, 185, 0.15);
-  --card-bg-blur: rgba(247, 236, 222, 0.5);
-  --card-border-blur: rgba(233, 218, 193, 0.5);
-  --card-border-hover: rgba(233, 218, 193, 1);
-  --input-bg: rgba(251, 248, 241, 0.4);
-  --input-bg-focus: rgba(251, 248, 241, 0.8);
-  --date-card-bg: rgba(251, 248, 241, 0.4);
-  --date-card-hover: rgba(251, 248, 241, 0.8);
-  --tracker-header-bg: rgba(233, 218, 193, 0.3);
-  --tracker-header-bg-solid: rgba(247, 236, 222, 0.7);
-  --tracker-row-hover: rgba(233, 218, 193, 0.2);
-  --badge-bg: rgba(233, 218, 193, 0.4);
-  --badge-border: transparent;
-  --checkbox-bg: rgba(251, 248, 241, 1);
-  --hacker-checkbox-bg: #F7ECDE;
-}
-
-/* Removed inversion since it's a video now */
-[data-theme="light"] .jp-matrix-wrapper {
-  /* filter: invert(1); */
-}
-
-[data-theme="light"] .tracker-grid-container {
-  background-color: rgba(247, 236, 222, 0.5);
-}
+/* Removed light theme overrides */
 
 * {
   margin: 0;

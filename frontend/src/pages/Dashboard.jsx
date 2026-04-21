@@ -147,7 +147,6 @@ const HabitRow = React.memo(({
 
 const Dashboard = () => {
   const { user, logout } = useContext(AuthContext);
-  const { theme, toggleTheme } = useContext(ThemeContext);
   const [matrixData, setMatrixData] = useState({});
   const [uniqueTasks, setUniqueTasks] = useState([]);
   const [analytics, setAnalytics] = useState(null);
@@ -377,13 +376,6 @@ const Dashboard = () => {
         </div>
         
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-          <button 
-            onClick={toggleTheme} 
-            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)' }}
-            title="Toggle Theme"
-          >
-            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-          </button>
           <button 
             onClick={() => setSoundEnabled(!soundEnabled)} 
             style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)' }}
