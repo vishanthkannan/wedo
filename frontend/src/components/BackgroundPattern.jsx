@@ -16,13 +16,19 @@ const BackgroundPattern = ({ alwaysOn = false }) => {
 
     let timeout;
     const handleTaskCompleted = () => {
-      setShowVideo(true);
-      if (videoRef.current) {
+      // Only reset if not already showing to avoid "looping" glitch
+      if (!showVideo && videoRef.current) {
         videoRef.current.currentTime = 0;
-        videoRef.current.play().catch(e => console.log('Auto-play prevented'));
       }
+      
+      setShowVideo(true);
+      
+      if (videoRef.current) {
+        videoRef.current.play().catch(e => console.log('Play interrupted'));
+      }
+      
       clearTimeout(timeout);
-      timeout = setTimeout(() => setShowVideo(false), 3500);
+      timeout = setTimeout(() => setShowVideo(false), 6000); // Increased duration
     };
     
     window.addEventListener('taskCompleted', handleTaskCompleted);

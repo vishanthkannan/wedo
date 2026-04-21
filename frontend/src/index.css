@@ -864,7 +864,7 @@ h1, h2, h3, h4, h5, h6 {
 .tracker-row.header-row {
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 50; /* Above everything else in the grid */
   background-color: var(--tracker-header-bg-solid);
 }
 
@@ -875,6 +875,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 12px 16px;
   border-right: 1px solid var(--card-border-blur);
   min-width: 60px;
+  background-color: transparent; /* Cells are transparent unless sticky */
 }
 
 .tracker-header {
@@ -894,14 +895,16 @@ h1, h2, h3, h4, h5, h6 {
   min-width: 180px;
   position: sticky;
   left: 0;
-  background-color: var(--bg-secondary) !important;
-  z-index: 10;
+  background-color: var(--bg-secondary) !important; /* Forces solid background for names */
+  z-index: 30; /* Above normal cells but below header row */
   box-shadow: 4px 0 10px rgba(0,0,0,0.3);
 }
 
 .tracker-header.tracker-task-name {
-  z-index: 30;
+  z-index: 60; /* Highest priority: top-left corner */
   background-color: var(--tracker-header-bg-solid) !important;
+  left: 0;
+  top: 0;
 }
 
 /* --- Midnight Sky Background --- */
