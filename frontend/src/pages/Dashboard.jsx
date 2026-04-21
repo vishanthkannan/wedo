@@ -6,7 +6,7 @@ import TaskItem from '../components/TaskItem';
 import ProductivityChart from '../components/ProductivityChart';
 import MidnightSkyBackground from '../components/MidnightSkyBackground';
 import { playSound } from '../utils/audio';
-import { motion, AnimatePresence, Reorder } from 'framer-motion';
+import { motion, AnimatePresence, Reorder, useDragControls } from 'framer-motion';
 import { Plus, Flame, Volume2, VolumeX, LogOut, Check, Edit2, Trash2, Sun, Moon, GripVertical } from 'lucide-react';
 
 const Dashboard = () => {
@@ -307,37 +307,46 @@ const Dashboard = () => {
                 </div>
               ) : (
                 <Reorder.Group axis="y" values={uniqueTasks} onReorder={setUniqueTasks}>
-                  {uniqueTasks.map(task => (
-                    <Reorder.Item 
-                      key={task.title} 
-                      value={task} 
-                      className="tracker-row"
-                    >
-                      <div className="tracker-cell tracker-task-name tracker-task-name-cell">
-                        {editingTask === task.title ? (
-                          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', width: '100%' }}>
-                            <input 
-                              type="text" 
-                              className="premium-input" 
-                              style={{ padding: '4px 8px', fontSize: '13px', width: '100%', minWidth: '100px' }}
-                              value={editingValue} 
-                              onChange={(e) => setEditingValue(e.target.value)} 
-                              autoFocus
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter') handleRenameTask(task.title);
-                                if (e.key === 'Escape') setEditingTask(null);
-                              }}
-                            />
-                            <button onClick={() => handleRenameTask(task.title)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-color)' }}>
-                              <Check size={16} />
-                            </button>
-                          </div>
-                        ) : (
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
-                              <GripVertical size={18} className="drag-handle" />
-                              <span>{task.title}</span>
+                  {uniqueTasks.map(task => {
+                    const dragControls = useDragControls();
+                    return (
+                      <Reorder.Item 
+                        key={task.title} 
+                        value={task} 
+                        className="tracker-row"
+                        dragListener={false}
+                        dragControls={dragControls}
+                      >
+                        <div className="tracker-cell tracker-task-name tracker-task-name-cell">
+                          {editingTask === task.title ? (
+                            <div style={{ display: 'flex', gap: '8px', alignItems: 'center', width: '100%' }}>
+                              <input 
+                                type="text" 
+                                className="premium-input" 
+                                style={{ padding: '4px 8px', fontSize: '13px', width: '100%', minWidth: '100px' }}
+                                value={editingValue} 
+                                onChange={(e) => setEditingValue(e.target.value)} 
+                                autoFocus
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') handleRenameTask(task.title);
+                                  if (e.key === 'Escape') setEditingTask(null);
+                                }}
+                              />
+                              <button onClick={() => handleRenameTask(task.title)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-color)' }}>
+                                <Check size={16} />
+                              </button>
                             </div>
+                          ) : (
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
+                                <div 
+                                  onPointerDown={(e) => dragControls.start(e)}
+                                  className="drag-handle-wrapper"
+                                >
+                                  <GripVertical size={18} className="drag-handle" />
+                                </div>
+                                <span>{task.title}</span>
+                              </div>
                             <div style={{ display: 'flex', gap: '4px' }}>
                               <button 
                                 className="tracker-edit-btn"
@@ -409,8 +418,9 @@ const Dashboard = () => {
                           </div>
                         );
                       })}
-                    </Reorder.Item>
-                  ))}
+                      </Reorder.Item>
+                    );
+                  })}
                 </Reorder.Group>
               )}
             </div>

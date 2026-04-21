@@ -60,8 +60,12 @@ const BackgroundPattern = ({ alwaysOn = false }) => {
           objectFit: 'cover',
           filter: 'brightness(1.2)',
           ...(alwaysOn ? {} : {
-            WebkitMaskImage: 'linear-gradient(to right, transparent 0%, transparent 30%, black 80%, black 100%)',
-            maskImage: 'linear-gradient(to right, transparent 0%, transparent 30%, black 80%, black 100%)'
+            WebkitMaskImage: window.innerWidth < 768 
+              ? 'linear-gradient(to bottom, transparent 0%, transparent 20%, black 50%, black 100%)'
+              : 'linear-gradient(to right, transparent 0%, transparent 30%, black 80%, black 100%)',
+            maskImage: window.innerWidth < 768 
+              ? 'linear-gradient(to bottom, transparent 0%, transparent 20%, black 50%, black 100%)'
+              : 'linear-gradient(to right, transparent 0%, transparent 30%, black 80%, black 100%)'
           })
         }}
       >
