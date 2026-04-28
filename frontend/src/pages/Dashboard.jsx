@@ -5,7 +5,6 @@ import api from '../utils/api';
 import TaskItem from '../components/TaskItem';
 import ProductivityChart from '../components/ProductivityChart';
 import MidnightSkyBackground from '../components/MidnightSkyBackground';
-import JpMatrixBackground from '../components/JpMatrixBackground';
 import { playSound } from '../utils/audio';
 import { motion, AnimatePresence, Reorder, useDragControls } from 'framer-motion';
 import { Plus, Flame, Volume2, VolumeX, LogOut, Check, Edit2, Trash2, Sun, Moon, GripVertical } from 'lucide-react';
@@ -65,9 +64,6 @@ const HabitRow = React.memo(({
   handleCreateAndToggleTask 
 }) => {
   const dragControls = useDragControls();
-  
-  // Check if today's entry is completed to restrict modification
-  const isCompletedToday = rowData?.[today]?.completed;
 
   return (
     <Reorder.Item 
@@ -99,28 +95,23 @@ const HabitRow = React.memo(({
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
             <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
               <div 
-                onPointerDown={(e) => !isCompletedToday && dragControls.start(e)}
-                className={`drag-handle-wrapper ${isCompletedToday ? 'disabled-handle' : ''}`}
-                style={{ cursor: isCompletedToday ? 'not-allowed' : 'grab', opacity: isCompletedToday ? 0.3 : 1 }}
+                onPointerDown={(e) => dragControls.start(e)}
+                className="drag-handle-wrapper"
               >
                 <GripVertical size={18} className="drag-handle" />
               </div>
-              <span style={{ opacity: isCompletedToday ? 0.7 : 1 }}>{task.title}</span>
+              <span>{task.title}</span>
             </div>
             <div style={{ display: 'flex', gap: '4px' }}>
               <button 
                 className="tracker-edit-btn"
                 onClick={() => { setEditingTask(task.title); setEditingValue(task.title); }}
-                disabled={isCompletedToday}
-                style={{ opacity: isCompletedToday ? 0 : undefined, pointerEvents: isCompletedToday ? 'none' : 'auto' }}
               >
                 <Edit2 size={14} />
               </button>
               <button 
                 className="tracker-edit-btn tracker-delete-btn"
                 onClick={() => handleDeleteBulkTask(task.title)}
-                disabled={isCompletedToday}
-                style={{ opacity: isCompletedToday ? 0 : undefined, pointerEvents: isCompletedToday ? 'none' : 'auto' }}
               >
                 <Trash2 size={14} />
               </button>
@@ -130,8 +121,6 @@ const HabitRow = React.memo(({
       </div>
       {dateRange.map(d => {
         const t = rowData?.[d];
-        const isPastOrTodayCompleted = (d < today && t?.completed) || (d === today && t?.completed);
-        
         return (
           <div key={d} className={`tracker-cell ${d > today ? 'disabled-cell' : ''}`}>
             {t ? (
@@ -139,7 +128,7 @@ const HabitRow = React.memo(({
                 id={`checkbox-${t._id}`}
                 checked={t.completed}
                 onChange={(completed) => handleToggleTask(t._id, completed)}
-                disabled={d > today || isPastOrTodayCompleted}
+                disabled={d > today}
               />
             ) : (
               <HackerCheckbox 
@@ -366,12 +355,8 @@ const Dashboard = () => {
   };
 
   return (
-    <>
+    <div className="app-container">
       <MidnightSkyBackground />
-      <div className="jp-matrix-wrapper" style={{ opacity: 0.15, zIndex: -1 }}>
-        <JpMatrixBackground />
-      </div>
-      <div className="app-container">
       <header className="app-header">
         <div className="user-info">
           <div className="loading" style={{ marginRight: '10px' }}>
@@ -484,8 +469,7 @@ const Dashboard = () => {
         {/* Empty placeholder to keep the grid layout balanced */}
         <div></div>
       </div>
-      </div>
-    </>
+    </div>
   );
 };
 
