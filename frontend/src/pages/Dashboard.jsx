@@ -377,15 +377,15 @@ const Dashboard = () => {
         
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
           <button 
+            className="header-icon-btn"
             onClick={() => setSoundEnabled(!soundEnabled)} 
-            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)' }}
             title="Toggle Sound"
           >
             {soundEnabled ? <Volume2 size={20} /> : <VolumeX size={20} />}
           </button>
           <button 
+            className="header-icon-btn logout-btn"
             onClick={logout}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)' }}
             title="Log Out"
           >
             <LogOut size={20} />

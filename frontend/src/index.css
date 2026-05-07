@@ -709,6 +709,30 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 48px;
 }
 
+.header-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-icon-btn:hover {
+  color: var(--accent-color);
+  background: rgba(84, 186, 185, 0.1);
+  transform: scale(1.1);
+}
+
+.header-icon-btn.logout-btn:hover {
+  color: #ff4757;
+  background: rgba(255, 71, 87, 0.1);
+}
+
 .user-info {
   display: flex;
   align-items: center;
