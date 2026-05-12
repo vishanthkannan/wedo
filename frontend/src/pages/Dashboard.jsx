@@ -451,7 +451,11 @@ const Dashboard = () => {
             </div>
           </div>
           {analytics && (
-            <ProductivityChart data={analytics.chartData} activeTopics={activeTopics} />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '24px' }}>
+              {(activeTopics.includes('all') ? ['all'] : activeTopics).map(topic => (
+                <ProductivityChart key={topic} data={analytics.chartData} activeTopics={[topic]} />
+              ))}
+            </div>
           )}
         </div>
 

@@ -71,7 +71,7 @@ const ProductivityChart = React.memo(({ data, activeTopics = ['all'] }) => {
     >
       <div style={{ padding: '20px 24px 0 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
         <h3 style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', letterSpacing: '1px', textTransform: 'uppercase' }}>
-          30-Day Activity {isSingle && statusText && <span style={{ color: chartColor, marginLeft: '8px', fontSize: '12px' }}>{statusText}</span>}
+          {singleKey === 'completed' ? 'Overall' : singleKey} Activity {isSingle && statusText && <span style={{ color: chartColor, marginLeft: '8px', fontSize: '12px' }}>{statusText}</span>}
         </h3>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
           {keysToRender.map((key, i) => {
