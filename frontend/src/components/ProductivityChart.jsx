@@ -5,7 +5,11 @@ import { motion } from 'framer-motion';
 const CustomTooltip = ({ active, payload, label, chartColor }) => {
   if (active && payload && payload.length) {
     const color = chartColor || 'var(--accent-color)';
-    const shadowColor = chartColor === '#ff4757' ? 'rgba(255, 71, 87, 0.4)' : 'var(--shadow-glow)';
+    let shadowColor = 'var(--shadow-glow)';
+    if (chartColor === '#ff4757') shadowColor = 'rgba(255, 71, 87, 0.4)';
+    if (chartColor === '#2ed573') shadowColor = 'rgba(46, 213, 115, 0.4)';
+    if (chartColor === '#1e90ff') shadowColor = 'rgba(30, 144, 255, 0.4)';
+
     return (
       <div style={{ 
         padding: '8px 12px', 
@@ -24,12 +28,33 @@ const CustomTooltip = ({ active, payload, label, chartColor }) => {
 };
 
 const ProductivityChart = React.memo(({ data }) => {
-  // Determine if the graph is consistent
-  // Let's say consistent means completing tasks on at least half of the recorded days
-  const activeDays = data.filter(d => d.completed > 0).length;
-  const isConsistent = data.length === 0 || activeDays >= (data.length * 0.3); // Setting a reasonable threshold
+  let chartColor = 'var(--accent-color)';
+  let statusText = '';
   
-  const chartColor = isConsistent ? 'var(--accent-color)' : '#ff4757';
+  if (data && data.length >= 3) {
+    const last3 = data.slice(-3);
+    const is3DayStreak = last3.every(d => d.completed > 0);
+    
+    if (is3DayStreak) {
+      chartColor = '#2ed573'; // Green
+      statusText = '(3-Day Streak!)';
+    } else {
+      const today = data[data.length - 1];
+      const yesterday = data[data.length - 2];
+      if (today && yesterday) {
+        if (today.completed > yesterday.completed) {
+          chartColor = '#1e90ff'; // Blue
+          statusText = '(Trending Up)';
+        } else if (today.completed < yesterday.completed) {
+          chartColor = '#ff4757'; // Red
+          statusText = '(Trending Down)';
+        } else {
+          chartColor = 'var(--accent-color)';
+          statusText = '';
+        }
+      }
+    }
+  }
 
   return (
     <motion.div 
@@ -41,7 +66,7 @@ const ProductivityChart = React.memo(({ data }) => {
     >
       <div style={{ padding: '20px 24px 0 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h3 style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', letterSpacing: '1px', textTransform: 'uppercase' }}>
-          30-Day Activity {(!isConsistent && data.length > 0) && <span style={{ color: chartColor, marginLeft: '8px', fontSize: '12px' }}>(Inconsistent)</span>}
+          30-Day Activity {statusText && <span style={{ color: chartColor, marginLeft: '8px', fontSize: '12px' }}>{statusText}</span>}
         </h3>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: chartColor, boxShadow: `0 0 8px ${chartColor}` }}></div>
