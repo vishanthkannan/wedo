@@ -182,7 +182,7 @@ const Dashboard = () => {
   const [editingType, setEditingType] = useState('daily');
 
   // Topic States
-  const [activeTopic, setActiveTopic] = useState('all');
+  const [activeTopics, setActiveTopics] = useState(['all']);
   const [newTaskTopic, setNewTaskTopic] = useState('daily');
   
   const scrollRef = useRef(null);
@@ -221,7 +221,7 @@ const Dashboard = () => {
       fetchTasksMatrix();
     }
     fetchAnalytics();
-  }, [dateRange, selectedDate, activeTopic]);
+  }, [dateRange, selectedDate, activeTopics]);
 
   const fetchTasksMatrix = async () => {
     try {
@@ -253,7 +253,8 @@ const Dashboard = () => {
 
   const fetchAnalytics = async () => {
     try {
-      const res = await api.get(`/tasks/analytics/weekly${activeTopic !== 'all' ? `?type=${activeTopic}` : ''}`);
+      const typeQuery = activeTopics.includes('all') ? 'all' : activeTopics.join(',');
+      const res = await api.get(`/tasks/analytics/weekly?type=${typeQuery}`);
       setAnalytics(res.data);
     } catch (err) {
       console.error(err);
@@ -425,23 +426,32 @@ const Dashboard = () => {
 
       <div className="dashboard-grid" style={{ marginTop: '24px' }}>
         <div style={{ gridColumn: '1 / -1', marginBottom: '16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '16px' }}>
             <h2 className="section-title" style={{ marginBottom: 0 }}>Analytics</h2>
-            <select 
-              value={activeTopic} 
-              onChange={(e) => setActiveTopic(e.target.value)}
-              className="premium-input"
-              style={{ width: 'auto', padding: '8px 16px' }}
-            >
-              <option value="all">All Topics</option>
-              <option value="daily">Daily</option>
-              <option value="health">Health</option>
-              <option value="study">Study</option>
-              <option value="work">Work</option>
-            </select>
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+              {['all', 'daily', 'health', 'study', 'work'].map(topic => (
+                <label key={topic} style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '14px', color: activeTopics.includes(topic) ? 'var(--text-primary)' : 'var(--text-secondary)' }}>
+                  <input 
+                    type="checkbox" 
+                    checked={activeTopics.includes(topic)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        if (topic === 'all') setActiveTopics(['all']);
+                        else setActiveTopics(prev => [...prev.filter(t => t !== 'all'), topic]);
+                      } else {
+                        const next = activeTopics.filter(t => t !== topic);
+                        setActiveTopics(next.length ? next : ['all']);
+                      }
+                    }}
+                    style={{ accentColor: 'var(--accent-color)', width: '16px', height: '16px' }}
+                  />
+                  {topic === 'all' ? 'All Topics' : topic.charAt(0).toUpperCase() + topic.slice(1)}
+                </label>
+              ))}
+            </div>
           </div>
           {analytics && (
-            <ProductivityChart data={analytics.chartData} />
+            <ProductivityChart data={analytics.chartData} activeTopics={activeTopics} />
           )}
         </div>
 

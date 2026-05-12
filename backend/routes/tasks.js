@@ -192,7 +192,8 @@ router.get('/analytics/weekly', protect, async (req, res) => {
 
     const query = { user: req.user, date: { $in: dates } };
     if (type && type !== 'all') {
-      query.type = type;
+      const types = type.split(',');
+      query.type = { $in: types };
     }
 
     const tasks = await Task.find(query);
@@ -201,28 +202,42 @@ router.get('/analytics/weekly', protect, async (req, res) => {
     let totalTasks = tasks.length;
     let completionByDay = {};
     
-    dates.forEach(d => completionByDay[d] = { total: 0, completed: 0 });
+    dates.forEach(d => completionByDay[d] = { total: 0, completed: 0, byType: {} });
 
     tasks.forEach(t => {
       completionByDay[t.date].total += 1;
+      if (!completionByDay[t.date].byType[t.type]) {
+        completionByDay[t.date].byType[t.type] = { total: 0, completed: 0 };
+      }
+      completionByDay[t.date].byType[t.type].total += 1;
+      
       if (t.completed) {
         completionByDay[t.date].completed += 1;
+        completionByDay[t.date].byType[t.type].completed += 1;
         totalCompleted += 1;
       }
     });
 
     const completionPercent = totalTasks === 0 ? 0 : Math.round((totalCompleted / totalTasks) * 100);
 
-    const chartData = dates.map(d => ({
-      name: new Date(d).toLocaleDateString('en-US', { 
-        month: 'short', 
-        day: 'numeric',
-        timeZone: 'UTC' // Force UTC to match our YYYY-MM-DD storage format
-      }),
-      date: d,
-      completed: completionByDay[d].completed,
-      total: completionByDay[d].total
-    }));
+    const chartData = dates.map(d => {
+      const obj = {
+        name: new Date(d).toLocaleDateString('en-US', { 
+          month: 'short', 
+          day: 'numeric',
+          timeZone: 'UTC' 
+        }),
+        date: d,
+        completed: completionByDay[d].completed,
+        total: completionByDay[d].total
+      };
+      
+      Object.keys(completionByDay[d].byType).forEach(type => {
+        obj[type] = completionByDay[d].byType[type].completed;
+      });
+      
+      return obj;
+    });
 
     res.json({
       totalCompleted,
