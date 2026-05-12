@@ -80,7 +80,7 @@ const HabitRow = React.memo(({
             <input 
               type="text" 
               className="premium-input" 
-              style={{ padding: '4px 8px', fontSize: '13px', width: '50%', minWidth: '50px' }}
+              style={{ padding: '4px 8px', fontSize: '13px', flex: '1', minWidth: '80px' }}
               value={editingValue} 
               onChange={(e) => setEditingValue(e.target.value)} 
               autoFocus
@@ -93,7 +93,7 @@ const HabitRow = React.memo(({
               value={editingType}
               onChange={(e) => setEditingType(e.target.value)}
               className="premium-input"
-              style={{ padding: '4px 8px', fontSize: '13px', width: '40%', minWidth: '40px' }}
+              style={{ padding: '4px 8px', fontSize: '13px', flex: '0 0 auto', width: 'auto', minWidth: '70px' }}
             >
               <option value="daily">Daily</option>
               <option value="health">Health</option>
