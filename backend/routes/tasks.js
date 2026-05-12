@@ -89,6 +89,23 @@ router.put('/rename/bulk', protect, async (req, res) => {
   }
 });
 
+// Change tasks type by title
+router.put('/type/bulk', protect, async (req, res) => {
+  try {
+    const { title, newType } = req.body;
+    if (!title || !newType) {
+      return res.status(400).json({ message: 'Title and newType required' });
+    }
+    await Task.updateMany(
+      { user: req.user, title: title },
+      { $set: { type: newType } }
+    );
+    res.json({ message: 'Tasks type changed successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // Update task
 router.put('/:id', protect, async (req, res) => {
   try {
@@ -164,6 +181,7 @@ router.delete('/:id', protect, async (req, res) => {
 // Get monthly performance
 router.get('/analytics/weekly', protect, async (req, res) => {
   try {
+    const { type } = req.query;
     const today = new Date();
     const dates = [];
     for(let i=29; i>=0; i--) {
@@ -172,7 +190,12 @@ router.get('/analytics/weekly', protect, async (req, res) => {
       dates.push(d.toISOString().split('T')[0]);
     }
 
-    const tasks = await Task.find({ user: req.user, date: { $in: dates } });
+    const query = { user: req.user, date: { $in: dates } };
+    if (type && type !== 'all') {
+      query.type = type;
+    }
+
+    const tasks = await Task.find(query);
     
     let totalCompleted = 0;
     let totalTasks = tasks.length;
