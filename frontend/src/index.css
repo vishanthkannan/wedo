@@ -826,7 +826,6 @@ h1, h2, h3, h4, h5, h6 {
   transition: background-color 0.2s ease;
   width: 100%;
   background-color: var(--bg-secondary);
-  contain: paint; /* Performance optimization for large grids */
 }
 
 .tracker-row.header-row {

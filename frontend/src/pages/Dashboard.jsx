@@ -58,7 +58,9 @@ const HabitRow = React.memo(({
   setEditingTask, 
   editingValue, 
   setEditingValue, 
-  handleRenameTask, 
+  editingType,
+  setEditingType,
+  handleUpdateTask, 
   handleDeleteBulkTask, 
   handleToggleTask, 
   handleCreateAndToggleTask 
@@ -78,16 +80,27 @@ const HabitRow = React.memo(({
             <input 
               type="text" 
               className="premium-input" 
-              style={{ padding: '4px 8px', fontSize: '13px', width: '100%', minWidth: '100px' }}
+              style={{ padding: '4px 8px', fontSize: '13px', width: '50%', minWidth: '50px' }}
               value={editingValue} 
               onChange={(e) => setEditingValue(e.target.value)} 
               autoFocus
               onKeyDown={(e) => {
-                if (e.key === 'Enter') handleRenameTask(task.title);
+                if (e.key === 'Enter') handleUpdateTask(task.title, editingValue, editingType);
                 if (e.key === 'Escape') setEditingTask(null);
               }}
             />
-            <button onClick={() => handleRenameTask(task.title)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-color)' }}>
+            <select
+              value={editingType}
+              onChange={(e) => setEditingType(e.target.value)}
+              className="premium-input"
+              style={{ padding: '4px 8px', fontSize: '13px', width: '40%', minWidth: '40px' }}
+            >
+              <option value="daily">Daily</option>
+              <option value="health">Health</option>
+              <option value="study">Study</option>
+              <option value="work">Work</option>
+            </select>
+            <button onClick={() => handleUpdateTask(task.title, editingValue, editingType)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-color)' }}>
               <Check size={16} />
             </button>
           </div>
@@ -100,12 +113,15 @@ const HabitRow = React.memo(({
               >
                 <GripVertical size={18} className="drag-handle" />
               </div>
-              <span>{task.title}</span>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span>{task.title}</span>
+                <span style={{ fontSize: '10px', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{task.type}</span>
+              </div>
             </div>
             <div style={{ display: 'flex', gap: '4px' }}>
               <button 
                 className="tracker-edit-btn"
-                onClick={() => { setEditingTask(task.title); setEditingValue(task.title); }}
+                onClick={() => { setEditingTask(task.title); setEditingValue(task.title); setEditingType(task.type || 'daily'); }}
               >
                 <Edit2 size={14} />
               </button>
@@ -134,7 +150,7 @@ const HabitRow = React.memo(({
               <HackerCheckbox 
                 id={`checkbox-new-${task.title}-${d}`}
                 checked={false}
-                onChange={() => handleCreateAndToggleTask(task.title, d)}
+                onChange={() => handleCreateAndToggleTask(task.title, d, task.type)}
                 disabled={d > today}
               />
             )}
@@ -163,6 +179,11 @@ const Dashboard = () => {
   // Edit State
   const [editingTask, setEditingTask] = useState(null);
   const [editingValue, setEditingValue] = useState('');
+  const [editingType, setEditingType] = useState('daily');
+
+  // Topic States
+  const [activeTopic, setActiveTopic] = useState('all');
+  const [newTaskTopic, setNewTaskTopic] = useState('daily');
   
   const scrollRef = useRef(null);
 
@@ -200,7 +221,7 @@ const Dashboard = () => {
       fetchTasksMatrix();
     }
     fetchAnalytics();
-  }, [dateRange, selectedDate]);
+  }, [dateRange, selectedDate, activeTopic]);
 
   const fetchTasksMatrix = async () => {
     try {
@@ -232,7 +253,7 @@ const Dashboard = () => {
 
   const fetchAnalytics = async () => {
     try {
-      const res = await api.get('/tasks/analytics/weekly');
+      const res = await api.get(`/tasks/analytics/weekly${activeTopic !== 'all' ? `?type=${activeTopic}` : ''}`);
       setAnalytics(res.data);
     } catch (err) {
       console.error(err);
@@ -272,7 +293,7 @@ const Dashboard = () => {
     }
   };
 
-  const handleCreateAndToggleTask = async (title, date) => {
+  const handleCreateAndToggleTask = async (title, date, type = 'daily') => {
     try {
       playSound('click', soundEnabled);
       setTimeout(() => playSound('reward', soundEnabled), 300);
@@ -283,13 +304,13 @@ const Dashboard = () => {
         const newMatrix = { ...prev };
         if (!newMatrix[title]) newMatrix[title] = {};
         newMatrix[title] = { ...newMatrix[title] };
-        newMatrix[title][date] = { _id: 'temp-' + Date.now(), title, date, type: 'daily', completed: true };
+        newMatrix[title][date] = { _id: 'temp-' + Date.now(), title, date, type, completed: true };
         return newMatrix;
       });
 
       await api.post('/tasks', {
         title,
-        type: 'daily',
+        type,
         date,
         completed: true
       });
@@ -309,7 +330,7 @@ const Dashboard = () => {
     try {
       await api.post('/tasks', {
         title: newTaskTitle,
-        type: 'daily',
+        type: newTaskTopic,
         date: today
       });
       setNewTaskTitle('');
@@ -320,15 +341,24 @@ const Dashboard = () => {
     }
   };
 
-  const handleRenameTask = async (oldTitle) => {
-    if (!editingValue.trim() || editingValue === oldTitle) {
+  const handleUpdateTask = async (oldTitle, newTitle, newType) => {
+    if (!newTitle.trim()) {
       setEditingTask(null);
       return;
     }
     try {
-      await api.put('/tasks/rename/bulk', { oldTitle, newTitle: editingValue });
+      const oldType = uniqueTasks.find(t => t.title === oldTitle)?.type;
+      
+      if (newTitle !== oldTitle) {
+        await api.put('/tasks/rename/bulk', { oldTitle, newTitle });
+      }
+      if (newType !== oldType) {
+        await api.put('/tasks/type/bulk', { title: newTitle, newType });
+      }
+      
       setEditingTask(null);
       fetchTasksMatrix();
+      fetchAnalytics();
     } catch (err) {
       console.error(err);
     }
@@ -395,6 +425,21 @@ const Dashboard = () => {
 
       <div className="dashboard-grid" style={{ marginTop: '24px' }}>
         <div style={{ gridColumn: '1 / -1', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <h2 className="section-title" style={{ marginBottom: 0 }}>Analytics</h2>
+            <select 
+              value={activeTopic} 
+              onChange={(e) => setActiveTopic(e.target.value)}
+              className="premium-input"
+              style={{ width: 'auto', padding: '8px 16px' }}
+            >
+              <option value="all">All Topics</option>
+              <option value="daily">Daily</option>
+              <option value="health">Health</option>
+              <option value="study">Study</option>
+              <option value="work">Work</option>
+            </select>
+          </div>
           {analytics && (
             <ProductivityChart data={analytics.chartData} />
           )}
@@ -414,6 +459,17 @@ const Dashboard = () => {
               value={newTaskTitle}
               onChange={(e) => setNewTaskTitle(e.target.value)}
             />
+            <select 
+              value={newTaskTopic} 
+              onChange={(e) => setNewTaskTopic(e.target.value)}
+              className="premium-input add-task-type"
+              style={{ width: 'auto' }}
+            >
+              <option value="daily">Daily</option>
+              <option value="health">Health</option>
+              <option value="study">Study</option>
+              <option value="work">Work</option>
+            </select>
             <button type="submit" className="add-item-btn">
               <span className="button__text">Add Habit</span>
               <span className="button__icon">
@@ -454,7 +510,9 @@ const Dashboard = () => {
                       setEditingTask={setEditingTask}
                       editingValue={editingValue}
                       setEditingValue={setEditingValue}
-                      handleRenameTask={handleRenameTask}
+                      editingType={editingType}
+                      setEditingType={setEditingType}
+                      handleUpdateTask={handleUpdateTask}
                       handleDeleteBulkTask={handleDeleteBulkTask}
                       handleToggleTask={handleToggleTask}
                       handleCreateAndToggleTask={handleCreateAndToggleTask}
