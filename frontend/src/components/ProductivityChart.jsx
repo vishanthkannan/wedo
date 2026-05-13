@@ -100,8 +100,8 @@ const ProductivityChart = React.memo(({ data, activeTopics = ['all'] }) => {
         </div>
       </div>
 
-      <div style={{ height: '240px', width: '100%', padding: '16px 24px 16px 16px' }}>
-        <ResponsiveContainer width="100%" height="100%">
+      <div style={{ height: '240px', width: '100%', minWidth: 0, padding: '16px 24px 16px 16px' }}>
+        <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
           <AreaChart data={data} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
             <defs>
               {keysToRender.map((key, i) => {
