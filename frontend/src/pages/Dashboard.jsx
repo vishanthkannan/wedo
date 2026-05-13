@@ -9,7 +9,7 @@ import { playSound } from '../utils/audio';
 import { motion, AnimatePresence, Reorder, useDragControls } from 'framer-motion';
 import { Plus, Flame, Volume2, VolumeX, LogOut, Check, Edit2, Trash2, Sun, Moon, GripVertical } from 'lucide-react';
 
-const HackerCheckbox = React.memo(({ id, checked, onChange, disabled }) => {
+const HackerCheckbox = React.memo(({ id, checked, onChange, disabled, isToday }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -28,10 +28,10 @@ const HackerCheckbox = React.memo(({ id, checked, onChange, disabled }) => {
       />
       <label className="checkbox-label" htmlFor={id} onClick={(e) => e.preventDefault()}>
         <span className="checkmark"></span>
-        <div className="grid-bg"></div>
+        {isToday && <div className="grid-bg"></div>}
         
-        {/* Only render expensive glitch overlays and particles when active/hovered */}
-        {(isHovered || checked) && (
+        {/* Only render expensive glitch overlays and particles when active/hovered for today */}
+        {isToday && (isHovered || checked) && (
           <>
             <div className="glitch-overlay-h"></div>
             <div className="glitch-overlay-v"></div>
@@ -137,6 +137,7 @@ const HabitRow = React.memo(({
       </div>
       {dateRange.map(d => {
         const t = rowData?.[d];
+        const isToday = d === today;
         return (
           <div key={d} className={`tracker-cell ${d > today ? 'disabled-cell' : ''}`}>
             {t ? (
@@ -145,6 +146,7 @@ const HabitRow = React.memo(({
                 checked={t.completed}
                 onChange={(completed) => handleToggleTask(t._id, completed)}
                 disabled={d > today}
+                isToday={isToday}
               />
             ) : (
               <HackerCheckbox 
@@ -152,6 +154,7 @@ const HabitRow = React.memo(({
                 checked={false}
                 onChange={() => handleCreateAndToggleTask(task.title, d, task.type)}
                 disabled={d > today}
+                isToday={isToday}
               />
             )}
           </div>
