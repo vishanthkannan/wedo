@@ -1,13 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-const IntroScreen = ({ onComplete }) => {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      onComplete();
-    }, 2500);
-    return () => clearTimeout(timer);
-  }, [onComplete]);
+const IntroScreen = () => {
 
   return (
     <motion.div 
