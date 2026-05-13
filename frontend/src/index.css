@@ -1957,14 +1957,209 @@ input:-webkit-autofill:active {
 
 @keyframes particleUp {
   0% { opacity: 0; }
+.jp-matrix > span:nth-child(41n + 1) { animation: jp-smooth-pulse 3.9s ease-in-out infinite 0.4s; }
+.jp-matrix > span:nth-child(17n + 9) { animation: jp-smooth-pulse 2.8s ease-in-out infinite 0.9s; }
+.jp-matrix > span:nth-child(23n + 18) { animation: jp-smooth-pulse 4.3s ease-in-out infinite 1.3s; }
+.jp-matrix > span:nth-child(31n + 4) { animation: jp-smooth-pulse 5.6s ease-in-out infinite 0.1s; }
+.jp-matrix > span:nth-child(43n + 20) { animation: jp-smooth-pulse 3.6s ease-in-out infinite 1.8s; }
+.jp-matrix > span:nth-child(13n + 6) { animation: jp-smooth-pulse 3.2s ease-in-out infinite 1.2s; }
+.jp-matrix > span:nth-child(53n + 5) { animation: jp-smooth-pulse 4.9s ease-in-out infinite 0.5s; }
+.jp-matrix > span:nth-child(47n + 15) { animation: jp-smooth-pulse 5.9s ease-in-out infinite 1s; }
+
+@keyframes jp-smooth-pulse {
+  0%, 100% {
+    color: rgba(0, 150, 255, 0.4);
+    text-shadow: 0 0 5px rgba(0, 150, 255, 0.5);
+  }
+  30% {
+    color: rgba(100, 200, 255, 1);
+    text-shadow: 0 0 10px rgba(100, 200, 255, 1), 0 0 15px rgba(100, 200, 255, 1);
+  }
+  50% {
+    color: rgba(255, 105, 180, 1);
+    text-shadow: 0 0 10px rgba(255, 105, 180, 1), 0 0 15px rgba(255, 105, 180, 1);
+  }
+  70% {
+    color: #ffffff;
+    text-shadow: 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #fff;
+  }
+}
+
+/* --- Space Button --- */
+.space-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 13rem;
+  overflow: hidden;
+  height: 3rem;
+  background-size: 300% 300%;
+  cursor: pointer;
+  backdrop-filter: blur(1rem);
+  border-radius: 5rem;
+  transition: 0.5s;
+  animation: gradient_301 5s ease infinite;
+  border: double 4px transparent;
+  background-image: linear-gradient(#212121, #212121),
+    linear-gradient(
+      137.48deg,
+      #ffdb3b 10%,
+      #fe53bb 45%,
+      #8f51ea 67%,
+      #0044ff 87%
+    );
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  position: relative;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+#container-stars {
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transition: 0.5s;
+  backdrop-filter: blur(1rem);
+  border-radius: 5rem;
+}
+
+.space-btn strong {
+  z-index: 2;
+  font-family: inherit;
+  font-size: 14px;
+  letter-spacing: 5px;
+  color: #ffffff;
+  text-shadow: 0 0 4px white;
+}
+
+#glow {
+  position: absolute;
+  display: flex;
+  width: 12rem;
+}
+
+.circle {
+  width: 100%;
+  height: 30px;
+  filter: blur(2rem);
+  animation: pulse_3011 4s infinite;
+  z-index: -1;
+}
+
+.circle:nth-of-type(1) {
+  background: rgba(254, 83, 186, 0.636);
+}
+
+.circle:nth-of-type(2) {
+  background: rgba(142, 81, 234, 0.704);
+}
+
+.space-btn:hover #container-stars {
+  z-index: 1;
+  background-color: #212121;
+}
+
+.space-btn:hover {
+  transform: scale(1.1);
+}
+
+.space-btn:active {
+  border: double 4px #fe53bb;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  animation: none;
+}
+
+.space-btn:active .circle {
+  background: #fe53bb;
+}
+
+#stars {
+  position: relative;
+  background: transparent;
+  width: 200rem;
+  height: 200rem;
+}
+
+#stars::after {
+  content: "";
+  position: absolute;
+  top: -10rem;
+  left: -100rem;
+  width: 100%;
+  height: 100%;
+  animation: animStarRotate 90s linear infinite;
+}
+
+#stars::after {
+  background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  background-size: 50px 50px;
+}
+
+#stars::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 170%;
+  height: 500%;
+  animation: animStar 60s linear infinite;
+}
+
+#stars::before {
+  background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  background-size: 50px 50px;
+  opacity: 0.5;
+}
+
+@keyframes animStar {
+  from { transform: translateY(0); }
+  to { transform: translateY(-135rem); }
+}
+
+@keyframes animStarRotate {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0); }
+}
+
+@keyframes gradient_301 {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes pulse_3011 {
+  0% { transform: scale(0.75); box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 0, 0, 0); }
+  100% { transform: scale(0.75); box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
+}
+
+/* --- Green Fire Animation --- */
+@keyframes scaleUpDown {
+  0%, 100% { transform: scaleY(1) scaleX(1); }
+  50%, 90% { transform: scaleY(1.1); }
+  75% { transform: scaleY(0.95); }
+  80% { transform: scaleX(0.95); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: skewX(0) scale(1); }
+  50% { transform: skewX(5deg) scale(0.9); }
+}
+
+@keyframes particleUp {
+  0% { opacity: 0; }
   20% { opacity: 1; }
   80% { opacity: 1; }
   100% { opacity: 0; top: -100%; transform: scale(0.5); }
 }
 
 @keyframes glow {
-  0%, 100% { background-color: #3cff1e; }
-  50% { background-color: #3cff1e; }
+  0%, 100% { background-color: var(--accent-color); }
+  50% { background-color: var(--accent-color); }
 }
 
 .fire {
@@ -1976,6 +2171,7 @@ input:-webkit-autofill:active {
   background-color: transparent;
   margin-left: auto;
   margin-right: auto;
+  transform: scale(0.6);
 }
 
 .fire-center {
@@ -1990,10 +2186,10 @@ input:-webkit-autofill:active {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-image: radial-gradient(farthest-corner at 10px 0, #3cff1e 0%, #3cff1e 95%);
+  background-image: radial-gradient(farthest-corner at 10px 0, var(--accent-color) 0%, var(--accent-color) 95%);
   transform: scaleX(0.8) rotate(45deg);
   border-radius: 0 40% 60% 40%;
-  filter: drop-shadow(0 0 10px #3cff1e);
+  filter: drop-shadow(0 0 10px var(--accent-color));
 }
 
 .fire-center .particle-fire {
@@ -2002,9 +2198,9 @@ input:-webkit-autofill:active {
   left: 45%;
   width: 10px;
   height: 10px;
-  background-color: #3cff1e;
+  background-color: var(--accent-color);
   border-radius: 50%;
-  filter: drop-shadow(0 0 10px #d43322);
+  filter: drop-shadow(0 0 10px var(--accent-color));
   animation: particleUp 2s ease-out infinite both;
   will-change: top, transform, opacity;
 }
@@ -2023,10 +2219,10 @@ input:-webkit-autofill:active {
   right: -25%;
   width: 80%;
   height: 80%;
-  background-color: #3cff1e;
+  background-color: var(--accent-color);
   transform: scaleX(0.8) rotate(45deg);
   border-radius: 0 40% 60% 40%;
-  filter: drop-shadow(0 0 10px #3cff1e);
+  filter: drop-shadow(0 0 10px var(--accent-color));
 }
 
 .fire-right .particle-fire {
@@ -2035,10 +2231,10 @@ input:-webkit-autofill:active {
   left: 50%;
   width: 15px;
   height: 15px;
-  background-color: #3cff1e;
+  background-color: var(--accent-color);
   transform: scaleX(0.8) rotate(45deg);
   border-radius: 50%;
-  filter: drop-shadow(0 0 10px #3cff1e);
+  filter: drop-shadow(0 0 10px var(--accent-color));
   animation: particleUp 2s ease-out infinite both;
   will-change: top, transform, opacity;
 }
@@ -2057,10 +2253,10 @@ input:-webkit-autofill:active {
   left: -20%;
   width: 80%;
   height: 80%;
-  background-color: #3cff1e;
+  background-color: var(--accent-color);
   transform: scaleX(0.8) rotate(45deg);
   border-radius: 0 40% 60% 40%;
-  filter: drop-shadow(0 0 10px #3cff1e);
+  filter: drop-shadow(0 0 10px var(--accent-color));
 }
 
 .fire-left .particle-fire {
@@ -2069,9 +2265,9 @@ input:-webkit-autofill:active {
   left: 20%;
   width: 10%;
   height: 10%;
-  background-color: #3cff1e;
+  background-color: var(--accent-color);
   border-radius: 50%;
-  filter: drop-shadow(0 0 10px #d43322);
+  filter: drop-shadow(0 0 10px var(--accent-color));
   animation: particleUp 3s ease-out infinite both;
   will-change: top, transform, opacity;
 }
@@ -2082,7 +2278,7 @@ input:-webkit-autofill:active {
   left: 20%;
   width: 75%;
   height: 75%;
-  background-color: #3cff1e;
+  background-color: var(--accent-color);
   transform: scaleX(0.8) rotate(45deg);
   border-radius: 0 40% 100% 40%;
   filter: blur(10px);
