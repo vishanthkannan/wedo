@@ -504,11 +504,24 @@ const Dashboard = () => {
       <MidnightSkyBackground />
       <header className="app-header">
         <div className="user-info">
-          <div className="loading" style={{ marginRight: '10px' }}>
-            <svg height="48px" width="64px">
-              <polyline id="back" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"></polyline>
-              <polyline id="front" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"></polyline>
-            </svg>
+          <div style={{ marginRight: '16px', position: 'relative', width: '50px', height: '50px' }}>
+            <div className="fire">
+              <div className="fire-left">
+                <div className="main-fire"></div>
+                <div className="particle-fire"></div>
+              </div>
+              <div className="fire-center">
+                <div className="main-fire"></div>
+                <div className="particle-fire"></div>
+              </div>
+              <div className="fire-right">
+                <div className="main-fire"></div>
+                <div className="particle-fire"></div>
+              </div>
+              <div className="fire-bottom">
+                <div className="main-fire"></div>
+              </div>
+            </div>
           </div>
           <div className="user-details" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
             <h3>
