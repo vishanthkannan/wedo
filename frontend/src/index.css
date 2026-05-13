@@ -795,8 +795,8 @@ select.premium-input option {
   -webkit-text-stroke: 1px var(--accent-color);
   animation: liquidWave 3s ease-in-out infinite;
   white-space: nowrap;
-  /* Use a simpler clip-path or transform if possible */
   will-change: clip-path;
+  transform: translateZ(0);
 }
 
 @keyframes liquidWave {
@@ -905,6 +905,8 @@ select.premium-input option {
   inset: 0;
   background-repeat: repeat;
   pointer-events: none;
+  will-change: opacity;
+  transform: translateZ(0);
 }
 
 .uiverse-midnight-sky .stars-1 {
@@ -942,6 +944,8 @@ select.premium-input option {
   box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.5);
   opacity: 0;
   pointer-events: none;
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 .uiverse-midnight-sky .meteor::after {
@@ -981,6 +985,7 @@ select.premium-input option {
   box-shadow: 15px 15px 0 0 #fdfbd3;
   filter: drop-shadow(0 0 15px rgba(253, 251, 211, 0.4));
   z-index: 10;
+  transform: translateZ(0);
 }
 
 @keyframes twinkle {
