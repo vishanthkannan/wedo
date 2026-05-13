@@ -234,6 +234,7 @@ router.get('/analytics/weekly', protect, async (req, res) => {
       
       Object.keys(completionByDay[d].byType).forEach(type => {
         obj[type] = completionByDay[d].byType[type].completed;
+        obj[`${type}Total`] = completionByDay[d].byType[type].total;
       });
       
       return obj;
