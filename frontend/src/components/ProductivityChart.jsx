@@ -25,7 +25,7 @@ const CustomTooltip = ({ active, payload, label, singleColor }) => {
   return null;
 };
 
-const PALETTE = ['#1e90ff', '#2ed573', '#ff4757', '#ffa502', '#ff7f50', '#a4b0be'];
+const PALETTE = ['var(--accent-color)', '#2ed573', '#ff4757', '#ffa502', '#ff7f50', '#a4b0be'];
 
 const ProductivityChart = React.memo(({ data, activeTopics = ['all'] }) => {
   const isSingle = activeTopics.length === 1;
@@ -59,7 +59,7 @@ const ProductivityChart = React.memo(({ data, activeTopics = ['all'] }) => {
         chartColor = '#ff4757'; // Red
         statusText = '(No Activity)';
       } else if (todayValue > yesterdayValue) {
-        chartColor = '#1e90ff'; // Blue
+        chartColor = 'var(--accent-color)'; // Blue
         statusText = '(Trending Up)';
       } else if (todayValue < yesterdayValue) {
         chartColor = '#ff4757'; // Red
