@@ -202,7 +202,7 @@ const MultiSelectDropdown = ({ activeTopics, setActiveTopics }) => {
   };
 
   return (
-    <div ref={dropdownRef} style={{ position: 'relative' }}>
+    <div ref={dropdownRef} style={{ position: 'relative', zIndex: 100 }}>
       <div 
         className="premium-input" 
         style={{ 
@@ -545,7 +545,7 @@ const Dashboard = () => {
             <MultiSelectDropdown activeTopics={activeTopics} setActiveTopics={setActiveTopics} />
           </div>
           {analytics && (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '24px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(max(300px, calc(50% - 24px)), 1fr))', gap: '24px' }}>
               {(activeTopics.includes('all') ? ['all'] : activeTopics).map(topic => (
                 <ProductivityChart key={topic} data={analytics.chartData} activeTopics={[topic]} />
               ))}
