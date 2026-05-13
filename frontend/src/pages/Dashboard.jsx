@@ -164,6 +164,117 @@ const HabitRow = React.memo(({
   );
 });
 
+const MultiSelectDropdown = ({ activeTopics, setActiveTopics }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const topics = ['all', 'daily', 'health', 'study', 'work'];
+
+  const handleToggle = (topic) => {
+    if (topic === 'all') {
+      setActiveTopics(['all']);
+    } else {
+      let newTopics = activeTopics.filter(t => t !== 'all');
+      if (newTopics.includes(topic)) {
+        newTopics = newTopics.filter(t => t !== topic);
+      } else {
+        newTopics.push(topic);
+      }
+      if (newTopics.length === 0) newTopics = ['all'];
+      setActiveTopics(newTopics);
+    }
+  };
+
+  const getLabel = () => {
+    if (activeTopics.includes('all')) return 'All Topics';
+    if (activeTopics.length === 1) return activeTopics[0].charAt(0).toUpperCase() + activeTopics[0].slice(1);
+    return `${activeTopics.length} Topics Selected`;
+  };
+
+  return (
+    <div ref={dropdownRef} style={{ position: 'relative' }}>
+      <div 
+        className="premium-input" 
+        style={{ 
+          width: 'auto', 
+          minWidth: '180px', 
+          cursor: 'pointer',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          userSelect: 'none',
+          padding: '12px 20px'
+        }}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span>{getLabel()}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+      
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="premium-card"
+            style={{ 
+              position: 'absolute', 
+              top: '100%', 
+              right: 0, 
+              width: '200px', 
+              marginTop: '8px',
+              padding: '16px',
+              zIndex: 50,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              background: 'var(--bg-secondary)',
+              border: '1px solid var(--border-color)'
+            }}
+          >
+            {topics.map(topic => (
+              <label 
+                key={topic} 
+                style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '10px', 
+                  cursor: 'pointer', 
+                  fontSize: '14px', 
+                  color: activeTopics.includes(topic) ? 'var(--text-primary)' : 'var(--text-secondary)',
+                  transition: 'color 0.2s'
+                }}
+              >
+                <input 
+                  type="checkbox" 
+                  checked={activeTopics.includes(topic)}
+                  onChange={() => handleToggle(topic)}
+                  style={{ accentColor: 'var(--accent-color)', width: '16px', height: '16px', cursor: 'pointer' }}
+                />
+                {topic === 'all' ? 'All Topics' : topic.charAt(0).toUpperCase() + topic.slice(1)}
+              </label>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 const Dashboard = () => {
   const { user, logout } = useContext(AuthContext);
   const [matrixData, setMatrixData] = useState({});
@@ -431,18 +542,7 @@ const Dashboard = () => {
         <div style={{ gridColumn: '1 / -1', marginBottom: '16px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '16px' }}>
             <h2 className="section-title" style={{ marginBottom: 0 }}>Analytics</h2>
-            <select 
-              className="premium-input" 
-              style={{ width: 'auto', minWidth: '160px', cursor: 'pointer' }}
-              value={activeTopics.length === 1 ? activeTopics[0] : 'all'}
-              onChange={(e) => setActiveTopics([e.target.value])}
-            >
-              <option value="all">All Topics</option>
-              <option value="daily">Daily</option>
-              <option value="health">Health</option>
-              <option value="study">Study</option>
-              <option value="work">Work</option>
-            </select>
+            <MultiSelectDropdown activeTopics={activeTopics} setActiveTopics={setActiveTopics} />
           </div>
           {analytics && (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '24px' }}>
