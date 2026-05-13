@@ -45,10 +45,16 @@ const ProductivityChart = React.memo(({ data, activeTopics = ['all'] }) => {
       const today = data[data.length - 1];
       const yesterday = data[data.length - 2];
       if (today && yesterday) {
-        if ((today[singleKey] || 0) > (yesterday[singleKey] || 0)) {
+        const todayValue = today[singleKey] || 0;
+        const yesterdayValue = yesterday[singleKey] || 0;
+
+        if (todayValue === 0) {
+          chartColor = '#ff4757'; // Red
+          statusText = '(No Activity)';
+        } else if (todayValue > yesterdayValue) {
           chartColor = '#1e90ff'; // Blue
           statusText = '(Trending Up)';
-        } else if ((today[singleKey] || 0) < (yesterday[singleKey] || 0)) {
+        } else if (todayValue < yesterdayValue) {
           chartColor = '#ff4757'; // Red
           statusText = '(Trending Down)';
         } else {
