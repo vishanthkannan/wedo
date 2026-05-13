@@ -540,7 +540,7 @@ const Dashboard = () => {
 
       <div className="dashboard-grid" style={{ marginTop: '24px' }}>
         <div style={{ gridColumn: '1 / -1', marginBottom: '16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '24px' }}>
             <h2 className="section-title" style={{ marginBottom: 0 }}>Analytics</h2>
             <MultiSelectDropdown activeTopics={activeTopics} setActiveTopics={setActiveTopics} />
           </div>
