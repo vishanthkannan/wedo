@@ -738,6 +738,38 @@ select.premium-input option {
   background: rgba(255, 71, 87, 0.1);
 }
 
+/* --- Premium Logout Pill Button --- */
+.premium-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 71, 87, 0.05);
+  border: 1px solid rgba(255, 71, 87, 0.18);
+  border-radius: 20px;
+  padding: 8px 16px;
+  color: #FFA3A3;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.05);
+}
+
+.premium-logout-btn:hover {
+  background: rgba(255, 71, 87, 0.15);
+  border-color: rgba(255, 71, 87, 0.4);
+  color: #FFD1D1;
+  box-shadow: 0 4px 20px rgba(255, 71, 87, 0.2), 0 0 10px rgba(255, 71, 87, 0.1);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.premium-logout-btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+
 .user-info {
   display: flex;
   align-items: center;

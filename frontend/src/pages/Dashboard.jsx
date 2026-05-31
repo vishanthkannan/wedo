@@ -542,11 +542,12 @@ const Dashboard = () => {
             {soundEnabled ? <Volume2 size={20} /> : <VolumeX size={20} />}
           </button>
           <button 
-            className="header-icon-btn logout-btn"
+            className="premium-logout-btn"
             onClick={logout}
             title="Log Out"
           >
-            <LogOut size={20} />
+            <LogOut size={16} />
+            <span>Log Out</span>
           </button>
         </div>
       </header>
