@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import BackgroundPattern from '../components/BackgroundPattern';
 import MidnightSkyBackground from '../components/MidnightSkyBackground';
 import UiverseButton from '../components/UiverseButton';
@@ -10,16 +10,24 @@ const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const { register } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setLoading(true);
     try {
       await register(name, email, password);
       navigate('/');
     } catch (err) {
-      alert('Registration failed.');
+      console.error(err);
+      const msg = err.response?.data?.message || 'Registration failed. Please try again.';
+      setError(msg);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -34,6 +42,25 @@ const Register = () => {
       >
         <h2 className="auth-title">Create Account</h2>
         <p className="auth-subtitle">Join us and start tracking your routines.</p>
+
+        <AnimatePresence>
+          {error && (
+            <motion.div 
+              className="error-banner"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              <svg className="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              <span>{error}</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
         
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form__group field" style={{ maxWidth: '100%' }}>
@@ -45,6 +72,7 @@ const Register = () => {
               onChange={(e) => setName(e.target.value)}
               required
               id="name"
+              disabled={loading}
             />
             <label htmlFor="name" className="form__label">Full Name</label>
           </div>
@@ -58,6 +86,7 @@ const Register = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
               id="email"
+              disabled={loading}
             />
             <label htmlFor="email" className="form__label">Email address</label>
           </div>
@@ -71,11 +100,12 @@ const Register = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               id="password"
+              disabled={loading}
             />
             <label htmlFor="password" className="form__label">Password</label>
           </div>
           
-          <UiverseButton isSubmitting={false} text="SIGN UP" />
+          <UiverseButton disabled={loading} text="SIGN UP" />
         </form>
         
         <Link to="/login" className="auth-link">

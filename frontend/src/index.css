@@ -2091,3 +2091,31 @@ input:-webkit-autofill:active {
   animation: glow 2s ease-out infinite both;
   will-change: background-color;
 }
+
+/* --- Premium In-App Error Banner --- */
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(239, 68, 68, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  color: #FCA5A5;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.15);
+  width: 100%;
+}
+
+.error-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: #EF4444;
+  filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.5));
+}
