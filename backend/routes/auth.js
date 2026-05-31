@@ -4,6 +4,9 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { protect } = require('../middleware/authMiddleware');
+const { OAuth2Client } = require('google-auth-library');
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 router.post('/register', async (req, res) => {
   try {
@@ -53,6 +56,61 @@ router.post('/login', async (req, res) => {
     res.json({ token, user: { id: user._id, name: user.name, email: user.email, dailyStreak: user.dailyStreak, longestStreak: user.longestStreak } });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.post('/google', async (req, res) => {
+  try {
+    const { credential } = req.body;
+    
+    // Verify the Google OAuth token
+    const ticket = await client.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    
+    const payload = ticket.getPayload();
+    const { email, name } = payload;
+
+    // Check if user already exists
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      // Create new user (Generate a secure random password since they login via Google)
+      const randomPassword = Math.random().toString(36).slice(-10) + Date.now().toString(36);
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(randomPassword, salt);
+
+      user = new User({
+        name,
+        email,
+        password: hashedPassword,
+        dailyStreak: 0,
+      });
+      await user.save();
+    }
+
+    // Streak logic update on login
+    const today = new Date().toISOString().split('T')[0];
+    const lastLogin = user.lastLoginDate ? new Date(user.lastLoginDate).toISOString().split('T')[0] : null;
+    
+    if (lastLogin !== today) {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayStr = yesterday.toISOString().split('T')[0];
+      
+      if (lastLogin !== yesterdayStr) {
+        user.dailyStreak = 0; // missed a day
+      }
+      user.lastLoginDate = new Date();
+      await user.save();
+    }
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    res.json({ token, user: { id: user._id, name: user.name, email: user.email, dailyStreak: user.dailyStreak, longestStreak: user.longestStreak } });
+  } catch (error) {
+    console.error("Google login error:", error);
+    res.status(400).json({ message: 'Google authentication failed' });
   }
 });
 

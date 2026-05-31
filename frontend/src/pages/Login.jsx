@@ -5,13 +5,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import BackgroundPattern from '../components/BackgroundPattern';
 import MidnightSkyBackground from '../components/MidnightSkyBackground';
 import UiverseButton from '../components/UiverseButton';
+import { GoogleLogin } from '@react-oauth/google';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useContext(AuthContext);
+  const { login, loginWithGoogle } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -24,6 +25,21 @@ const Login = () => {
     } catch (err) {
       console.error(err);
       const msg = err.response?.data?.message || 'Login failed. Please check credentials.';
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    setError('');
+    setLoading(true);
+    try {
+      await loginWithGoogle(credentialResponse.credential);
+      navigate('/');
+    } catch (err) {
+      console.error(err);
+      const msg = err.response?.data?.message || 'Google Login failed. Please try again.';
       setError(msg);
     } finally {
       setLoading(false);
@@ -91,6 +107,18 @@ const Login = () => {
           
           <UiverseButton disabled={loading} text="SIGN IN" />
         </form>
+
+        <div className="auth-divider">or</div>
+
+        <div className="google-btn-container">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => setError('Google Sign-In was unsuccessful. Please try again.')}
+            theme="filled_dark"
+            shape="circle"
+            width="250"
+          />
+        </div>
         
         <Link to="/register" className="auth-link">
           Don't have an account? Sign up

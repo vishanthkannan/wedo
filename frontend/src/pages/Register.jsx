@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import BackgroundPattern from '../components/BackgroundPattern';
 import MidnightSkyBackground from '../components/MidnightSkyBackground';
 import UiverseButton from '../components/UiverseButton';
+import { GoogleLogin } from '@react-oauth/google';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -12,7 +13,7 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { register } = useContext(AuthContext);
+  const { register, loginWithGoogle } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -25,6 +26,21 @@ const Register = () => {
     } catch (err) {
       console.error(err);
       const msg = err.response?.data?.message || 'Registration failed. Please try again.';
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    setError('');
+    setLoading(true);
+    try {
+      await loginWithGoogle(credentialResponse.credential);
+      navigate('/');
+    } catch (err) {
+      console.error(err);
+      const msg = err.response?.data?.message || 'Google Login failed. Please try again.';
       setError(msg);
     } finally {
       setLoading(false);
@@ -107,6 +123,18 @@ const Register = () => {
           
           <UiverseButton disabled={loading} text="SIGN UP" />
         </form>
+
+        <div className="auth-divider">or</div>
+
+        <div className="google-btn-container">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => setError('Google Sign-In was unsuccessful. Please try again.')}
+            theme="filled_dark"
+            shape="circle"
+            width="250"
+          />
+        </div>
         
         <Link to="/login" className="auth-link">
           Already have an account? Sign in
