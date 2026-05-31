@@ -504,23 +504,27 @@ const Dashboard = () => {
       <MidnightSkyBackground />
       <header className="app-header">
         <div className="user-info">
-          <div style={{ marginRight: '16px', position: 'relative', width: '50px', height: '50px' }}>
-            <div className="fire">
-              <div className="fire-left">
-                <div className="main-fire"></div>
-                <div className="particle-fire"></div>
+          <div className="loader-container">
+            <div className="clouds">
+              <div className="cloud cloud1"></div>
+              <div className="cloud cloud2"></div>
+              <div className="cloud cloud3"></div>
+              <div className="cloud cloud4"></div>
+              <div className="cloud cloud5"></div>
+            </div>
+
+            <div className="loader-scale-wrapper">
+              <div className="loader">
+                <span><span></span><span></span><span></span><span></span></span>
+                <div className="base">
+                  <span></span>
+                  <div className="face"></div>
+                </div>
               </div>
-              <div className="fire-center">
-                <div className="main-fire"></div>
-                <div className="particle-fire"></div>
-              </div>
-              <div className="fire-right">
-                <div className="main-fire"></div>
-                <div className="particle-fire"></div>
-              </div>
-              <div className="fire-bottom">
-                <div className="main-fire"></div>
-              </div>
+            </div>
+
+            <div className="longfazers">
+              <span></span><span></span><span></span><span></span>
             </div>
           </div>
           <div className="user-details" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>

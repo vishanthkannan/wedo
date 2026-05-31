@@ -1975,153 +1975,305 @@ input:-webkit-autofill:active {
 }
 
 
-/* --- Blue Fire Animation --- */
-@keyframes scaleUpDown {
-  0%, 100% { transform: scaleY(1) scaleX(1); }
-  50%, 90% { transform: scaleY(1.1); }
-  75% { transform: scaleY(0.95); }
-  80% { transform: scaleX(0.95); }
+/* --- Premium Speeder Loader & Clouds Animation --- */
+
+.loader-container {
+  margin-right: 16px;
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.02);
+  overflow: hidden;
+  box-shadow: inset 0 0 15px rgba(84, 186, 185, 0.08);
 }
 
-@keyframes shake {
-  0%, 100% { transform: skewX(0) scale(1); }
-  50% { transform: skewX(5deg) scale(0.9); }
-}
-
-@keyframes particleUp {
-  0% { opacity: 0; }
-  20% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { opacity: 0; top: -100%; transform: scale(0.5); }
-}
-
-@keyframes glow {
-  0%, 100% { background-color: var(--accent-color); }
-  50% { background-color: var(--accent-color); }
-}
-
-.fire {
+.loader-scale-wrapper {
+  transform: scale(0.32);
+  transform-origin: center;
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 50px;
-  height: 50px;
-  background-color: transparent;
-  margin-left: auto;
-  margin-right: auto;
-  transform: scale(0.6);
+  top: -16px;
+  left: -15px;
+  width: 100px;
+  height: 100px;
 }
 
-.fire-center {
+.loader {
   position: absolute;
-  height: 100%;
-  width: 100%;
-  animation: scaleUpDown 3s ease-out infinite both;
-  will-change: transform;
-}
-
-.fire-center .main-fire {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-image: radial-gradient(farthest-corner at 10px 0, var(--accent-color) 0%, var(--accent-color) 95%);
-  transform: scaleX(0.8) rotate(45deg);
-  border-radius: 0 40% 60% 40%;
-  filter: drop-shadow(0 0 10px var(--accent-color));
-}
-
-.fire-center .particle-fire {
-  position: absolute;
-  top: 60%;
-  left: 45%;
-  width: 10px;
-  height: 10px;
-  background-color: var(--accent-color);
-  border-radius: 50%;
-  filter: drop-shadow(0 0 10px var(--accent-color));
-  animation: particleUp 2s ease-out infinite both;
-  will-change: top, transform, opacity;
-}
-
-.fire-right {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  animation: shake 2s ease-out infinite both;
-  will-change: transform;
-}
-
-.fire-right .main-fire {
-  position: absolute;
-  top: 15%;
-  right: -25%;
-  width: 80%;
-  height: 80%;
-  background-color: var(--accent-color);
-  transform: scaleX(0.8) rotate(45deg);
-  border-radius: 0 40% 60% 40%;
-  filter: drop-shadow(0 0 10px var(--accent-color));
-}
-
-.fire-right .particle-fire {
-  position: absolute;
-  top: 45%;
+  top: 50%;
   left: 50%;
-  width: 15px;
-  height: 15px;
-  background-color: var(--accent-color);
-  transform: scaleX(0.8) rotate(45deg);
-  border-radius: 50%;
-  filter: drop-shadow(0 0 10px var(--accent-color));
-  animation: particleUp 2s ease-out infinite both;
-  will-change: top, transform, opacity;
+  margin-left: -50px;
+  animation: speeder 0.4s linear infinite;
 }
 
-.fire-left {
+.loader > span {
+  height: 5px;
+  width: 35px;
+  background: var(--accent-color);
   position: absolute;
-  height: 100%;
+  top: -19px;
+  left: 60px;
+  border-radius: 2px 10px 1px 0;
+}
+
+.base span {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-right: 100px solid #E0F7F6;
+  border-bottom: 6px solid transparent;
+}
+
+.base span:before {
+  content: "";
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+  background: #E0F7F6;
+  position: absolute;
+  right: -110px;
+  top: -16px;
+}
+
+.base span:after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 0 solid transparent;
+  border-right: 55px solid #E0F7F6;
+  border-bottom: 16px solid transparent;
+  top: -16px;
+  right: -98px;
+}
+
+.face {
+  position: absolute;
+  height: 12px;
+  width: 20px;
+  background: #E0F7F6;
+  border-radius: 20px 20px 0 0;
+  transform: rotate(-40deg);
+  right: -125px;
+  top: -15px;
+}
+
+.face:after {
+  content: "";
+  height: 12px;
+  width: 12px;
+  background: var(--accent-color);
+  right: 4px;
+  top: 7px;
+  position: absolute;
+  transform: rotate(40deg);
+  transform-origin: 50% 50%;
+  border-radius: 0 0 2px 2px;
+}
+
+.loader > span > span {
+  width: 30px;
+  height: 1px;
+  background: #ffffff;
+  position: absolute;
+}
+
+.loader > span > span:nth-child(1) {
+  animation: fazer1 0.2s linear infinite;
+}
+
+.loader > span > span:nth-child(2) {
+  top: 3px;
+  animation: fazer2 0.4s linear infinite;
+}
+
+.loader > span > span:nth-child(3) {
+  top: 1px;
+  animation: fazer3 0.4s linear infinite;
+  animation-delay: -1s;
+}
+
+.loader > span > span:nth-child(4) {
+  top: 4px;
+  animation: fazer4 1s linear infinite;
+  animation-delay: -1s;
+}
+
+@keyframes fazer1 {
+  0% { left: 0; }
+  100% { left: -80px; opacity: 0; }
+}
+
+@keyframes fazer2 {
+  0% { left: 0; }
+  100% { left: -100px; opacity: 0; }
+}
+
+@keyframes fazer3 {
+  0% { left: 0; }
+  100% { left: -50px; opacity: 0; }
+}
+
+@keyframes fazer4 {
+  0% { left: 0; }
+  100% { left: -150px; opacity: 0; }
+}
+
+@keyframes speeder {
+  0% { transform: translate(2px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -3px) rotate(-1deg); }
+  20% { transform: translate(-2px, 0px) rotate(1deg); }
+  30% { transform: translate(1px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 3px) rotate(-1deg); }
+  60% { transform: translate(-1px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-2px, -1px) rotate(1deg); }
+  90% { transform: translate(2px, 1px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+.longfazers {
+  position: absolute;
   width: 100%;
-  animation: shake 3s ease-out infinite both;
-  will-change: transform;
+  height: 100%;
 }
 
-.fire-left .main-fire {
+.longfazers span {
   position: absolute;
-  top: 15%;
-  left: -20%;
-  width: 80%;
-  height: 80%;
-  background-color: var(--accent-color);
-  transform: scaleX(0.8) rotate(45deg);
-  border-radius: 0 40% 60% 40%;
-  filter: drop-shadow(0 0 10px var(--accent-color));
+  height: 2px;
+  width: 20%;
+  background: #ffffff;
 }
 
-.fire-left .particle-fire {
+.longfazers span:nth-child(1) {
+  top: 20%;
+  animation: lf 0.6s linear infinite;
+  animation-delay: -5s;
+}
+
+.longfazers span:nth-child(2) {
+  top: 40%;
+  animation: lf2 0.8s linear infinite;
+  animation-delay: -1s;
+}
+
+.longfazers span:nth-child(3) {
+  top: 60%;
+  animation: lf3 0.6s linear infinite;
+}
+
+.longfazers span:nth-child(4) {
+  top: 80%;
+  animation: lf4 0.5s linear infinite;
+  animation-delay: -3s;
+}
+
+@keyframes lf {
+  0% { left: 200%; }
+  100% { left: -200%; opacity: 0; }
+}
+
+@keyframes lf2 {
+  0% { left: 200%; }
+  100% { left: -200%; opacity: 0; }
+}
+
+@keyframes lf3 {
+  0% { left: 200%; }
+  100% { left: -100%; opacity: 0; }
+}
+
+@keyframes lf4 {
+  0% { left: 200%; }
+  100% { left: -100%; opacity: 0; }
+}
+
+/* ✅ CLOUDS - moving right to left with px values */
+.clouds {
   position: absolute;
-  top: 10%;
-  left: 20%;
-  width: 10%;
-  height: 10%;
-  background-color: var(--accent-color);
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.cloud {
+  position: absolute;
+  background: #fff;
   border-radius: 50%;
-  filter: drop-shadow(0 0 10px var(--accent-color));
-  animation: particleUp 3s ease-out infinite both;
-  will-change: top, transform, opacity;
+  opacity: 0.15;
+  animation: moveClouds linear infinite;
 }
 
-.fire-bottom .main-fire {
+.cloud::before,
+.cloud::after {
+  content: "";
   position: absolute;
-  top: 30%;
-  left: 20%;
-  width: 75%;
-  height: 75%;
-  background-color: var(--accent-color);
-  transform: scaleX(0.8) rotate(45deg);
-  border-radius: 0 40% 100% 40%;
-  filter: blur(10px);
-  animation: glow 2s ease-out infinite both;
-  will-change: background-color;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.cloud::before {
+  width: 60%;
+  height: 60%;
+  top: -30%;
+  left: 10%;
+}
+
+.cloud::after {
+  width: 40%;
+  height: 40%;
+  top: -20%;
+  left: 50%;
+}
+
+/* Clouds start off-screen (right) and move left */
+.cloud1 {
+  width: 25px;
+  height: 15px;
+  top: 15%;
+  left: 80px;
+  animation-duration: 2s;
+}
+
+.cloud2 {
+  width: 35px;
+  height: 20px;
+  top: 35%;
+  left: 100px;
+  animation-duration: 3s;
+}
+
+.cloud3 {
+  width: 20px;
+  height: 12px;
+  top: 20%;
+  left: 120px;
+  animation-duration: 4s;
+}
+
+.cloud4 {
+  width: 25px;
+  height: 20px;
+  top: 70%;
+  left: 90px;
+  animation-duration: 3s;
+}
+
+.cloud5 {
+  width: 40px;
+  height: 12px;
+  top: 80%;
+  left: 110px;
+  animation-duration: 2s;
+}
+
+@keyframes moveClouds {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-180px); }
 }
 
 /* --- Premium In-App Error Banner --- */
