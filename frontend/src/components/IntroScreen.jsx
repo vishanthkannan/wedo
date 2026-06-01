@@ -20,31 +20,36 @@ const IntroScreen = () => {
       }}
     >
       <div className="loader">
-        <svg height="0" width="0" viewBox="0 0 100 100" className="absolute">
-          <defs className="s-xJBuHA073rTt" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 100 100"
+          width="100"
+          height="100"
+          className="inline-block"
+        >
+          <defs>
             <linearGradient
-              className="s-xJBuHA073rTt"
               gradientUnits="userSpaceOnUse"
               y2="2"
               x2="0"
               y1="62"
               x1="0"
-              id="b"
+              id="wedo-gradient-b"
             >
-              <stop className="s-xJBuHA073rTt" stopColor="#0369a1"></stop>
-              <stop className="s-xJBuHA073rTt" stopColor="#67e8f9" offset="1.5"></stop>
+              <stop stopColor="#0369a1"></stop>
+              <stop stopColor="#67e8f9" offset="1.5"></stop>
             </linearGradient>
             <linearGradient
-              className="s-xJBuHA073rTt"
               gradientUnits="userSpaceOnUse"
               y2="0"
               x2="0"
               y1="64"
               x1="0"
-              id="c"
+              id="wedo-gradient-c"
             >
-              <stop className="s-xJBuHA073rTt" stopColor="#0369a1"></stop>
-              <stop className="s-xJBuHA073rTt" stopColor="#22d3ee" offset="1"></stop>
+              <stop stopColor="#0369a1"></stop>
+              <stop stopColor="#22d3ee" offset="1"></stop>
               <animateTransform
                 repeatCount="indefinite"
                 keySplines=".42,0,.58,1;.42,0,.58,1;.42,0,.58,1;.42,0,.58,1;.42,0,.58,1;.42,0,.58,1;.42,0,.58,1;.42,0,.58,1"
@@ -56,32 +61,22 @@ const IntroScreen = () => {
               ></animateTransform>
             </linearGradient>
             <linearGradient
-              className="s-xJBuHA073rTt"
               gradientUnits="userSpaceOnUse"
               y2="2"
               x2="0"
               y1="62"
               x1="0"
-              id="d"
+              id="wedo-gradient-d"
             >
-              <stop className="s-xJBuHA073rTt" stopColor="#38bdf8"></stop>
-              <stop className="s-xJBuHA073rTt" stopColor="#075985" offset="1.5"></stop>
+              <stop stopColor="#38bdf8"></stop>
+              <stop stopColor="#075985" offset="1.5"></stop>
             </linearGradient>
           </defs>
-        </svg>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 100 100"
-          width="100"
-          height="100"
-          className="inline-block"
-        >
           <path
             strokeLinejoin="round"
             strokeLinecap="round"
             strokeWidth="12"
-            stroke="url(#d)"
+            stroke="url(#wedo-gradient-d)"
             d="M 15,20 L 35,80 L 50,50 L 65,80 L 85,20"
             className="dash"
             pathLength="360"
@@ -99,7 +94,7 @@ const IntroScreen = () => {
             strokeLinejoin="round"
             strokeLinecap="round"
             strokeWidth="8"
-            stroke="url(#b)"
+            stroke="url(#wedo-gradient-b)"
             d="M 20,20 L 80,20 
             L 80,27 L 27,27 L 27,50
             L 70,50 L 70,57 
@@ -122,7 +117,7 @@ const IntroScreen = () => {
             strokeLinejoin="round"
             strokeLinecap="round"
             strokeWidth="12"
-            stroke="url(#b)"
+            stroke="url(#wedo-gradient-b)"
             d="M 25,20 L 25,80 C 85,80 85,20 25,20 Z"
             className="dash"
             pathLength="360"
@@ -140,7 +135,7 @@ const IntroScreen = () => {
             strokeLinejoin="round"
             strokeLinecap="round"
             strokeWidth="11"
-            stroke="url(#c)"
+            stroke="url(#wedo-gradient-c)"
             d="M 50,15  
             A 35,35 0 0 1 85,50  
             A 35,35 0 0 1 50,85  
