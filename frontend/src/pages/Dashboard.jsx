@@ -507,11 +507,16 @@ const Dashboard = () => {
         <div className="user-info">
           <div className="user-details" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
             <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div className="loading" style={{ display: 'inline-flex', alignItems: 'center' }}>
-                <svg height="32px" width="42px" viewBox="0 0 64 48">
-                  <polyline id="back" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"></polyline>
-                  <polyline id="front" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"></polyline>
-                </svg>
+              <div style={{ width: '42px', height: '42px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                <div className="pyramid-loader" style={{ position: 'absolute', transform: 'scale(0.4) rotateX(-20deg)', transformOrigin: 'center' }}>
+                  <div className="wrapper">
+                    <span className="side side1"></span>
+                    <span className="side side2"></span>
+                    <span className="side side3"></span>
+                    <span className="side side4"></span>
+                    <span className="shadow"></span>
+                  </div>  
+                </div>
               </div>
               <div className="liquid-text-container">
                 <span>{user?.name?.split(' ')[0]}</span>
