@@ -133,24 +133,6 @@ const Profile = () => {
             </h3>
           </div>
         </div>
-
-        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-          <button 
-            className="header-icon-btn"
-            onClick={() => setSoundEnabled(!soundEnabled)} 
-            title="Toggle Sound"
-          >
-            {soundEnabled ? <Volume2 size={20} /> : <VolumeX size={20} />}
-          </button>
-          <button 
-            className="premium-logout-btn"
-            onClick={logout}
-            title="Log Out"
-          >
-            <LogOut size={16} />
-            <span>Log Out</span>
-          </button>
-        </div>
       </header>
 
       <div className="dashboard-grid" style={{ marginTop: '24px', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
@@ -184,13 +166,13 @@ const Profile = () => {
             </div>
             
             <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-              {user?.name}
               <div className="loading" style={{ display: 'inline-flex', alignItems: 'center' }}>
-                <svg height="20px" width="26px" viewBox="0 0 64 48">
+                <svg height="24px" width="32px" viewBox="0 0 64 48">
                   <polyline id="back" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"></polyline>
                   <polyline id="front" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"></polyline>
                 </svg>
               </div>
+              {user?.name}
             </h2>
             <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '16px' }}>{user?.email}</p>
             
@@ -208,6 +190,37 @@ const Profile = () => {
             >
               <Award size={14} style={{ color: 'var(--accent-color)' }} />
               <span>Member since: {formattedDate}</span>
+            </div>
+
+            {/* In-Card Quick Controls */}
+            <div 
+              style={{ 
+                borderTop: '1px solid var(--border-color)', 
+                marginTop: '16px',
+                paddingTop: '16px',
+                display: 'flex',
+                gap: '12px',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <button 
+                className="header-icon-btn"
+                onClick={() => setSoundEnabled(!soundEnabled)} 
+                title="Toggle Sound"
+                style={{ border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}
+              >
+                {soundEnabled ? <Volume2 size={20} /> : <VolumeX size={20} />}
+              </button>
+              <button 
+                className="premium-logout-btn"
+                onClick={logout}
+                title="Log Out"
+                style={{ margin: 0 }}
+              >
+                <LogOut size={16} />
+                <span>Log Out</span>
+              </button>
             </div>
           </div>
 

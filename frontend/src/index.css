@@ -52,6 +52,7 @@ body {
   background-color: var(--bg-primary);
   background-image: radial-gradient(circle at top right, rgba(84, 186, 185, 0.05), transparent 40%),
                     radial-gradient(circle at bottom left, rgba(84, 186, 185, 0.03), transparent 40%);
+  background-attachment: fixed;
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
