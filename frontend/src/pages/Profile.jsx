@@ -191,18 +191,7 @@ const Profile = () => {
               onChange={handleImageChange} 
             />
             
-            <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-              <div style={{ width: '30px', height: '30px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-                <div className="pyramid-loader" style={{ position: 'absolute', transform: 'scale(0.8) rotateX(-20deg)', transformOrigin: 'center' }}>
-                  <div className="wrapper">
-                    <span className="side side1"></span>
-                    <span className="side side2"></span>
-                    <span className="side side3"></span>
-                    <span className="side side4"></span>
-                    <span className="shadow"></span>
-                  </div>  
-                </div>
-              </div>
+            <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', color: 'var(--text-primary)' }}>
               {user?.name}
             </h2>
             <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '16px' }}>{user?.email}</p>
