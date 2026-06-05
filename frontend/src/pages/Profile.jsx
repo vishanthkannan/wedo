@@ -119,10 +119,16 @@ const Profile = () => {
             <span>Dashboard</span>
           </button>
           <div className="user-details" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-            <h3>
+            <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <div className="liquid-text-container">
                 <span>Profile Settings</span>
                 <span>Profile Settings</span>
+              </div>
+              <div className="loading" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                <svg height="24px" width="32px" viewBox="0 0 64 48">
+                  <polyline id="back" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"></polyline>
+                  <polyline id="front" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"></polyline>
+                </svg>
               </div>
             </h3>
           </div>
@@ -147,7 +153,7 @@ const Profile = () => {
         </div>
       </header>
 
-      <div className="dashboard-grid" style={{ marginTop: '24px', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
+      <div className="dashboard-grid" style={{ marginTop: '24px', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
         
         {/* Left Column: Profile Card and Streak Stats */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -177,7 +183,15 @@ const Profile = () => {
               {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
             </div>
             
-            <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', color: 'var(--text-primary)' }}>{user?.name}</h2>
+            <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+              {user?.name}
+              <div className="loading" style={{ display: 'inline-flex', alignItems: 'center' }}>
+                <svg height="20px" width="26px" viewBox="0 0 64 48">
+                  <polyline id="back" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"></polyline>
+                  <polyline id="front" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"></polyline>
+                </svg>
+              </div>
+            </h2>
             <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '16px' }}>{user?.email}</p>
             
             <div 

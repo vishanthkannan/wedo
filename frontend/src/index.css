@@ -2105,3 +2105,103 @@ input:-webkit-autofill:active {
   width: 100%;
   margin-top: 10px;
 }
+
+/* From Uiverse.io by RaspberryBee - Adjusted for theme */ 
+.loading svg polyline {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.loading svg polyline#back {
+  fill: none;
+  stroke: var(--border-color);
+  opacity: 0.6;
+}
+
+.loading svg polyline#front {
+  fill: none;
+  stroke: var(--accent-color);
+  stroke-dasharray: 48, 144;
+  stroke-dashoffset: 192;
+  animation: dash_682 1.4s linear infinite;
+}
+
+@keyframes dash_682 {
+  72.5% {
+    opacity: 0;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* --- Mobile Responsiveness Media Queries --- */
+@media (max-width: 600px) {
+  .app-container {
+    padding: 20px 16px;
+  }
+
+  .app-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .app-header > div:last-child {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .user-info {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .svg-frame {
+    margin-right: 0 !important;
+  }
+
+  .user-details h3 {
+    justify-content: center;
+    display: flex;
+    align-items: center;
+  }
+
+  .liquid-text-container span {
+    font-size: 24px !important;
+  }
+
+  .add-task-form {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .add-task-type {
+    width: 100% !important;
+    padding: 14px 20px;
+  }
+
+  .add-item-btn {
+    width: 100%;
+  }
+
+  .chart-container {
+    height: 220px;
+  }
+
+  .stats-card {
+    padding: 20px;
+  }
+
+  .stats-value {
+    font-size: 32px;
+  }
+}
