@@ -200,7 +200,9 @@ const Profile = () => {
                 display: 'flex',
                 gap: '12px',
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                position: 'relative',
+                zIndex: 2
               }}
             >
               <button 
