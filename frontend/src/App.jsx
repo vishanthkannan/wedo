@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import IntroScreen from './components/IntroScreen';
 import BackgroundPattern from './components/BackgroundPattern';
+import MidnightSkyBackground from './components/MidnightSkyBackground';
 import { ThemeProvider } from './context/ThemeContext';
 
 const ProtectedRoute = ({ children }) => {
@@ -33,6 +34,7 @@ const AppContent = () => {
   return (
     <>
       <BackgroundPattern />
+      <MidnightSkyBackground />
       <AnimatePresence>
         {showIntro && <IntroScreen key="intro" />}
       </AnimatePresence>

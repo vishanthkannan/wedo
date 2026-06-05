@@ -503,7 +503,6 @@ const Dashboard = () => {
 
   return (
     <div className="app-container">
-      <MidnightSkyBackground />
       <header className="app-header">
         <div className="user-info">
           <div className="svg-frame">
@@ -611,21 +610,6 @@ const Dashboard = () => {
             title="Profile Settings"
           >
             <User size={20} />
-          </button>
-          <button 
-            className="header-icon-btn"
-            onClick={() => setSoundEnabled(!soundEnabled)} 
-            title="Toggle Sound"
-          >
-            {soundEnabled ? <Volume2 size={20} /> : <VolumeX size={20} />}
-          </button>
-          <button 
-            className="premium-logout-btn"
-            onClick={logout}
-            title="Log Out"
-          >
-            <LogOut size={16} />
-            <span>Log Out</span>
           </button>
         </div>
       </header>

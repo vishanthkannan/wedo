@@ -106,7 +106,6 @@ const Profile = () => {
 
   return (
     <div className="app-container">
-      <MidnightSkyBackground />
       <header className="app-header">
         <div className="user-info">
           <button 
