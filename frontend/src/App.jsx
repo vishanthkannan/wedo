@@ -5,6 +5,7 @@ import { AnimatePresence } from 'framer-motion';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
 import IntroScreen from './components/IntroScreen';
 import BackgroundPattern from './components/BackgroundPattern';
 import { ThemeProvider } from './context/ThemeContext';
@@ -47,6 +48,14 @@ const AppContent = () => {
                 element={
                   <ProtectedRoute>
                     <Dashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/profile" 
+                element={
+                  <ProtectedRoute>
+                    <Profile />
                   </ProtectedRoute>
                 } 
               />

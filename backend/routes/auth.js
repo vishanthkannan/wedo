@@ -114,6 +114,66 @@ router.post('/google', async (req, res) => {
   }
 });
 
+// Update user profile
+router.put('/profile', protect, async (req, res) => {
+  try {
+    const { name, email } = req.body;
+    const user = await User.findById(req.user);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    if (email && email !== user.email) {
+      const emailExists = await User.findOne({ email });
+      if (emailExists) {
+        return res.status(400).json({ message: 'Email is already in use by another account' });
+      }
+      user.email = email;
+    }
+
+    if (name) user.name = name;
+    await user.save();
+
+    res.json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      dailyStreak: user.dailyStreak,
+      longestStreak: user.longestStreak,
+      lastLoginDate: user.lastLoginDate,
+      createdAt: user.createdAt
+    });
+  } catch (error) {
+    console.error('Update profile error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Update password
+router.put('/password', protect, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: 'Current password and new password are required' });
+    }
+
+    const user = await User.findById(req.user);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Incorrect current password' });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(newPassword, salt);
+    await user.save();
+
+    res.json({ message: 'Password updated successfully' });
+  } catch (error) {
+    console.error('Update password error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 router.get('/me', protect, async (req, res) => {
   try {
     const user = await User.findById(req.user).select('-password');

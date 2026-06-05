@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { ThemeContext } from '../context/ThemeContext';
 import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import TaskItem from '../components/TaskItem';
 import ProductivityChart from '../components/ProductivityChart';
 import MidnightSkyBackground from '../components/MidnightSkyBackground';
 import { playSound } from '../utils/audio';
 import { motion, AnimatePresence, Reorder, useDragControls } from 'framer-motion';
-import { Plus, Flame, Volume2, VolumeX, LogOut, Check, Edit2, Trash2, Sun, Moon, GripVertical } from 'lucide-react';
+import { Plus, Flame, Volume2, VolumeX, LogOut, Check, Edit2, Trash2, Sun, Moon, GripVertical, User } from 'lucide-react';
 
 const HackerCheckbox = React.memo(({ id, checked, onChange, disabled, isToday }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -277,6 +278,7 @@ const MultiSelectDropdown = ({ activeTopics, setActiveTopics }) => {
 
 const Dashboard = () => {
   const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [matrixData, setMatrixData] = useState({});
   const [uniqueTasks, setUniqueTasks] = useState([]);
   const [analytics, setAnalytics] = useState(null);
@@ -597,6 +599,15 @@ const Dashboard = () => {
         </div>
         
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+          <button 
+            className="premium-logout-btn"
+            onClick={() => navigate('/profile')}
+            title="Profile Settings"
+            style={{ display: 'flex', gap: '6px', alignItems: 'center' }}
+          >
+            <User size={16} />
+            <span>Profile</span>
+          </button>
           <button 
             className="header-icon-btn"
             onClick={() => setSoundEnabled(!soundEnabled)} 
