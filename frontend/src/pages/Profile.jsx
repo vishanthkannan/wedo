@@ -118,22 +118,8 @@ const Profile = () => {
             <span>Dashboard</span>
           </button>
           <div className="user-details" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-            <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div className="liquid-text-container">
-                <span>Profile Settings</span>
-                <span>Profile Settings</span>
-              </div>
-              <div style={{ width: '42px', height: '42px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-                <div className="pyramid-loader" style={{ position: 'absolute', transform: 'scale(0.4) rotateX(-20deg)', transformOrigin: 'center' }}>
-                  <div className="wrapper">
-                    <span className="side side1"></span>
-                    <span className="side side2"></span>
-                    <span className="side side3"></span>
-                    <span className="side side4"></span>
-                    <span className="shadow"></span>
-                  </div>  
-                </div>
-              </div>
+            <h3 style={{ fontSize: '28px', fontWeight: '700', fontFamily: 'Outfit, sans-serif', color: 'var(--text-primary)' }}>
+              Profile Settings
             </h3>
           </div>
         </div>
