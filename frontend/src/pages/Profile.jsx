@@ -5,7 +5,7 @@ import api from '../utils/api';
 import MidnightSkyBackground from '../components/MidnightSkyBackground';
 import { playSound } from '../utils/audio';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Flame, Check, User, Mail, Lock, Save, Key, AlertCircle, Volume2, VolumeX, LogOut, Award } from 'lucide-react';
+import { ArrowLeft, Flame, Check, User, Mail, Lock, Save, Key, AlertCircle, Volume2, VolumeX, LogOut, Award, Camera } from 'lucide-react';
 
 const Profile = () => {
   const { user, setUser, logout } = useContext(AuthContext);
@@ -14,7 +14,23 @@ const Profile = () => {
   // Settings State
   const [name, setName] = useState(user?.name || '');
   const [email, setEmail] = useState(user?.email || '');
+  const [profileImage, setProfileImage] = useState(user?.profileImage || '');
   const [currentPassword, setCurrentPassword] = useState('');
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) { // 2MB limit
+        setProfileMessage({ text: 'Image size should be less than 2MB.', type: 'error' });
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -49,8 +65,8 @@ const Profile = () => {
     setLoadingProfile(true);
     try {
       playSound('click', soundEnabled);
-      const res = await api.put('/auth/profile', { name, email });
-      setUser({ ...user, name: res.data.name, email: res.data.email });
+      const res = await api.put('/auth/profile', { name, email, profileImage });
+      setUser({ ...user, name: res.data.name, email: res.data.email, profileImage: res.data.profileImage });
       setProfileMessage({ text: 'Profile updated successfully!', type: 'success' });
       setTimeout(() => playSound('reward', soundEnabled), 300);
     } catch (err) {
@@ -149,15 +165,35 @@ const Profile = () => {
                 fontFamily: 'Outfit, sans-serif',
                 color: 'white',
                 boxShadow: 'var(--shadow-glow)',
-                border: '4px solid rgba(255, 255, 255, 0.1)'
+                border: '4px solid rgba(255, 255, 255, 0.1)',
+                position: 'relative',
+                cursor: 'pointer',
+                overflow: 'hidden'
               }}
+              onClick={() => document.getElementById('avatar-upload').click()}
+              className="avatar-container"
+              title="Click to change profile image"
             >
-              {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+              {profileImage ? (
+                <img src={profileImage} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              ) : (
+                user?.name ? user.name.charAt(0).toUpperCase() : 'U'
+              )}
+              <div className="avatar-overlay">
+                <Camera size={18} />
+              </div>
             </div>
+            <input 
+              type="file" 
+              id="avatar-upload" 
+              accept="image/*" 
+              style={{ display: 'none' }} 
+              onChange={handleImageChange} 
+            />
             
             <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
               <div style={{ width: '30px', height: '30px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-                <div className="pyramid-loader" style={{ position: 'absolute', transform: 'scale(0.28) rotateX(-20deg)', transformOrigin: 'center' }}>
+                <div className="pyramid-loader" style={{ position: 'absolute', transform: 'scale(0.8) rotateX(-20deg)', transformOrigin: 'center' }}>
                   <div className="wrapper">
                     <span className="side side1"></span>
                     <span className="side side2"></span>

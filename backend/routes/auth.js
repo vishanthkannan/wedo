@@ -21,7 +21,7 @@ router.post('/register', async (req, res) => {
     await user.save();
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-    res.status(201).json({ token, user: { id: user._id, name: user.name, email: user.email, dailyStreak: user.dailyStreak } });
+    res.status(201).json({ token, user: { id: user._id, name: user.name, email: user.email, profileImage: user.profileImage, dailyStreak: user.dailyStreak } });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -53,7 +53,7 @@ router.post('/login', async (req, res) => {
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email, dailyStreak: user.dailyStreak, longestStreak: user.longestStreak } });
+    res.json({ token, user: { id: user._id, name: user.name, email: user.email, profileImage: user.profileImage, dailyStreak: user.dailyStreak, longestStreak: user.longestStreak } });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -70,7 +70,7 @@ router.post('/google', async (req, res) => {
     });
     
     const payload = ticket.getPayload();
-    const { email, name } = payload;
+    const { email, name, picture } = payload;
 
     // Check if user already exists
     let user = await User.findOne({ email });
@@ -85,8 +85,12 @@ router.post('/google', async (req, res) => {
         name,
         email,
         password: hashedPassword,
+        profileImage: picture || '',
         dailyStreak: 0,
       });
+      await user.save();
+    } else if (picture && !user.profileImage) {
+      user.profileImage = picture;
       await user.save();
     }
 
@@ -107,7 +111,7 @@ router.post('/google', async (req, res) => {
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email, dailyStreak: user.dailyStreak, longestStreak: user.longestStreak } });
+    res.json({ token, user: { id: user._id, name: user.name, email: user.email, profileImage: user.profileImage, dailyStreak: user.dailyStreak, longestStreak: user.longestStreak } });
   } catch (error) {
     console.error("Google login error:", error);
     res.status(400).json({ message: 'Google authentication failed' });
@@ -117,7 +121,7 @@ router.post('/google', async (req, res) => {
 // Update user profile
 router.put('/profile', protect, async (req, res) => {
   try {
-    const { name, email } = req.body;
+    const { name, email, profileImage } = req.body;
     const user = await User.findById(req.user);
     if (!user) return res.status(404).json({ message: 'User not found' });
 
@@ -130,12 +134,14 @@ router.put('/profile', protect, async (req, res) => {
     }
 
     if (name) user.name = name;
+    if (profileImage !== undefined) user.profileImage = profileImage;
     await user.save();
 
     res.json({
       id: user._id,
       name: user.name,
       email: user.email,
+      profileImage: user.profileImage,
       dailyStreak: user.dailyStreak,
       longestStreak: user.longestStreak,
       lastLoginDate: user.lastLoginDate,

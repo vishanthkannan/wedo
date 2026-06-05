@@ -958,7 +958,6 @@ select.premium-input option {
     radial-gradient(1.5px 1.5px at 60% 85%, #fff, transparent),
     radial-gradient(1.5px 1.5px at 85% 65%, #fff, transparent);
   background-size: 300px 300px;
-  animation: twinkle 5s ease-in-out infinite 1s;
 }
 
 .uiverse-midnight-sky .stars-3 {
@@ -966,7 +965,6 @@ select.premium-input option {
     radial-gradient(2px 2px at 10% 80%, #fff, transparent),
     radial-gradient(2px 2px at 80% 40%, #fff, transparent);
   background-size: 400px 400px;
-  animation: twinkle 7s ease-in-out infinite 2s;
 }
 
 .uiverse-midnight-sky .meteor {
@@ -1029,18 +1027,18 @@ select.premium-input option {
 
 @keyframes shoot {
   0% {
-    transform: translateX(0) translateY(0) rotate(-35deg);
+    transform: translate3d(0, 0, 0) rotate(-35deg);
     opacity: 0;
   }
   5% {
     opacity: 1;
   }
   15% {
-    transform: translateX(-1500px) translateY(1000px) rotate(-35deg);
+    transform: translate3d(-1500px, 1000px, 0) rotate(-35deg);
     opacity: 0;
   }
   100% {
-    transform: translateX(-1500px) translateY(1000px) rotate(-35deg);
+    transform: translate3d(-1500px, 1000px, 0) rotate(-35deg);
     opacity: 0;
   }
 }
@@ -2111,8 +2109,8 @@ input:-webkit-autofill:active {
 /* From Uiverse.io - Pyramid Loader */
 .pyramid-loader {
   position: relative;
-  width: 300px;
-  height: 300px;
+  width: 100px;
+  height: 100px;
   display: block;
   transform-style: preserve-3d;
   transform: rotateX(-20deg);
@@ -2124,6 +2122,7 @@ input:-webkit-autofill:active {
   height: 100%;
   transform-style: preserve-3d;
   animation: spin 4s linear infinite;
+  will-change: transform;
 }
 
 @keyframes spin {
@@ -2133,8 +2132,8 @@ input:-webkit-autofill:active {
 }
 
 .pyramid-loader .wrapper .side {
-  width: 70px;
-  height: 70px;
+  width: 24px;
+  height: 24px;
   position: absolute;
   top: 0;
   left: 0;
@@ -2166,8 +2165,8 @@ input:-webkit-autofill:active {
 }
 
 .pyramid-loader .wrapper .shadow {
-  width: 60px;
-  height: 60px;
+  width: 20px;
+  height: 20px;
   background: #8B5AD5;
   position: absolute;
   top: 0;
@@ -2175,8 +2174,37 @@ input:-webkit-autofill:active {
   right: 0;
   bottom: 0;
   margin: auto;
-  transform: rotateX(90deg) translateZ(-40px);
-  filter: blur(12px);
+  transform: rotateX(90deg) translateZ(-13px);
+  filter: blur(4px);
+}
+
+/* Avatar Upload Container Hover Effects */
+.avatar-container {
+  position: relative;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.avatar-container:hover {
+  transform: scale(1.02);
+  border-color: var(--accent-color) !important;
+}
+
+.avatar-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 50%;
+  pointer-events: none; /* Let clicks pass to container */
+}
+
+.avatar-container:hover .avatar-overlay {
+  opacity: 1;
 }
 
 
