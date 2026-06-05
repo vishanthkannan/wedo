@@ -589,15 +589,15 @@ const Dashboard = () => {
           </div>
           <div className="user-details" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
             <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div className="liquid-text-container">
-                <span>{user?.name?.split(' ')[0]}</span>
-                <span>{user?.name?.split(' ')[0]}</span>
-              </div>
               <div className="loading" style={{ display: 'inline-flex', alignItems: 'center' }}>
                 <svg height="24px" width="32px" viewBox="0 0 64 48">
                   <polyline id="back" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"></polyline>
                   <polyline id="front" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"></polyline>
                 </svg>
+              </div>
+              <div className="liquid-text-container">
+                <span>{user?.name?.split(' ')[0]}</span>
+                <span>{user?.name?.split(' ')[0]}</span>
               </div>
             </h3>
           </div>
