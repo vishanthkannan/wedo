@@ -16,25 +16,59 @@ const Profile = () => {
   const [name, setName] = useState(user?.name || '');
   const [email, setEmail] = useState(user?.email || '');
   const [profileImage, setProfileImage] = useState(user?.profileImage || '');
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 2 * 1024 * 1024) { // 2MB limit
         setProfileMessage({ text: 'Image size should be less than 2MB.', type: 'error' });
         return;
       }
+      
+      setUploadingImage(true);
+      setProfileMessage({ text: '', type: '' });
+      
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImage(reader.result);
+      reader.onloadend = async () => {
+        try {
+          const base64Data = reader.result;
+          playSound('click', soundEnabled);
+          const res = await api.put('/auth/profile', { name: user?.name, profileImage: base64Data });
+          setProfileImage(res.data.profileImage);
+          setUser({ ...user, profileImage: res.data.profileImage });
+          setProfileMessage({ text: 'Profile picture updated successfully!', type: 'success' });
+          setTimeout(() => playSound('reward', soundEnabled), 300);
+        } catch (err) {
+          console.error(err);
+          const msg = err.response?.data?.message || 'Failed to upload image.';
+          setProfileMessage({ text: msg, type: 'error' });
+        } finally {
+          setUploadingImage(false);
+        }
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleRemoveImage = () => {
-    setProfileImage('');
+  const handleRemoveImage = async () => {
+    setUploadingImage(true);
+    setProfileMessage({ text: '', type: '' });
+    try {
+      playSound('click', soundEnabled);
+      const res = await api.put('/auth/profile', { name: user?.name, profileImage: '' });
+      setProfileImage('');
+      setUser({ ...user, profileImage: '' });
+      setProfileMessage({ text: 'Profile picture removed successfully!', type: 'success' });
+      setTimeout(() => playSound('reward', soundEnabled), 300);
+    } catch (err) {
+      console.error(err);
+      const msg = err.response?.data?.message || 'Failed to remove image.';
+      setProfileMessage({ text: msg, type: 'error' });
+    } finally {
+      setUploadingImage(false);
+    }
   };
 
 
@@ -186,6 +220,24 @@ const Profile = () => {
               ) : (
                 user?.name ? user.name.charAt(0).toUpperCase() : 'U'
               )}
+
+              {/* Uploading Spinner Overlay */}
+              {uploadingImage && (
+                <div 
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'rgba(0, 0, 0, 0.65)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backdropFilter: 'blur(2px)',
+                    zIndex: 10
+                  }}
+                >
+                  <div className="spinner-loader"></div>
+                </div>
+              )}
             </div>
 
             <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginTop: '-4px', marginBottom: '20px', position: 'relative', zIndex: 3 }}>
@@ -193,6 +245,7 @@ const Profile = () => {
                 type="button"
                 onClick={() => document.getElementById('avatar-upload').click()}
                 className="premium-logout-btn" 
+                disabled={uploadingImage}
                 style={{ 
                   margin: 0, 
                   padding: '6px 12px', 
@@ -202,7 +255,9 @@ const Profile = () => {
                   color: 'var(--text-primary)',
                   background: 'rgba(255, 255, 255, 0.05)',
                   textTransform: 'none',
-                  letterSpacing: 'normal'
+                  letterSpacing: 'normal',
+                  opacity: uploadingImage ? 0.6 : 1,
+                  cursor: uploadingImage ? 'not-allowed' : 'pointer'
                 }}
               >
                 {profileImage ? 'Change Photo' : 'Add Photo'}
@@ -212,6 +267,7 @@ const Profile = () => {
                   type="button"
                   onClick={handleRemoveImage}
                   className="premium-logout-btn" 
+                  disabled={uploadingImage}
                   style={{ 
                     margin: 0, 
                     padding: '6px 12px', 
@@ -221,7 +277,9 @@ const Profile = () => {
                     color: '#f87171',
                     background: 'rgba(239, 68, 68, 0.08)',
                     textTransform: 'none',
-                    letterSpacing: 'normal'
+                    letterSpacing: 'normal',
+                    opacity: uploadingImage ? 0.6 : 1,
+                    cursor: uploadingImage ? 'not-allowed' : 'pointer'
                   }}
                 >
                   Remove
