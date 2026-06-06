@@ -43,6 +43,10 @@ const Profile = () => {
   const [loadingPassword, setLoadingPassword] = useState(false);
   const [analytics, setAnalytics] = useState(null);
 
+  // Toggle Edit states
+  const [showProfileEdit, setShowProfileEdit] = useState(false);
+  const [showPasswordEdit, setShowPasswordEdit] = useState(false);
+
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
@@ -108,6 +112,7 @@ const Profile = () => {
       setNewPassword('');
       setConfirmPassword('');
       setTimeout(() => playSound('reward', soundEnabled), 300);
+      setShowPasswordEdit(false);
     } catch (err) {
       console.error(err);
       const msg = err.response?.data?.message || 'Failed to change password.';
@@ -148,7 +153,7 @@ const Profile = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           
           {/* Avatar and Info Card */}
-          <div className="premium-card" style={{ padding: '32px', textAlign: 'center', position: 'relative' }}>
+          <div className="premium-card profile-card-transparent" style={{ padding: '32px', textAlign: 'center', position: 'relative' }}>
             <div className="grid-bg" style={{ opacity: 0.1, borderRadius: 'inherit' }}></div>
             
             <div 
@@ -249,7 +254,7 @@ const Profile = () => {
 
           {/* Streak Stats Card */}
           <div 
-            className="premium-card" 
+            className="premium-card profile-card-transparent" 
             style={{ 
               padding: '24px'
             }}
@@ -281,7 +286,7 @@ const Profile = () => {
           </div>
 
           {/* Productivity Analytics Card */}
-          <div className="premium-card" style={{ padding: '24px' }}>
+          <div className="premium-card profile-card-transparent" style={{ padding: '24px' }}>
             <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Check size={20} style={{ color: 'var(--accent-color)' }} />
               Habit Progress (Last 30 Days)
@@ -330,13 +335,24 @@ const Profile = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', flex: '1.5' }}>
           
           {/* Update Profile Details Form */}
-          <div className="premium-card" style={{ padding: '32px' }}>
-            <h3 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <User size={22} style={{ color: 'var(--accent-color)' }} />
-              Profile Details
-            </h3>
+          <div className="premium-card profile-card-transparent" style={{ padding: '32px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+              <h3 style={{ fontSize: '20px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '10px', margin: 0 }}>
+                <User size={22} style={{ color: 'var(--accent-color)' }} />
+                Profile Details
+              </h3>
+              {!showProfileEdit && (
+                <button 
+                  onClick={() => setShowProfileEdit(true)} 
+                  className="premium-btn" 
+                  style={{ padding: '8px 16px', fontSize: '13px', borderRadius: 'var(--radius-sm)' }}
+                >
+                  Edit Details
+                </button>
+              )}
+            </div>
 
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
               {profileMessage.text && (
                 <motion.div 
                   initial={{ opacity: 0, y: -10 }}
@@ -355,55 +371,112 @@ const Profile = () => {
               )}
             </AnimatePresence>
 
-            <form onSubmit={handleUpdateProfile} className="auth-form" style={{ gap: '20px' }}>
-              <div className="form__group field" style={{ maxWidth: '100%' }}>
-                <input 
-                  type="text" 
-                  placeholder="Full Name" 
-                  className="form__field"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                  id="profile-name"
-                  disabled={loadingProfile}
-                />
-                <label htmlFor="profile-name" className="form__label">Full Name</label>
-              </div>
+            <AnimatePresence mode="wait">
+              {!showProfileEdit ? (
+                <motion.div
+                  key="profile-read"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
+                >
+                  <div style={{ padding: '16px', background: 'rgba(0, 0, 0, 0.2)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(255, 255, 255, 0.02)' }}>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '12px', marginBottom: '4px' }}>Name</p>
+                    <p style={{ fontSize: '15px', fontWeight: '500', color: 'var(--text-primary)' }}>{user?.name}</p>
+                  </div>
+                  <div style={{ padding: '16px', background: 'rgba(0, 0, 0, 0.2)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(255, 255, 255, 0.02)' }}>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '12px', marginBottom: '4px' }}>Email</p>
+                    <p style={{ fontSize: '15px', fontWeight: '500', color: 'var(--text-primary)' }}>{user?.email}</p>
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.form 
+                  key="profile-edit"
+                  onSubmit={async (e) => {
+                    await handleUpdateProfile(e);
+                    setShowProfileEdit(false);
+                  }} 
+                  className="auth-form" 
+                  style={{ gap: '20px' }}
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="form__group field" style={{ maxWidth: '100%' }}>
+                    <input 
+                      type="text" 
+                      placeholder="Full Name" 
+                      className="form__field"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                      id="profile-name"
+                      disabled={loadingProfile}
+                      autoFocus
+                    />
+                    <label htmlFor="profile-name" className="form__label">Full Name</label>
+                  </div>
 
-              <div className="form__group field" style={{ maxWidth: '100%', marginBottom: '12px' }}>
-                <input 
-                  type="email" 
-                  placeholder="Email Address" 
-                  className="form__field"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  id="profile-email"
-                  disabled={loadingProfile}
-                />
-                <label htmlFor="profile-email" className="form__label">Email Address</label>
-              </div>
+                  <div className="form__group field" style={{ maxWidth: '100%', marginBottom: '12px' }}>
+                    <input 
+                      type="email" 
+                      placeholder="Email Address" 
+                      className="form__field"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      id="profile-email"
+                      disabled={loadingProfile}
+                    />
+                    <label htmlFor="profile-email" className="form__label">Email Address</label>
+                  </div>
 
-              <button 
-                type="submit" 
-                className="premium-btn" 
-                style={{ width: 'fit-content', minWidth: '150px' }}
-                disabled={loadingProfile}
-              >
-                <Save size={16} />
-                <span>{loadingProfile ? 'Saving...' : 'Save Details'}</span>
-              </button>
-            </form>
+                  <div style={{ display: 'flex', gap: '12px' }}>
+                    <button 
+                      type="submit" 
+                      className="premium-btn" 
+                      style={{ width: 'fit-content', minWidth: '130px' }}
+                      disabled={loadingProfile}
+                    >
+                      <Save size={16} />
+                      <span>{loadingProfile ? 'Saving...' : 'Save Details'}</span>
+                    </button>
+                    <button 
+                      type="button" 
+                      className="premium-logout-btn" 
+                      style={{ margin: 0, padding: '12px 20px', borderRadius: 'var(--radius-md)' }}
+                      onClick={() => setShowProfileEdit(false)}
+                      disabled={loadingProfile}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </motion.form>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Change Password Form */}
-          <div className="premium-card" style={{ padding: '32px' }}>
-            <h3 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Key size={22} style={{ color: 'var(--accent-color)' }} />
-              Security Settings
-            </h3>
+          <div className="premium-card profile-card-transparent" style={{ padding: '32px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+              <h3 style={{ fontSize: '20px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '10px', margin: 0 }}>
+                <Key size={22} style={{ color: 'var(--accent-color)' }} />
+                Security Settings
+              </h3>
+              {!showPasswordEdit && (
+                <button 
+                  onClick={() => setShowPasswordEdit(true)} 
+                  className="premium-btn" 
+                  style={{ padding: '8px 16px', fontSize: '13px', borderRadius: 'var(--radius-sm)' }}
+                >
+                  Change Password
+                </button>
+              )}
+            </div>
 
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
               {passwordMessage.text && (
                 <motion.div 
                   initial={{ opacity: 0, y: -10 }}
@@ -422,59 +495,99 @@ const Profile = () => {
               )}
             </AnimatePresence>
 
-            <form onSubmit={handleChangePassword} className="auth-form" style={{ gap: '20px' }}>
-              <div className="form__group field" style={{ maxWidth: '100%' }}>
-                <input 
-                  type="password" 
-                  placeholder="Current Password" 
-                  className="form__field"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  required
-                  id="current-password"
-                  disabled={loadingPassword}
-                />
-                <label htmlFor="current-password" className="form__label">Current Password</label>
-              </div>
+            <AnimatePresence mode="wait">
+              {!showPasswordEdit ? (
+                <motion.div
+                  key="password-read"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
+                >
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '1.5' }}>
+                    Keep your account secure by periodically updating your password.
+                  </p>
+                </motion.div>
+              ) : (
+                <motion.form 
+                  key="password-edit"
+                  onSubmit={async (e) => {
+                    await handleChangePassword(e);
+                  }} 
+                  className="auth-form" 
+                  style={{ gap: '20px' }}
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="form__group field" style={{ maxWidth: '100%' }}>
+                    <input 
+                      type="password" 
+                      placeholder="Current Password" 
+                      className="form__field"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      required
+                      id="current-password"
+                      disabled={loadingPassword}
+                      autoFocus
+                    />
+                    <label htmlFor="current-password" className="form__label">Current Password</label>
+                  </div>
 
-              <div className="form__group field" style={{ maxWidth: '100%' }}>
-                <input 
-                  type="password" 
-                  placeholder="New Password" 
-                  className="form__field"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  required
-                  id="new-password"
-                  disabled={loadingPassword}
-                />
-                <label htmlFor="new-password" className="form__label">New Password</label>
-              </div>
+                  <div className="form__group field" style={{ maxWidth: '100%' }}>
+                    <input 
+                      type="password" 
+                      placeholder="New Password" 
+                      className="form__field"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      required
+                      id="new-password"
+                      disabled={loadingPassword}
+                    />
+                    <label htmlFor="new-password" className="form__label">New Password</label>
+                  </div>
 
-              <div className="form__group field" style={{ maxWidth: '100%', marginBottom: '12px' }}>
-                <input 
-                  type="password" 
-                  placeholder="Confirm New Password" 
-                  className="form__field"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  id="confirm-password"
-                  disabled={loadingPassword}
-                />
-                <label htmlFor="confirm-password" className="form__label">Confirm New Password</label>
-              </div>
+                  <div className="form__group field" style={{ maxWidth: '100%', marginBottom: '12px' }}>
+                    <input 
+                      type="password" 
+                      placeholder="Confirm New Password" 
+                      className="form__field"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                      id="confirm-password"
+                      disabled={loadingPassword}
+                    />
+                    <label htmlFor="confirm-password" className="form__label">Confirm New Password</label>
+                  </div>
 
-              <button 
-                type="submit" 
-                className="premium-btn" 
-                style={{ width: 'fit-content', minWidth: '160px' }}
-                disabled={loadingPassword}
-              >
-                <Lock size={16} />
-                <span>{loadingPassword ? 'Updating...' : 'Update Password'}</span>
-              </button>
-            </form>
+                  <div style={{ display: 'flex', gap: '12px' }}>
+                    <button 
+                      type="submit" 
+                      className="premium-btn" 
+                      style={{ width: 'fit-content', minWidth: '150px' }}
+                      disabled={loadingPassword}
+                    >
+                      <Lock size={16} />
+                      <span>{loadingPassword ? 'Updating...' : 'Update Password'}</span>
+                    </button>
+                    <button 
+                      type="button" 
+                      className="premium-logout-btn" 
+                      style={{ margin: 0, padding: '12px 20px', borderRadius: 'var(--radius-md)' }}
+                      onClick={() => setShowPasswordEdit(false)}
+                      disabled={loadingPassword}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </motion.form>
+              )}
+            </AnimatePresence>
           </div>
 
         </div>

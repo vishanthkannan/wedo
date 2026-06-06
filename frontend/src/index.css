@@ -2649,5 +2649,13 @@ input:-webkit-autofill:active {
   }
 }
 
+/* Glassmorphism Profile Cards */
+.profile-card-transparent {
+  background-color: rgba(18, 18, 20, 0.4) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.03) !important;
+}
+
 
 
