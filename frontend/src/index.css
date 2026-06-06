@@ -2635,5 +2635,19 @@ input:-webkit-autofill:active {
   -ms-user-select: none;
 }
 
+/* Profile Grid */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+@media (min-width: 768px) {
+  .profile-grid {
+    grid-template-columns: 1fr 1.5fr;
+  }
+}
+
 
 

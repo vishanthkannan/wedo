@@ -6,7 +6,6 @@ import api from '../utils/api';
 import TaskItem from '../components/TaskItem';
 import ProductivityChart from '../components/ProductivityChart';
 import MidnightSkyBackground from '../components/MidnightSkyBackground';
-import Footer from '../components/Footer';
 import { playSound } from '../utils/audio';
 import { motion, AnimatePresence, Reorder, useDragControls } from 'framer-motion';
 import { Plus, Flame, Volume2, VolumeX, LogOut, Check, Edit2, Trash2, Sun, Moon, GripVertical, User } from 'lucide-react';
@@ -768,7 +767,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

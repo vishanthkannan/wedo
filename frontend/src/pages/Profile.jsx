@@ -3,6 +3,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import MidnightSkyBackground from '../components/MidnightSkyBackground';
+import Footer from '../components/Footer';
 import { playSound } from '../utils/audio';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Flame, Check, User, Mail, Lock, Save, Key, AlertCircle, Volume2, VolumeX, LogOut, Award, Camera } from 'lucide-react';
@@ -141,7 +142,7 @@ const Profile = () => {
         </div>
       </header>
 
-      <div className="dashboard-grid" style={{ marginTop: '24px', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
+      <div className="profile-grid">
         
         {/* Left Column: Profile Card and Streak Stats */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -479,6 +480,7 @@ const Profile = () => {
         </div>
 
       </div>
+      <Footer />
     </div>
   );
 };
