@@ -2668,8 +2668,8 @@ input:-webkit-autofill:active {
 
 .profile-tooltip {
   position: absolute;
-  top: 50px;
-  right: 0;
+  top: -24px;
+  right: 55px;
   padding: 10px;
   opacity: 0;
   pointer-events: none;
@@ -2689,9 +2689,9 @@ input:-webkit-autofill:active {
   min-width: 200px;
 }
 
-/* Show tooltip when hovering */
+/* Show tooltip when hovering, sliding to the left */
 .profile-tooltip-container:hover .profile-tooltip {
-  top: 55px;
+  right: 70px;
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
