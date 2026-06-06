@@ -21,10 +21,18 @@ router.get('/', protect, async (req, res) => {
         // Extract unique daily tasks titles
         const uniqueDailies = [...new Set(pastDailies.map(t => t.title))];
         
+        const titleToPriority = {};
+        pastDailies.forEach(t => {
+          if (!titleToPriority[t.title]) {
+            titleToPriority[t.title] = t.priority || 'moderate';
+          }
+        });
+
         const newDailies = uniqueDailies.map(title => ({
           user: req.user,
           title,
           type: 'daily',
+          priority: titleToPriority[title] || 'moderate',
           date,
           completed: false
         }));
@@ -44,8 +52,8 @@ router.get('/', protect, async (req, res) => {
 // Create task
 router.post('/', protect, async (req, res) => {
   try {
-    const { title, type, date, completed } = req.body;
-    const task = new Task({ user: req.user, title, type, date, completed: completed || false });
+    const { title, type, priority, date, completed } = req.body;
+    const task = new Task({ user: req.user, title, type, priority: priority || 'moderate', date, completed: completed || false });
     await task.save();
 
     // Streak logic check when completing daily routines on creation
@@ -106,6 +114,23 @@ router.put('/type/bulk', protect, async (req, res) => {
   }
 });
 
+// Change tasks priority by title
+router.put('/priority/bulk', protect, async (req, res) => {
+  try {
+    const { title, newPriority } = req.body;
+    if (!title || !newPriority) {
+      return res.status(400).json({ message: 'Title and newPriority required' });
+    }
+    await Task.updateMany(
+      { user: req.user, title: title },
+      { $set: { priority: newPriority } }
+    );
+    res.json({ message: 'Tasks priority changed successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // Update task
 router.put('/:id', protect, async (req, res) => {
   try {
@@ -117,6 +142,9 @@ router.put('/:id', protect, async (req, res) => {
     const wasCompleted = task.completed;
     task.completed = req.body.completed !== undefined ? req.body.completed : task.completed;
     task.title = req.body.title || task.title;
+    if (req.body.priority !== undefined) {
+      task.priority = req.body.priority;
+    }
     await task.save();
 
     // Streak logic check when completing daily routines

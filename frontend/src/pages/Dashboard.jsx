@@ -61,10 +61,13 @@ const HabitRow = React.memo(({
   setEditingValue, 
   editingType,
   setEditingType,
+  editingPriority,
+  setEditingPriority,
   handleUpdateTask, 
   handleDeleteBulkTask, 
   handleToggleTask, 
-  handleCreateAndToggleTask 
+  handleCreateAndToggleTask,
+  showDragHandle
 }) => {
   const dragControls = useDragControls();
 
@@ -77,16 +80,16 @@ const HabitRow = React.memo(({
     >
       <div className="tracker-cell tracker-task-name tracker-task-name-cell">
         {editingTask === task.title ? (
-          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', width: '100%' }}>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', width: '100%', flexWrap: 'wrap' }}>
             <input 
               type="text" 
               className="premium-input" 
-              style={{ padding: '4px 8px', fontSize: '13px', flex: '1', minWidth: '80px' }}
+              style={{ padding: '4px 8px', fontSize: '13px', flex: '1 1 120px', minWidth: '80px' }}
               value={editingValue} 
               onChange={(e) => setEditingValue(e.target.value)} 
               autoFocus
               onKeyDown={(e) => {
-                if (e.key === 'Enter') handleUpdateTask(task.title, editingValue, editingType);
+                if (e.key === 'Enter') handleUpdateTask(task.title, editingValue, editingType, editingPriority);
                 if (e.key === 'Escape') setEditingTask(null);
               }}
             />
@@ -101,28 +104,50 @@ const HabitRow = React.memo(({
               <option value="study">Study</option>
               <option value="work">Work</option>
             </select>
-            <button onClick={() => handleUpdateTask(task.title, editingValue, editingType)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-color)' }}>
+            <select
+              value={editingPriority}
+              onChange={(e) => setEditingPriority(e.target.value)}
+              className="premium-input"
+              style={{ padding: '4px 8px', fontSize: '13px', flex: '0 0 auto', width: 'auto', minWidth: '70px' }}
+            >
+              <option value="low">Low</option>
+              <option value="moderate">Moderate</option>
+              <option value="high">High</option>
+            </select>
+            <button onClick={() => handleUpdateTask(task.title, editingValue, editingType, editingPriority)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-color)' }}>
               <Check size={16} />
             </button>
           </div>
         ) : (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
             <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
-              <div 
-                onPointerDown={(e) => dragControls.start(e)}
-                className="drag-handle-wrapper"
-              >
-                <GripVertical size={18} className="drag-handle" />
-              </div>
+              {showDragHandle && (
+                <div 
+                  onPointerDown={(e) => dragControls.start(e)}
+                  className="drag-handle-wrapper"
+                >
+                  <GripVertical size={18} className="drag-handle" />
+                </div>
+              )}
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <span>{task.title}</span>
-                <span style={{ fontSize: '10px', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{task.type}</span>
+                <div style={{ display: 'flex', gap: '6px', alignItems: 'center', marginTop: '2px' }}>
+                  <span style={{ fontSize: '10px', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{task.type}</span>
+                  <span className={`priority-badge priority-${task.priority || 'moderate'}`}>
+                    {task.priority || 'moderate'}
+                  </span>
+                </div>
               </div>
             </div>
             <div style={{ display: 'flex', gap: '4px' }}>
               <button 
                 className="tracker-edit-btn"
-                onClick={() => { setEditingTask(task.title); setEditingValue(task.title); setEditingType(task.type || 'daily'); }}
+                onClick={() => { 
+                  setEditingTask(task.title); 
+                  setEditingValue(task.title); 
+                  setEditingType(task.type || 'daily'); 
+                  setEditingPriority(task.priority || 'moderate');
+                }}
               >
                 <Edit2 size={14} />
               </button>
@@ -153,7 +178,7 @@ const HabitRow = React.memo(({
               <HackerCheckbox 
                 id={`checkbox-new-${task.title}-${d}`}
                 checked={false}
-                onChange={() => handleCreateAndToggleTask(task.title, d, task.type)}
+                onChange={() => handleCreateAndToggleTask(task.title, d, task.type, task.priority)}
                 disabled={d > today}
                 isToday={isToday}
               />
@@ -291,15 +316,18 @@ const Dashboard = () => {
   // UI State
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [soundEnabled, setSoundEnabled] = useState(true);
+  const [sortBy, setSortBy] = useState('default');
   
   // Edit State
   const [editingTask, setEditingTask] = useState(null);
   const [editingValue, setEditingValue] = useState('');
   const [editingType, setEditingType] = useState('daily');
+  const [editingPriority, setEditingPriority] = useState('moderate');
 
   // Topic States
   const [activeTopics, setActiveTopics] = useState(['all']);
   const [newTaskTopic, setNewTaskTopic] = useState('daily');
+  const [newTaskPriority, setNewTaskPriority] = useState('moderate');
   
   const scrollRef = useRef(null);
 
@@ -351,7 +379,7 @@ const Dashboard = () => {
         const date = dateRange[i];
         res.data.forEach(task => {
           if (!taskSet.has(task.title)) {
-            taskSet.set(task.title, task.type);
+            taskSet.set(task.title, { type: task.type, priority: task.priority || 'moderate' });
           }
           if (!newMatrix[task.title]) {
             newMatrix[task.title] = {};
@@ -361,7 +389,7 @@ const Dashboard = () => {
       });
 
       setMatrixData(newMatrix);
-      setUniqueTasks(Array.from(taskSet.entries()).map(([title, type]) => ({ title, type })));
+      setUniqueTasks(Array.from(taskSet.entries()).map(([title, info]) => ({ title, type: info.type, priority: info.priority })));
     } catch (err) {
       console.error(err);
     }
@@ -410,7 +438,7 @@ const Dashboard = () => {
     }
   };
 
-  const handleCreateAndToggleTask = async (title, date, type = 'daily') => {
+  const handleCreateAndToggleTask = async (title, date, type = 'daily', priority = 'moderate') => {
     try {
       playSound('click', soundEnabled);
       setTimeout(() => playSound('reward', soundEnabled), 300);
@@ -421,13 +449,14 @@ const Dashboard = () => {
         const newMatrix = { ...prev };
         if (!newMatrix[title]) newMatrix[title] = {};
         newMatrix[title] = { ...newMatrix[title] };
-        newMatrix[title][date] = { _id: 'temp-' + Date.now(), title, date, type, completed: true };
+        newMatrix[title][date] = { _id: 'temp-' + Date.now(), title, date, type, priority, completed: true };
         return newMatrix;
       });
 
       await api.post('/tasks', {
         title,
         type,
+        priority,
         date,
         completed: true
       });
@@ -448,9 +477,11 @@ const Dashboard = () => {
       await api.post('/tasks', {
         title: newTaskTitle,
         type: newTaskTopic,
+        priority: newTaskPriority,
         date: today
       });
       setNewTaskTitle('');
+      setNewTaskPriority('moderate');
       fetchTasksMatrix();
       fetchAnalytics();
     } catch (err) {
@@ -458,19 +489,24 @@ const Dashboard = () => {
     }
   };
 
-  const handleUpdateTask = async (oldTitle, newTitle, newType) => {
+  const handleUpdateTask = async (oldTitle, newTitle, newType, newPriority) => {
     if (!newTitle.trim()) {
       setEditingTask(null);
       return;
     }
     try {
-      const oldType = uniqueTasks.find(t => t.title === oldTitle)?.type;
+      const taskObj = uniqueTasks.find(t => t.title === oldTitle);
+      const oldType = taskObj?.type;
+      const oldPriority = taskObj?.priority;
       
       if (newTitle !== oldTitle) {
         await api.put('/tasks/rename/bulk', { oldTitle, newTitle });
       }
       if (newType !== oldType) {
         await api.put('/tasks/type/bulk', { title: newTitle, newType });
+      }
+      if (newPriority !== oldPriority) {
+        await api.put('/tasks/priority/bulk', { title: newTitle, newPriority });
       }
       
       setEditingTask(null);
@@ -480,6 +516,52 @@ const Dashboard = () => {
       console.error(err);
     }
   };
+
+  // Computes the sorted list of tasks based on selected sorting option
+  const sortedTasks = React.useMemo(() => {
+    if (sortBy === 'default') return uniqueTasks;
+
+    const list = [...uniqueTasks];
+
+    if (sortBy === 'alpha') {
+      return list.sort((a, b) => a.title.localeCompare(b.title));
+    }
+
+    if (sortBy === 'priority-desc' || sortBy === 'priority-asc') {
+      const priorityWeights = { high: 3, moderate: 2, low: 1 };
+      return list.sort((a, b) => {
+        const wA = priorityWeights[a.priority] || 2;
+        const wB = priorityWeights[b.priority] || 2;
+        return sortBy === 'priority-desc' ? wB - wA : wA - wB;
+      });
+    }
+
+    if (sortBy === 'type') {
+      return list.sort((a, b) => a.type.localeCompare(b.type));
+    }
+
+    if (sortBy === 'completion') {
+      const getCompletionRate = (title) => {
+        const row = matrixData[title];
+        if (!row) return 0;
+        let completedCount = 0;
+        let totalCount = 0;
+        dateRange.forEach(d => {
+          if (d <= today) {
+            totalCount++;
+            if (row[d]?.completed) {
+              completedCount++;
+            }
+          }
+        });
+        return totalCount === 0 ? 0 : completedCount / totalCount;
+      };
+
+      return list.sort((a, b) => getCompletionRate(b.title) - getCompletionRate(a.title));
+    }
+
+    return list;
+  }, [uniqueTasks, sortBy, matrixData, dateRange, today]);
 
   const handleDeleteBulkTask = async (title) => {
     if (!window.confirm(`Are you sure you want to delete "${title}"?`)) return;
@@ -568,9 +650,27 @@ const Dashboard = () => {
 
         {/* Main Tasks Section */}
         <div>
-          <h2 className="section-title">
-            Your Habit Matrix
-          </h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '16px' }}>
+            <h2 className="section-title" style={{ marginBottom: 0 }}>
+              Your Habit Matrix
+            </h2>
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+              <span style={{ fontSize: '13px', color: 'var(--text-secondary)', fontWeight: '500', letterSpacing: '0.5px' }}>SORT BY</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="premium-input"
+                style={{ width: 'auto', padding: '8px 16px', fontSize: '13px', minHeight: '38px', cursor: 'pointer' }}
+              >
+                <option value="default">Default (Drag & Drop)</option>
+                <option value="alpha">Alphabetical (A-Z)</option>
+                <option value="priority-desc">Priority (High to Low)</option>
+                <option value="priority-asc">Priority (Low to High)</option>
+                <option value="type">Type</option>
+                <option value="completion">Completion Rate</option>
+              </select>
+            </div>
+          </div>
           
           <form className="add-task-form" onSubmit={handleAddTask}>
             <input 
@@ -590,6 +690,16 @@ const Dashboard = () => {
               <option value="health">Health</option>
               <option value="study">Study</option>
               <option value="work">Work</option>
+            </select>
+            <select 
+              value={newTaskPriority} 
+              onChange={(e) => setNewTaskPriority(e.target.value)}
+              className="premium-input add-task-priority"
+              style={{ width: 'auto' }}
+            >
+              <option value="low">Low</option>
+              <option value="moderate">Moderate</option>
+              <option value="high">High</option>
             </select>
             <button type="submit" className="add-item-btn">
               <span className="button__text">Add Habit</span>
@@ -619,8 +729,8 @@ const Dashboard = () => {
                   </div>
                 </div>
               ) : (
-                <Reorder.Group axis="y" values={uniqueTasks} onReorder={setUniqueTasks}>
-                  {uniqueTasks.map(task => (
+                <Reorder.Group axis="y" values={sortedTasks} onReorder={setUniqueTasks}>
+                  {sortedTasks.map(task => (
                     <HabitRow 
                       key={task.title}
                       task={task}
@@ -633,10 +743,13 @@ const Dashboard = () => {
                       setEditingValue={setEditingValue}
                       editingType={editingType}
                       setEditingType={setEditingType}
+                      editingPriority={editingPriority}
+                      setEditingPriority={setEditingPriority}
                       handleUpdateTask={handleUpdateTask}
                       handleDeleteBulkTask={handleDeleteBulkTask}
                       handleToggleTask={handleToggleTask}
                       handleCreateAndToggleTask={handleCreateAndToggleTask}
+                      showDragHandle={sortBy === 'default'}
                     />
                   ))}
                 </Reorder.Group>

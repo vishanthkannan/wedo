@@ -2291,3 +2291,45 @@ input:-webkit-autofill:active {
     font-size: 32px;
   }
 }
+
+/* --- Priority Badges --- */
+.priority-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  line-height: 1;
+}
+
+.priority-high {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.3);
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.1);
+}
+
+.priority-moderate {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.3);
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.1);
+}
+
+.priority-low {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 6px rgba(59, 130, 246, 0.1);
+}
+
+.add-task-priority {
+  width: auto;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
