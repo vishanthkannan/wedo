@@ -32,12 +32,13 @@ const AppContent = () => {
   // Show intro if auth is still loading OR if the minimum 2.5s animation time hasn't finished
   const showIntro = loading || !minTimePassed;
   const isProfilePage = location.pathname === '/profile';
+  const isLoginPage = location.pathname === '/login' || location.pathname === '/register';
 
   return (
     <>
       {/* Conditionally render dashboard backgrounds */}
-      {!isProfilePage && <BackgroundPattern />}
-      {!isProfilePage && <MidnightSkyBackground />}
+      {!isProfilePage && !isLoginPage && <BackgroundPattern />}
+      {!isProfilePage && !isLoginPage && <MidnightSkyBackground />}
 
       {/* Conditionally render profile background at root level (truly static/fixed) */}
       {isProfilePage && (
@@ -70,6 +71,40 @@ const AppContent = () => {
             }}
           >
             <source src={profileBgVideo} type="video/mp4" />
+          </video>
+        </div>
+      )}
+
+      {/* Conditionally render login background at root level (truly static/fixed) */}
+      {isLoginPage && (
+        <div 
+          className="login-video-bg"
+          style={{ 
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            zIndex: -2,
+            overflow: 'hidden',
+            pointerEvents: 'none',
+            background: 'radial-gradient(circle at center, #0a0a0f 0%, #030305 100%)'
+          }}
+        >
+          <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              opacity: 0.20,
+              filter: 'brightness(0.7) contrast(1.1)'
+            }}
+          >
+            <source src="/video/login.mp4" type="video/mp4" />
           </video>
         </div>
       )}

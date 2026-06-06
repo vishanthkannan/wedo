@@ -2,8 +2,6 @@ import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import BackgroundPattern from '../components/BackgroundPattern';
-import MidnightSkyBackground from '../components/MidnightSkyBackground';
 import UiverseButton from '../components/UiverseButton';
 import { GoogleLogin } from '@react-oauth/google';
 
@@ -48,7 +46,6 @@ const Login = () => {
 
   return (
     <div className="auth-container">
-      <MidnightSkyBackground />
       <motion.div
         className="premium-card auth-card"
         initial={{ opacity: 0, y: 20 }}
