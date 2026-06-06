@@ -115,6 +115,38 @@ const Profile = () => {
 
   return (
     <div className="app-container">
+      {/* Profile Page Video Background */}
+      <div 
+        className="profile-video-bg"
+        style={{ 
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          zIndex: -1,
+          overflow: 'hidden',
+          pointerEvents: 'none',
+          background: 'radial-gradient(circle at center, #0a0a0f 0%, #030305 100%)'
+        }}
+      >
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            opacity: 0.28,
+            filter: 'brightness(0.7) contrast(1.1)'
+          }}
+        >
+          <source src="/video/profile.mp4" type="video/mp4" />
+        </video>
+      </div>
+
       <header className="app-header">
         <div className="user-info">
           <button 
