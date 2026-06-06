@@ -42,13 +42,22 @@ export const AuthProvider = ({ children }) => {
     setUser(res.data.user);
   };
 
+  const [profileBgVideo, setProfileBgVideoState] = useState(() => {
+    return localStorage.getItem('profileBgVideo') || '/video/profile.mp4';
+  });
+
+  const setProfileBgVideo = (videoPath) => {
+    localStorage.setItem('profileBgVideo', videoPath);
+    setProfileBgVideoState(videoPath);
+  };
+
   const logout = () => {
     localStorage.removeItem('token');
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, login, register, loginWithGoogle, logout, loading }}>
+    <AuthContext.Provider value={{ user, setUser, login, register, loginWithGoogle, logout, loading, profileBgVideo, setProfileBgVideo }}>
       {children}
     </AuthContext.Provider>
   );

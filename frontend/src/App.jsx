@@ -18,7 +18,7 @@ const ProtectedRoute = ({ children }) => {
 };
 
 const AppContent = () => {
-  const { user, loading } = useContext(AuthContext);
+  const { user, loading, profileBgVideo } = useContext(AuthContext);
   const [minTimePassed, setMinTimePassed] = useState(false);
   const location = useLocation();
 
@@ -56,6 +56,7 @@ const AppContent = () => {
           }}
         >
           <video 
+            key={profileBgVideo}
             autoPlay 
             loop 
             muted 
@@ -68,7 +69,7 @@ const AppContent = () => {
               filter: 'brightness(0.7) contrast(1.1)'
             }}
           >
-            <source src="/video/profile.mp4" type="video/mp4" />
+            <source src={profileBgVideo} type="video/mp4" />
           </video>
         </div>
       )}

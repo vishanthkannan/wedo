@@ -6,10 +6,10 @@ import MidnightSkyBackground from '../components/MidnightSkyBackground';
 import Footer from '../components/Footer';
 import { playSound } from '../utils/audio';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Flame, Check, User, Mail, Lock, Save, Key, AlertCircle, Volume2, VolumeX, LogOut, Award, Camera } from 'lucide-react';
+import { ArrowLeft, Flame, Check, User, Mail, Lock, Save, Key, AlertCircle, Volume2, VolumeX, LogOut, Award, Camera, Video } from 'lucide-react';
 
 const Profile = () => {
-  const { user, setUser, logout } = useContext(AuthContext);
+  const { user, setUser, logout, profileBgVideo, setProfileBgVideo } = useContext(AuthContext);
   const navigate = useNavigate();
 
   // Settings State
@@ -212,6 +212,17 @@ const Profile = () => {
                 style={{ border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}
               >
                 {soundEnabled ? <Volume2 size={20} /> : <VolumeX size={20} />}
+              </button>
+              <button 
+                className="header-icon-btn"
+                onClick={() => {
+                  playSound('click', soundEnabled);
+                  setProfileBgVideo(profileBgVideo === '/video/profile.mp4' ? '/video/girl-profile.mp4' : '/video/profile.mp4');
+                }} 
+                title="Switch Background Video"
+                style={{ border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}
+              >
+                <Video size={20} />
               </button>
               <button 
                 className="premium-logout-btn"
