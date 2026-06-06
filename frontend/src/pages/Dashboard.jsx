@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { ThemeContext } from '../context/ThemeContext';
 import { AuthContext } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import api from '../utils/api';
 import TaskItem from '../components/TaskItem';
 import ProductivityChart from '../components/ProductivityChart';
@@ -597,27 +597,46 @@ const Dashboard = () => {
         </div>
         
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-          <button 
-            className="header-icon-btn"
-            onClick={() => navigate('/profile')}
-            title="Profile Settings"
-            style={{ 
-              padding: user?.profileImage ? '0' : '8px', 
-              overflow: 'hidden', 
-              width: '38px', 
-              height: '38px', 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center',
-              borderRadius: '50%'
-            }}
-          >
-            {user?.profileImage ? (
-              <img src={user.profileImage} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            ) : (
-              <User size={20} />
-            )}
-          </button>
+          <div className="profile-tooltip-container">
+            <div className="profile-tooltip">
+              <div className="profile-tooltip-card">
+                <div className="profile-tooltip-user">
+                  <div className="profile-tooltip-img">
+                    {user?.profileImage ? (
+                      <img src={user.profileImage} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ) : (
+                      user?.name ? user.name.charAt(0).toUpperCase() : 'U'
+                    )}
+                  </div>
+                  <div className="profile-tooltip-details">
+                    <div className="profile-tooltip-name">{user?.name || 'User'}</div>
+                    <div className="profile-tooltip-username">@{user?.email ? user.email.split('@')[0] : 'username'}</div>
+                  </div>
+                </div>
+                <div className="profile-tooltip-about">
+                  <Flame size={14} style={{ color: '#F97316' }} />
+                  <span>Streak: {user?.dailyStreak || 0} days</span>
+                </div>
+              </div>
+            </div>
+            
+            <Link to="/profile" className="profile-tooltip-icon">
+              <div className="profile-tooltip-layer">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span className="profile-icon-layer">
+                  {user?.profileImage ? (
+                    <img src={user.profileImage} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : (
+                    <User size={20} style={{ color: 'var(--accent-color)' }} />
+                  )}
+                </span>
+              </div>
+              <div className="profile-tooltip-text">Profile</div>
+            </Link>
+          </div>
         </div>
       </header>
 

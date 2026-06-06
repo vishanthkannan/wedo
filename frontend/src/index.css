@@ -2657,5 +2657,185 @@ input:-webkit-autofill:active {
   border: 1px solid rgba(255, 255, 255, 0.03) !important;
 }
 
+/* Premium Profile Tooltip Container */
+.profile-tooltip-container {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 17px;
+  border-radius: 10px;
+}
+
+.profile-tooltip {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  padding: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  border-radius: 15px;
+  z-index: 1000;
+  box-shadow: inset 5px 5px 5px rgba(0, 0, 0, 0.2),
+    inset -5px -5px 15px rgba(255, 255, 255, 0.05),
+    5px 5px 15px rgba(0, 0, 0, 0.5), -5px -5px 15px rgba(255, 255, 255, 0.05);
+}
+
+.profile-tooltip-card {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 14px;
+  border: 1px solid var(--border-color);
+  min-width: 200px;
+}
+
+/* Show tooltip when hovering */
+.profile-tooltip-container:hover .profile-tooltip {
+  top: 55px;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.profile-tooltip-icon {
+  text-decoration: none;
+  color: #fff;
+  display: block;
+  position: relative;
+}
+
+.profile-tooltip-layer {
+  width: 44px;
+  height: 44px;
+  transition: transform 0.3s;
+  position: relative;
+}
+
+.profile-tooltip-icon:hover .profile-tooltip-layer {
+  transform: rotate(-35deg) skew(20deg);
+}
+
+.profile-tooltip-layer span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  border: 1px solid var(--accent-color);
+  border-radius: 8px;
+  transition: all 0.3s;
+  color: var(--accent-color);
+  background: transparent;
+}
+
+.profile-tooltip-icon:hover .profile-tooltip-layer span {
+  box-shadow: -1px 1px 3px var(--accent-color);
+}
+
+.profile-tooltip-icon .profile-tooltip-text {
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  opacity: 0;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--accent-color);
+  transform: translateX(-50%);
+  transition: bottom 0.3s ease, opacity 0.3s ease;
+}
+
+.profile-tooltip-icon:hover .profile-tooltip-text {
+  bottom: -25px;
+  opacity: 1;
+}
+
+.profile-tooltip-icon:hover .profile-tooltip-layer span:nth-child(1) {
+  opacity: 0.2;
+}
+
+.profile-tooltip-icon:hover .profile-tooltip-layer span:nth-child(2) {
+  opacity: 0.4;
+  transform: translate(5px, -5px);
+}
+
+.profile-tooltip-icon:hover .profile-tooltip-layer span:nth-child(3) {
+  opacity: 0.6;
+  transform: translate(10px, -10px);
+}
+
+.profile-tooltip-icon:hover .profile-tooltip-layer span:nth-child(4) {
+  opacity: 0.8;
+  transform: translate(15px, -15px);
+}
+
+.profile-tooltip-icon:hover .profile-tooltip-layer span:nth-child(5) {
+  opacity: 1;
+  transform: translate(20px, -20px);
+}
+
+.profile-tooltip-layer span.profile-icon-layer {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  fill: var(--accent-color);
+  background: var(--bg-primary);
+  border: 1px solid var(--accent-color);
+  overflow: hidden;
+}
+
+.profile-tooltip-user {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.profile-tooltip-img {
+  width: 42px;
+  height: 42px;
+  font-size: 18px;
+  font-weight: 700;
+  border: 1px solid var(--accent-color);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  color: var(--accent-color);
+  overflow: hidden;
+}
+
+.profile-tooltip-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent-color);
+  font-family: 'Outfit', sans-serif;
+}
+
+.profile-tooltip-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: #fff;
+}
+
+.profile-tooltip-username {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.profile-tooltip-about {
+  color: var(--text-secondary);
+  font-size: 12px;
+  padding-top: 8px;
+  margin-top: 8px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 
 
