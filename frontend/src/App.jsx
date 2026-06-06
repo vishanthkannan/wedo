@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import { AnimatePresence } from 'framer-motion';
 import Login from './pages/Login';
@@ -20,6 +20,7 @@ const ProtectedRoute = ({ children }) => {
 const AppContent = () => {
   const { user, loading } = useContext(AuthContext);
   const [minTimePassed, setMinTimePassed] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -30,39 +31,74 @@ const AppContent = () => {
 
   // Show intro if auth is still loading OR if the minimum 2.5s animation time hasn't finished
   const showIntro = loading || !minTimePassed;
+  const isProfilePage = location.pathname === '/profile';
 
   return (
     <>
-      <BackgroundPattern />
-      <MidnightSkyBackground />
+      {/* Conditionally render dashboard backgrounds */}
+      {!isProfilePage && <BackgroundPattern />}
+      {!isProfilePage && <MidnightSkyBackground />}
+
+      {/* Conditionally render profile background at root level (truly static/fixed) */}
+      {isProfilePage && (
+        <div 
+          className="profile-video-bg"
+          style={{ 
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            zIndex: -2,
+            overflow: 'hidden',
+            pointerEvents: 'none',
+            background: 'radial-gradient(circle at center, #0a0a0f 0%, #030305 100%)'
+          }}
+        >
+          <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              opacity: 0.12, // Increased transparency
+              filter: 'brightness(0.7) contrast(1.1)'
+            }}
+          >
+            <source src="/video/profile.mp4" type="video/mp4" />
+          </video>
+        </div>
+      )}
+
       <AnimatePresence>
         {showIntro && <IntroScreen key="intro" />}
       </AnimatePresence>
       
       <div style={{ opacity: showIntro ? 0 : 1, transition: 'opacity 0.5s ease', pointerEvents: showIntro ? 'none' : 'auto' }}>
         {!loading && (
-          <Router>
-            <Routes>
-              <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
-              <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
-              <Route 
-                path="/" 
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/profile" 
-                element={
-                  <ProtectedRoute>
-                    <Profile />
-                  </ProtectedRoute>
-                } 
-              />
-            </Routes>
-          </Router>
+          <Routes>
+            <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
+            <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
+            <Route 
+              path="/" 
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/profile" 
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              } 
+            />
+          </Routes>
         )}
       </div>
     </>
@@ -73,7 +109,9 @@ const App = () => {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <AppContent />
+        <Router>
+          <AppContent />
+        </Router>
       </AuthProvider>
     </ThemeProvider>
   );
