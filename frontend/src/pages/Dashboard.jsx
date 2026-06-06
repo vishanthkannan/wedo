@@ -533,13 +533,9 @@ const Dashboard = () => {
     }
 
     if (sortBy === 'type') {
-      return list.sort((a, b) => {
-        const isSelectedA = a.type === selectedSortDomain;
-        const isSelectedB = b.type === selectedSortDomain;
-        if (isSelectedA && !isSelectedB) return -1;
-        if (!isSelectedA && isSelectedB) return 1;
-        return a.title.localeCompare(b.title);
-      });
+      return list
+        .filter(task => task.type === selectedSortDomain)
+        .sort((a, b) => a.title.localeCompare(b.title));
     }
 
     if (sortBy === 'completion') {
@@ -745,7 +741,7 @@ const Dashboard = () => {
                   </div>
                 ))}
               </div>
-              {uniqueTasks.length === 0 ? (
+              {sortedTasks.length === 0 ? (
                 <div className="tracker-row">
                   <div className="tracker-cell" colSpan={dateRange.length + 1} style={{ padding: '40px', color: 'var(--text-secondary)', textAlign: 'center', width: '100%' }}>
                     No tasks found. Add one above!
