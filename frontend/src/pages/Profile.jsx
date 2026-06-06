@@ -341,7 +341,15 @@ const Profile = () => {
                 className="header-icon-btn"
                 onClick={() => {
                   playSound('click', soundEnabled);
-                  setProfileBgVideo(profileBgVideo === '/video/profile.mp4' ? '/video/girl-profile.mp4' : '/video/profile.mp4');
+                  const videos = [
+                    '/video/profile.mp4',
+                    '/video/girl-profile.mp4',
+                    '/video/profile1.mp4',
+                    '/video/profile2.mp4'
+                  ];
+                  const currentIndex = videos.indexOf(profileBgVideo);
+                  const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % videos.length;
+                  setProfileBgVideo(videos[nextIndex]);
                 }} 
                 title="Switch Background Video"
                 style={{ border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)' }}

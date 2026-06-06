@@ -10,14 +10,15 @@
   --text-secondary: #A1A1AA;
   
   /* Accents */
-  --accent-color: #54BAB9;
-  --accent-gradient: linear-gradient(135deg, #54BAB9, #38A0A0);
-  --accent-hover: #459E9E;
+  --accent-color: #00c6ff;
+  --accent-gradient: linear-gradient(135deg, #00c6ff, #0072ff);
+  --accent-hover: #0072ff;
+  --accent-glow: rgba(0, 198, 255, 0.4);
   
   /* Shadows & Radius */
   --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.5);
   --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.7);
-  --shadow-glow: 0 0 15px rgba(84, 186, 185, 0.25);
+  --shadow-glow: 0 0 15px rgba(0, 198, 255, 0.25);
   --radius-lg: 20px;
   --radius-md: 14px;
   --radius-sm: 8px;
@@ -91,8 +92,8 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: -2;
-  background-image: radial-gradient(circle at top right, rgba(84, 186, 185, 0.05), transparent 40%),
-                    radial-gradient(circle at bottom left, rgba(84, 186, 185, 0.03), transparent 40%);
+  background-image: radial-gradient(circle at top right, rgba(0, 198, 255, 0.05), transparent 40%),
+                    radial-gradient(circle at bottom left, rgba(0, 198, 255, 0.03), transparent 40%);
   pointer-events: none;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
@@ -136,7 +137,7 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 4px 15px rgba(84, 186, 185, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 198, 255, 0.2);
 }
 
 .premium-btn:hover {
@@ -167,7 +168,7 @@ select.premium-input option {
 
 .premium-input:focus {
   border-color: var(--accent-color);
-  box-shadow: 0 0 0 4px rgba(84, 186, 185, 0.15);
+  box-shadow: 0 0 0 4px rgba(0, 198, 255, 0.15);
   background-color: var(--input-bg-focus);
 }
 
@@ -339,7 +340,7 @@ select.premium-input option {
   background: var(--hacker-checkbox-bg);
   border: 1.5px solid var(--accent-color);
   border-radius: 50%;
-  box-shadow: 0 0 8px var(--accent-glow, rgba(84, 186, 185, 0.4));
+  box-shadow: 0 0 8px var(--accent-glow, rgba(0, 198, 255, 0.4));
   cursor: pointer;
   transition: all 0.3s ease;
   overflow: hidden;
@@ -358,8 +359,8 @@ select.premium-input option {
   pointer-events: none;
   background: repeating-linear-gradient(
     45deg,
-    rgba(84, 186, 185, 0.1),
-    rgba(84, 186, 185, 0.1) 2px,
+    rgba(0, 198, 255, 0.1),
+    rgba(0, 198, 255, 0.1) 2px,
     transparent 2px,
     transparent 6px
   );
@@ -407,7 +408,7 @@ select.premium-input option {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(84, 186, 185, 0.2),
+    rgba(0, 198, 255, 0.2),
     transparent
   );
   opacity: 0;
@@ -424,7 +425,7 @@ select.premium-input option {
   background: linear-gradient(
     0deg,
     transparent,
-    rgba(84, 186, 185, 0.15),
+    rgba(0, 198, 255, 0.15),
     transparent
   );
   opacity: 0;
@@ -474,7 +475,7 @@ select.premium-input option {
 
 /* Checked state */
 .checkbox-input:checked + .checkbox-label {
-  background: rgba(84, 186, 185, 0.2);
+  background: rgba(0, 198, 255, 0.2);
   border-color: var(--accent-color);
   box-shadow: 0 0 25px var(--accent-color);
 }
@@ -759,7 +760,7 @@ select.premium-input option {
 .add-task-type:focus,
 .add-task-priority:focus {
   border-color: var(--accent-color);
-  box-shadow: 0 0 0 4px rgba(84, 186, 185, 0.15);
+  box-shadow: 0 0 0 4px rgba(0, 198, 255, 0.15);
   background-color: var(--input-bg-focus);
 }
 
@@ -821,7 +822,7 @@ select.premium-input option {
 
 .header-icon-btn:hover {
   color: var(--accent-color);
-  background: rgba(84, 186, 185, 0.1);
+  background: rgba(0, 198, 255, 0.1);
   transform: scale(1.1);
 }
 
@@ -1290,7 +1291,7 @@ select.premium-input option {
 .tracker-edit-btn:hover {
   opacity: 1 !important;
   color: var(--accent-color);
-  background: rgba(84, 186, 185, 0.1);
+  background: rgba(0, 198, 255, 0.1);
 }
 
 .tracker-delete-btn:hover {
@@ -2870,7 +2871,7 @@ input:-webkit-autofill:active {
   position: absolute;
   top: 0;
   left: 0;
-  background-image: linear-gradient(to right, #0fd850 0%, #f9f047 100%);
+  background-image: linear-gradient(to right, #00c6ff 0%, #0072ff 100%);
   transition: .5s ease;
   display: block;
   z-index: -1;
