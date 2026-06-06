@@ -2333,3 +2333,11 @@ input:-webkit-autofill:active {
   background: var(--bg-secondary);
 }
 
+.tracker-row {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+
