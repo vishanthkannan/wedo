@@ -50,15 +50,6 @@ const IntroScreen = () => {
             >
               <stop stopColor="#0369a1"></stop>
               <stop stopColor="#22d3ee" offset="1"></stop>
-              <animateTransform
-                repeatCount="indefinite"
-                keySplines=".42,0,.58,1;.42,0,.58,1;.42,0,.58,1;.42,0,.58,1;.42,0,.58,1;.42,0,.58,1;.42,0,.58,1;.42,0,.58,1"
-                keyTimes="0; 0.125; 0.25; 0.375; 0.5; 0.625; 0.75; 0.875; 1"
-                dur="8s"
-                values="0 32 32;-270 32 32;-270 32 32;-540 32 32;-540 32 32;-810 32 32;-810 32 32;-1080 32 32;-1080 32 32"
-                type="rotate"
-                attributeName="gradientTransform"
-              ></animateTransform>
             </linearGradient>
             <linearGradient
               gradientUnits="userSpaceOnUse"
@@ -141,7 +132,7 @@ const IntroScreen = () => {
             A 35,35 0 0 1 50,85  
             A 35,35 0 0 1 15,50  
             A 35,35 0 0 1 50,15 Z"
-            className="spin"
+            className="dash"
             id="o"
             pathLength="360"
           ></path>

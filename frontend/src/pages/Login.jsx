@@ -49,18 +49,18 @@ const Login = () => {
   return (
     <div className="auth-container">
       <MidnightSkyBackground />
-      <motion.div 
+      <motion.div
         className="premium-card auth-card"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
         <h2 className="auth-title">Welcome Back</h2>
-        <p className="auth-subtitle">Sign in to continue your wedo.</p>
+        <p className="auth-subtitle">Sign in to continue wedo</p>
 
         <AnimatePresence>
           {error && (
-            <motion.div 
+            <motion.div
               className="error-banner"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -79,9 +79,9 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form__group field" style={{ maxWidth: '100%' }}>
-            <input 
-              type="email" 
-              placeholder="Email address" 
+            <input
+              type="email"
+              placeholder="Email address"
               className="form__field"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -89,12 +89,12 @@ const Login = () => {
               id="email"
               disabled={loading}
             />
-            <label htmlFor="email" className="form__label">Email address</label>
+            <label htmlFor="email" className="form__label">Email</label>
           </div>
           <div className="form__group field" style={{ maxWidth: '100%', marginBottom: '20px' }}>
-            <input 
-              type="password" 
-              placeholder="Password" 
+            <input
+              type="password"
+              placeholder="Password"
               className="form__field"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -104,7 +104,7 @@ const Login = () => {
             />
             <label htmlFor="password" className="form__label">Password</label>
           </div>
-          
+
           <UiverseButton disabled={loading} text="SIGN IN" />
         </form>
 
@@ -119,9 +119,9 @@ const Login = () => {
             width="250"
           />
         </div>
-        
+
         <Link to="/register" className="auth-link">
-          Don't have an account? Sign up
+          Don't have an account? Have One
         </Link>
       </motion.div>
     </div>
