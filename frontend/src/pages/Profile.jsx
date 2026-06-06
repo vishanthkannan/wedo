@@ -18,20 +18,7 @@ const Profile = () => {
   const [profileImage, setProfileImage] = useState(user?.profileImage || '');
   const [currentPassword, setCurrentPassword] = useState('');
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      if (file.size > 2 * 1024 * 1024) { // 2MB limit
-        setProfileMessage({ text: 'Image size should be less than 2MB.', type: 'error' });
-        return;
-      }
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -173,29 +160,15 @@ const Profile = () => {
                 boxShadow: 'var(--shadow-glow)',
                 border: '4px solid rgba(255, 255, 255, 0.1)',
                 position: 'relative',
-                cursor: 'pointer',
                 overflow: 'hidden'
               }}
-              onClick={() => document.getElementById('avatar-upload').click()}
-              className="avatar-container"
-              title="Click to change profile image"
             >
               {profileImage ? (
                 <img src={profileImage} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               ) : (
                 user?.name ? user.name.charAt(0).toUpperCase() : 'U'
               )}
-              <div className="avatar-overlay">
-                <Camera size={18} />
-              </div>
             </div>
-            <input 
-              type="file" 
-              id="avatar-upload" 
-              accept="image/*" 
-              style={{ display: 'none' }} 
-              onChange={handleImageChange} 
-            />
             
             <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', color: 'var(--text-primary)' }}>
               {user?.name}
