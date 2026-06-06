@@ -610,7 +610,6 @@ const Dashboard = () => {
                   </div>
                   <div className="profile-tooltip-details">
                     <div className="profile-tooltip-name">{user?.name || 'User'}</div>
-                    <div className="profile-tooltip-username">@{user?.email ? user.email.split('@')[0] : 'username'}</div>
                   </div>
                 </div>
                 <div className="profile-tooltip-about">
