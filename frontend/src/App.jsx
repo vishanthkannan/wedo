@@ -64,7 +64,7 @@ const AppContent = () => {
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              opacity: 0.05, // Increased transparency
+              opacity: 0.20, // Increased transparency
               filter: 'brightness(0.7) contrast(1.1)'
             }}
           >
