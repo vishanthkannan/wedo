@@ -2564,48 +2564,5 @@ input:-webkit-autofill:active {
   -ms-user-select: none;
 }
 
-/* --- Uiverse Neon Cards --- */
-.uiverse-neon-card {
-  position: relative;
-  background-color: rgba(5, 5, 5, 0.95); /* Deep black base */
-  border-radius: var(--radius-md, 12px);
-  z-index: 1;
-  transition: all 0.3s ease;
-}
 
-.uiverse-neon-card::before {
-  content: '';
-  position: absolute;
-  inset: -3px;
-  border-radius: calc(var(--radius-md, 12px) + 2px);
-  background: linear-gradient(-45deg, #e81cff 0%, #40c9ff 100% );
-  z-index: -10;
-  pointer-events: none;
-  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.uiverse-neon-card::after {
-  content: "";
-  z-index: -11;
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(-45deg, #fc00ff 0%, #00dbde 100% );
-  transform: translate3d(0, 0, 0) scale(0.95);
-  filter: blur(20px);
-  opacity: 0.6;
-  transition: all 0.6s ease;
-}
-
-.uiverse-neon-card:hover::after {
-  filter: blur(30px);
-  opacity: 0.95;
-}
-
-.uiverse-neon-card.neon-morph:hover::before {
-  transform: rotate(-90deg) scaleX(1.34) scaleY(0.77);
-}
-
-.uiverse-neon-card.neon-subtle:hover::before {
-  transform: rotate(-2deg) scale(1.02);
-}
 

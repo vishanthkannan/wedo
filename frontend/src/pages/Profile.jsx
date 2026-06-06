@@ -147,7 +147,7 @@ const Profile = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           
           {/* Avatar and Info Card */}
-          <div className="uiverse-neon-card neon-morph" style={{ padding: '32px', textAlign: 'center', position: 'relative' }}>
+          <div className="premium-card" style={{ padding: '32px', textAlign: 'center', position: 'relative' }}>
             <div className="grid-bg" style={{ opacity: 0.1, borderRadius: 'inherit' }}></div>
             
             <div 
@@ -248,7 +248,7 @@ const Profile = () => {
 
           {/* Streak Stats Card */}
           <div 
-            className="uiverse-neon-card neon-morph" 
+            className="premium-card" 
             style={{ 
               padding: '24px'
             }}
@@ -280,7 +280,7 @@ const Profile = () => {
           </div>
 
           {/* Productivity Analytics Card */}
-          <div className="uiverse-neon-card neon-morph" style={{ padding: '24px' }}>
+          <div className="premium-card" style={{ padding: '24px' }}>
             <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Check size={20} style={{ color: 'var(--accent-color)' }} />
               Habit Progress (Last 30 Days)
@@ -329,7 +329,7 @@ const Profile = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', flex: '1.5' }}>
           
           {/* Update Profile Details Form */}
-          <div className="uiverse-neon-card neon-subtle" style={{ padding: '32px' }}>
+          <div className="premium-card" style={{ padding: '32px' }}>
             <h3 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px' }}>
               <User size={22} style={{ color: 'var(--accent-color)' }} />
               Profile Details
@@ -396,7 +396,7 @@ const Profile = () => {
           </div>
 
           {/* Change Password Form */}
-          <div className="uiverse-neon-card neon-subtle" style={{ padding: '32px' }}>
+          <div className="premium-card" style={{ padding: '32px' }}>
             <h3 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px' }}>
               <Key size={22} style={{ color: 'var(--accent-color)' }} />
               Security Settings
