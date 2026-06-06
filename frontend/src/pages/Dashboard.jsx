@@ -120,7 +120,7 @@ const HabitRow = React.memo(({
           </div>
         ) : (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               {showDragHandle && (
                 <div 
                   onPointerDown={(e) => dragControls.start(e)}
@@ -130,16 +130,11 @@ const HabitRow = React.memo(({
                 </div>
               )}
               <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span>{task.title}</span>
-                <div style={{ display: 'flex', gap: '6px', alignItems: 'center', marginTop: '2px' }}>
-                  <span style={{ fontSize: '10px', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{task.type}</span>
-                  <span className={`priority-badge priority-${task.priority || 'moderate'}`}>
-                    {task.priority || 'moderate'}
-                  </span>
-                </div>
+                <span style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-primary)', lineHeight: '1.3' }}>{task.title}</span>
+                <span style={{ fontSize: '10px', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginTop: '2px' }}>{task.type}</span>
               </div>
             </div>
-            <div style={{ display: 'flex', gap: '4px' }}>
+            <div style={{ display: 'flex', gap: '4px', flexShrink: 0 }}>
               <button 
                 className="tracker-edit-btn"
                 onClick={() => { 
