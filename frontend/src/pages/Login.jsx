@@ -6,6 +6,7 @@ import BackgroundPattern from '../components/BackgroundPattern';
 import MidnightSkyBackground from '../components/MidnightSkyBackground';
 import UiverseButton from '../components/UiverseButton';
 import { GoogleLogin } from '@react-oauth/google';
+import Footer from '../components/Footer';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -47,7 +48,7 @@ const Login = () => {
   };
 
   return (
-    <div className="auth-container">
+    <div className="auth-container" style={{ flexDirection: 'column', gap: '20px' }}>
       <MidnightSkyBackground />
       <motion.div
         className="premium-card auth-card"
@@ -124,6 +125,7 @@ const Login = () => {
           Don't have an account? Have One
         </Link>
       </motion.div>
+      <Footer />
     </div>
   );
 };
