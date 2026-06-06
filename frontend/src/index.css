@@ -2922,7 +2922,7 @@ input:-webkit-autofill:active {
 
 .loading svg polyline#front {
   fill: none;
-  stroke: var(--accent-color, #00c6ff);
+  stroke: #0fd850;
   stroke-dasharray: 48, 144;
   stroke-dashoffset: 192;
   animation: dash_682 1.4s linear infinite;
