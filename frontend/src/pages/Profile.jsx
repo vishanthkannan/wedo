@@ -50,15 +50,15 @@ const Profile = () => {
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     setProfileMessage({ text: '', type: '' });
-    if (!name.trim() || !email.trim()) {
-      setProfileMessage({ text: 'All fields are required.', type: 'error' });
+    if (!name.trim()) {
+      setProfileMessage({ text: 'Name is required.', type: 'error' });
       return;
     }
     setLoadingProfile(true);
     try {
       playSound('click', soundEnabled);
-      const res = await api.put('/auth/profile', { name, email, profileImage });
-      setUser({ ...user, name: res.data.name, email: res.data.email, profileImage: res.data.profileImage });
+      const res = await api.put('/auth/profile', { name });
+      setUser({ ...user, name: res.data.name });
       setProfileMessage({ text: 'Profile updated successfully!', type: 'success' });
       setTimeout(() => playSound('reward', soundEnabled), 300);
     } catch (err) {
@@ -377,7 +377,7 @@ const Profile = () => {
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div className="form__group field" style={{ maxWidth: '100%' }}>
+                  <div className="form__group field" style={{ maxWidth: '100%', marginBottom: '12px' }}>
                     <input 
                       type="text" 
                       placeholder="Full Name" 
@@ -390,20 +390,6 @@ const Profile = () => {
                       autoFocus
                     />
                     <label htmlFor="profile-name" className="form__label">Full Name</label>
-                  </div>
-
-                  <div className="form__group field" style={{ maxWidth: '100%', marginBottom: '12px' }}>
-                    <input 
-                      type="email" 
-                      placeholder="Email Address" 
-                      className="form__field"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      id="profile-email"
-                      disabled={loadingProfile}
-                    />
-                    <label htmlFor="profile-email" className="form__label">Email Address</label>
                   </div>
 
                   <div style={{ display: 'flex', gap: '12px' }}>
