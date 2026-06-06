@@ -104,17 +104,7 @@ const HabitRow = React.memo(({
               <option value="study">Study</option>
               <option value="work">Work</option>
             </select>
-            <select
-              value={editingPriority}
-              onChange={(e) => setEditingPriority(e.target.value)}
-              className="premium-input"
-              style={{ padding: '4px 8px', fontSize: '13px', flex: '0 0 auto', width: 'auto', minWidth: '70px' }}
-            >
-              <option value="low">Low</option>
-              <option value="moderate">Moderate</option>
-              <option value="high">High</option>
-            </select>
-            <button onClick={() => handleUpdateTask(task.title, editingValue, editingType, editingPriority)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-color)' }}>
+            <button onClick={() => handleUpdateTask(task.title, editingValue, editingType)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-color)' }}>
               <Check size={16} />
             </button>
           </div>
@@ -141,7 +131,6 @@ const HabitRow = React.memo(({
                   setEditingTask(task.title); 
                   setEditingValue(task.title); 
                   setEditingType(task.type || 'daily'); 
-                  setEditingPriority(task.priority || 'moderate');
                 }}
               >
                 <Edit2 size={14} />
@@ -318,12 +307,10 @@ const Dashboard = () => {
   const [editingTask, setEditingTask] = useState(null);
   const [editingValue, setEditingValue] = useState('');
   const [editingType, setEditingType] = useState('daily');
-  const [editingPriority, setEditingPriority] = useState('moderate');
 
   // Topic States
   const [activeTopics, setActiveTopics] = useState(['all']);
   const [newTaskTopic, setNewTaskTopic] = useState('daily');
-  const [newTaskPriority, setNewTaskPriority] = useState('moderate');
   
   const scrollRef = useRef(null);
 
@@ -473,11 +460,10 @@ const Dashboard = () => {
       await api.post('/tasks', {
         title: newTaskTitle,
         type: newTaskTopic,
-        priority: newTaskPriority,
+        priority: 'moderate',
         date: today
       });
       setNewTaskTitle('');
-      setNewTaskPriority('moderate');
       fetchTasksMatrix();
       fetchAnalytics();
     } catch (err) {
@@ -485,7 +471,7 @@ const Dashboard = () => {
     }
   };
 
-  const handleUpdateTask = async (oldTitle, newTitle, newType, newPriority) => {
+  const handleUpdateTask = async (oldTitle, newTitle, newType) => {
     if (!newTitle.trim()) {
       setEditingTask(null);
       return;
@@ -493,16 +479,12 @@ const Dashboard = () => {
     try {
       const taskObj = uniqueTasks.find(t => t.title === oldTitle);
       const oldType = taskObj?.type;
-      const oldPriority = taskObj?.priority;
       
       if (newTitle !== oldTitle) {
         await api.put('/tasks/rename/bulk', { oldTitle, newTitle });
       }
       if (newType !== oldType) {
         await api.put('/tasks/type/bulk', { title: newTitle, newType });
-      }
-      if (newPriority !== oldPriority) {
-        await api.put('/tasks/priority/bulk', { title: newTitle, newPriority });
       }
       
       setEditingTask(null);
@@ -521,15 +503,6 @@ const Dashboard = () => {
 
     if (sortBy === 'alpha') {
       return list.sort((a, b) => a.title.localeCompare(b.title));
-    }
-
-    if (sortBy === 'priority-desc' || sortBy === 'priority-asc') {
-      const priorityWeights = { high: 3, moderate: 2, low: 1 };
-      return list.sort((a, b) => {
-        const wA = priorityWeights[a.priority] || 2;
-        const wB = priorityWeights[b.priority] || 2;
-        return sortBy === 'priority-desc' ? wB - wA : wA - wB;
-      });
     }
 
     if (sortBy === 'type') {
@@ -670,8 +643,6 @@ const Dashboard = () => {
               >
                 <option value="default">Default (Drag & Drop)</option>
                 <option value="alpha">Alphabetical (A-Z)</option>
-                <option value="priority-desc">Priority (High to Low)</option>
-                <option value="priority-asc">Priority (Low to High)</option>
                 <option value="type">Domain Name</option>
                 <option value="completion">Completion Rate</option>
               </select>
@@ -717,16 +688,6 @@ const Dashboard = () => {
               <option value="health">Health</option>
               <option value="study">Study</option>
               <option value="work">Work</option>
-            </select>
-            <select 
-              value={newTaskPriority} 
-              onChange={(e) => setNewTaskPriority(e.target.value)}
-              className="premium-input add-task-priority"
-              style={{ width: 'auto' }}
-            >
-              <option value="low">Low</option>
-              <option value="moderate">Moderate</option>
-              <option value="high">High</option>
             </select>
             <button type="submit" className="add-item-btn">
               <span className="button__text">Add Habit</span>
