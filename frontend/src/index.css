@@ -2837,5 +2837,59 @@ input:-webkit-autofill:active {
   gap: 4px;
 }
 
+/* --- Custom Uiverse Action Button --- */
+.uiverse-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 9em;
+  height: 3em;
+  border-radius: 30em;
+  font-size: 15px;
+  font-family: inherit;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3),
+              -4px -4px 10px rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+  transition: color 0.5s ease, border-color 0.5s ease, transform 0.3s ease;
+  user-select: none;
+}
+
+.uiverse-btn::before {
+  content: '';
+  width: 0;
+  height: 3em;
+  border-radius: 30em;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: linear-gradient(to right, #0fd850 0%, #f9f047 100%);
+  transition: .5s ease;
+  display: block;
+  z-index: -1;
+}
+
+.uiverse-btn:hover {
+  color: #020617 !important;
+  border-color: transparent;
+  transform: translateY(-2px);
+}
+
+.uiverse-btn:hover::before {
+  width: 100%;
+}
+
+.uiverse-btn:active {
+  transform: translateY(1px);
+}
+
+
 
 

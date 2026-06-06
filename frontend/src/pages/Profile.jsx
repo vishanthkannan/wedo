@@ -349,8 +349,7 @@ const Profile = () => {
               {!showProfileEdit && (
                 <button 
                   onClick={() => setShowProfileEdit(true)} 
-                  className="premium-btn" 
-                  style={{ padding: '8px 16px', fontSize: '13px', borderRadius: 'var(--radius-sm)' }}
+                  className="uiverse-btn"
                 >
                   Edit Details
                 </button>
@@ -427,8 +426,7 @@ const Profile = () => {
                   <div style={{ display: 'flex', gap: '12px' }}>
                     <button 
                       type="submit" 
-                      className="premium-btn" 
-                      style={{ width: 'fit-content', minWidth: '130px' }}
+                      className="uiverse-btn" 
                       disabled={loadingProfile}
                     >
                       <Save size={16} />
@@ -459,8 +457,7 @@ const Profile = () => {
               {!showPasswordEdit && (
                 <button 
                   onClick={() => setShowPasswordEdit(true)} 
-                  className="premium-btn" 
-                  style={{ padding: '8px 16px', fontSize: '13px', borderRadius: 'var(--radius-sm)' }}
+                  className="uiverse-btn"
                 >
                   Change Password
                 </button>
@@ -559,8 +556,7 @@ const Profile = () => {
                   <div style={{ display: 'flex', gap: '12px' }}>
                     <button 
                       type="submit" 
-                      className="premium-btn" 
-                      style={{ width: 'fit-content', minWidth: '150px' }}
+                      className="uiverse-btn" 
                       disabled={loadingPassword}
                     >
                       <Lock size={16} />
