@@ -66,7 +66,7 @@ const AppContent = () => {
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              opacity: 50, // Extremely subtle transparency
+              opacity: 30, // Extremely subtle transparency
               filter: 'brightness(0.7) contrast(1.1)'
             }}
           >
@@ -100,7 +100,7 @@ const AppContent = () => {
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              opacity: 50, // Extremely subtle transparency
+              opacity: 10, // Extremely subtle transparency
               filter: 'brightness(0.7) contrast(1.1)'
             }}
           >
