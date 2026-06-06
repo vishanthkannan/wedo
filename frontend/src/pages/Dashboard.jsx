@@ -61,8 +61,6 @@ const HabitRow = React.memo(({
   setEditingValue, 
   editingType,
   setEditingType,
-  editingPriority,
-  setEditingPriority,
   handleUpdateTask, 
   handleDeleteBulkTask, 
   handleToggleTask, 
@@ -311,6 +309,7 @@ const Dashboard = () => {
   // Topic States
   const [activeTopics, setActiveTopics] = useState(['all']);
   const [newTaskTopic, setNewTaskTopic] = useState('daily');
+  const [initialLoading, setInitialLoading] = useState(true);
   
   const scrollRef = useRef(null);
 
@@ -351,6 +350,10 @@ const Dashboard = () => {
   }, [dateRange, selectedDate, activeTopics]);
 
   const fetchTasksMatrix = async () => {
+    const isFirstLoad = uniqueTasks.length === 0;
+    if (isFirstLoad) {
+      setInitialLoading(true);
+    }
     try {
       const promises = dateRange.map(d => api.get(`/tasks?date=${d}`));
       const results = await Promise.all(promises);
@@ -362,7 +365,7 @@ const Dashboard = () => {
         const date = dateRange[i];
         res.data.forEach(task => {
           if (!taskSet.has(task.title)) {
-            taskSet.set(task.title, { type: task.type, priority: task.priority || 'moderate' });
+            taskSet.set(task.title, { type: task.type });
           }
           if (!newMatrix[task.title]) {
             newMatrix[task.title] = {};
@@ -372,9 +375,13 @@ const Dashboard = () => {
       });
 
       setMatrixData(newMatrix);
-      setUniqueTasks(Array.from(taskSet.entries()).map(([title, info]) => ({ title, type: info.type, priority: info.priority })));
+      setUniqueTasks(Array.from(taskSet.entries()).map(([title, info]) => ({ title, type: info.type })));
     } catch (err) {
       console.error(err);
+    } finally {
+      if (isFirstLoad) {
+        setInitialLoading(false);
+      }
     }
   };
 
@@ -710,7 +717,18 @@ const Dashboard = () => {
                   </div>
                 ))}
               </div>
-              {sortedTasks.length === 0 ? (
+              {initialLoading ? (
+                <div className="tracker-row">
+                  <div className="tracker-cell" colSpan={dateRange.length + 1} style={{ padding: '60px 40px', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+                    <div className="loading">
+                      <svg height="48px" width="64px">
+                        <polyline id="back" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"></polyline>
+                        <polyline id="front" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"></polyline>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              ) : sortedTasks.length === 0 ? (
                 <div className="tracker-row">
                   <div className="tracker-cell" colSpan={dateRange.length + 1} style={{ padding: '40px', color: 'var(--text-secondary)', textAlign: 'center', width: '100%' }}>
                     No tasks found. Add one above!
@@ -731,8 +749,6 @@ const Dashboard = () => {
                       setEditingValue={setEditingValue}
                       editingType={editingType}
                       setEditingType={setEditingType}
-                      editingPriority={editingPriority}
-                      setEditingPriority={setEditingPriority}
                       handleUpdateTask={handleUpdateTask}
                       handleDeleteBulkTask={handleDeleteBulkTask}
                       handleToggleTask={handleToggleTask}
