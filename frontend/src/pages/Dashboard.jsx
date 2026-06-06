@@ -562,7 +562,26 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="app-container">
+    <>
+      <AnimatePresence>
+        {initialLoading && (
+          <motion.div 
+            className="loading-overlay"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="loading">
+              <svg height="48px" width="64px">
+                <polyline id="back" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"></polyline>
+                <polyline id="front" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"></polyline>
+              </svg>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="app-container" style={{ filter: initialLoading ? 'blur(4px)' : 'none', transition: 'filter 0.3s ease' }}>
       <header className="app-header">
         <div className="user-info">
           <div className="user-details" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
@@ -717,18 +736,7 @@ const Dashboard = () => {
                   </div>
                 ))}
               </div>
-              {initialLoading ? (
-                <div className="tracker-row">
-                  <div className="tracker-cell" colSpan={dateRange.length + 1} style={{ padding: '60px 40px', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-                    <div className="loading">
-                      <svg height="48px" width="64px">
-                        <polyline id="back" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"></polyline>
-                        <polyline id="front" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24"></polyline>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              ) : sortedTasks.length === 0 ? (
+              {sortedTasks.length === 0 ? (
                 <div className="tracker-row">
                   <div className="tracker-cell" colSpan={dateRange.length + 1} style={{ padding: '40px', color: 'var(--text-secondary)', textAlign: 'center', width: '100%' }}>
                     No tasks found. Add one above!
@@ -763,6 +771,7 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
