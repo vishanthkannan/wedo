@@ -36,38 +36,20 @@ const ProductivityChart = React.memo(({ data, activeTopics = ['all'] }) => {
   
   if (isSingle && data && data.length >= 1) {
     const today = data[data.length - 1];
-    const yesterday = data[data.length - 2];
     
     const todayValue = today ? (today[singleKey] || 0) : 0;
     const totalKey = singleKey === 'completed' ? 'total' : `${singleKey}Total`;
     const todayTotal = today ? (today[totalKey] || 0) : 0;
-    
-    const isAllCompleted = todayTotal > 0 && todayValue === todayTotal;
-    const last3 = data.slice(-3);
-    const is3DayStreak = last3.length >= 3 && last3.every(d => (d[singleKey] || 0) > 0);
 
-    if (isAllCompleted) {
+    if (todayValue === 0) {
+      chartColor = '#ff4757'; // Red
+      statusText = '(No Activity)';
+    } else if (todayTotal > 0 && todayValue >= todayTotal / 2) {
       chartColor = '#2ed573'; // Green
-      statusText = '(All Completed!)';
-    } else if (is3DayStreak) {
-      chartColor = '#2ed573'; // Green
-      statusText = '(3-Day Streak!)';
-    } else if (today && yesterday) {
-      const yesterdayValue = yesterday[singleKey] || 0;
-
-      if (todayValue === 0) {
-        chartColor = '#ff4757'; // Red
-        statusText = '(No Activity)';
-      } else if (todayValue > yesterdayValue) {
-        chartColor = 'var(--accent-color)'; // Blue
-        statusText = '(Trending Up)';
-      } else if (todayValue < yesterdayValue) {
-        chartColor = '#ff4757'; // Red
-        statusText = '(Trending Down)';
-      } else {
-        chartColor = 'var(--accent-color)';
-        statusText = '';
-      }
+      statusText = todayValue === todayTotal ? '(All Completed!)' : '(Good Progress!)';
+    } else {
+      chartColor = 'var(--accent-color)'; // Blue
+      statusText = '(Active)';
     }
   }
 
