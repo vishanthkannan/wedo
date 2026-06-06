@@ -317,6 +317,7 @@ const Dashboard = () => {
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [sortBy, setSortBy] = useState('default');
+  const [selectedSortDomain, setSelectedSortDomain] = useState('daily');
   
   // Edit State
   const [editingTask, setEditingTask] = useState(null);
@@ -537,7 +538,13 @@ const Dashboard = () => {
     }
 
     if (sortBy === 'type') {
-      return list.sort((a, b) => a.type.localeCompare(b.type));
+      return list.sort((a, b) => {
+        const isSelectedA = a.type === selectedSortDomain;
+        const isSelectedB = b.type === selectedSortDomain;
+        if (isSelectedA && !isSelectedB) return -1;
+        if (!isSelectedA && isSelectedB) return 1;
+        return a.title.localeCompare(b.title);
+      });
     }
 
     if (sortBy === 'completion') {
@@ -561,7 +568,7 @@ const Dashboard = () => {
     }
 
     return list;
-  }, [uniqueTasks, sortBy, matrixData, dateRange, today]);
+  }, [uniqueTasks, sortBy, selectedSortDomain, matrixData, dateRange, today]);
 
   const handleDeleteBulkTask = async (title) => {
     if (!window.confirm(`Are you sure you want to delete "${title}"?`)) return;
@@ -669,6 +676,19 @@ const Dashboard = () => {
                 <option value="type">Domain Name</option>
                 <option value="completion">Completion Rate</option>
               </select>
+              {sortBy === 'type' && (
+                <select
+                  value={selectedSortDomain}
+                  onChange={(e) => setSelectedSortDomain(e.target.value)}
+                  className="premium-input"
+                  style={{ width: 'auto', padding: '8px 16px', fontSize: '13px', minHeight: '38px', cursor: 'pointer' }}
+                >
+                  <option value="daily">Daily</option>
+                  <option value="health">Health</option>
+                  <option value="study">Study</option>
+                  <option value="work">Work</option>
+                </select>
+              )}
             </div>
           </div>
           
