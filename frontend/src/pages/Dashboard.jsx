@@ -651,7 +651,7 @@ const Dashboard = () => {
         </div>
 
         {/* Main Tasks Section */}
-        <div>
+        <div style={{ gridColumn: '1 / -1' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '16px' }}>
             <h2 className="section-title" style={{ marginBottom: 0 }}>
               Your Habit Matrix
@@ -688,46 +688,14 @@ const Dashboard = () => {
           </div>
           
           <form className="add-task-form" onSubmit={handleAddTask} style={{ gap: '16px', alignItems: 'center' }}>
-            <div className="glitch-input-wrapper">
-              <div className="input-container">
-                <input
-                  type="text"
-                  id="holo-input"
-                  className="holo-input"
-                  placeholder=" "
-                  required
-                  value={newTaskTitle}
-                  onChange={(e) => setNewTaskTitle(e.target.value)}
-                />
-                <label htmlFor="holo-input" className="input-label" data-text="WHAT NEW HABIT?">
-                  WHAT NEW HABIT?
-                </label>
-
-                <div className="input-border"></div>
-                <div className="input-scanline"></div>
-                <div className="input-glow"></div>
-
-                <div className="input-data-stream">
-                  <div className="stream-bar" style={{ '--i': 0 }}></div>
-                  <div className="stream-bar" style={{ '--i': 1 }}></div>
-                  <div className="stream-bar" style={{ '--i': 2 }}></div>
-                  <div className="stream-bar" style={{ '--i': 3 }}></div>
-                  <div className="stream-bar" style={{ '--i': 4 }}></div>
-                  <div className="stream-bar" style={{ '--i': 5 }}></div>
-                  <div className="stream-bar" style={{ '--i': 6 }}></div>
-                  <div className="stream-bar" style={{ '--i': 7 }}></div>
-                  <div className="stream-bar" style={{ '--i': 8 }}></div>
-                  <div className="stream-bar" style={{ '--i': 9 }}></div>
-                </div>
-
-                <div className="input-corners">
-                  <div className="corner corner-tl"></div>
-                  <div className="corner corner-tr"></div>
-                  <div className="corner corner-bl"></div>
-                  <div className="corner corner-br"></div>
-                </div>
-              </div>
-            </div>
+            <input
+              type="text"
+              placeholder="What is your next habit?"
+              value={newTaskTitle}
+              onChange={(e) => setNewTaskTitle(e.target.value)}
+              className="premium-input add-task-input"
+              required
+            />
             <select 
               value={newTaskTopic} 
               onChange={(e) => setNewTaskTopic(e.target.value)}
@@ -805,9 +773,6 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-
-        {/* Empty placeholder to keep the grid layout balanced */}
-        <div></div>
       </div>
     </div>
   );
