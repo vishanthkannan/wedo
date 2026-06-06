@@ -18,6 +18,25 @@ const Profile = () => {
   const [profileImage, setProfileImage] = useState(user?.profileImage || '');
   const [currentPassword, setCurrentPassword] = useState('');
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) { // 2MB limit
+        setProfileMessage({ text: 'Image size should be less than 2MB.', type: 'error' });
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setProfileImage('');
+  };
+
 
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -57,8 +76,8 @@ const Profile = () => {
     setLoadingProfile(true);
     try {
       playSound('click', soundEnabled);
-      const res = await api.put('/auth/profile', { name });
-      setUser({ ...user, name: res.data.name });
+      const res = await api.put('/auth/profile', { name, profileImage });
+      setUser({ ...user, name: res.data.name, profileImage: res.data.profileImage });
       setProfileMessage({ text: 'Profile updated successfully!', type: 'success' });
       setTimeout(() => playSound('reward', soundEnabled), 300);
     } catch (err) {
@@ -148,17 +167,16 @@ const Profile = () => {
                 width: '100px', 
                 height: '100px', 
                 borderRadius: '50%', 
-                background: 'var(--accent-gradient)',
-                margin: '0 auto 20px',
+                background: 'rgba(255, 255, 255, 0.05)',
+                margin: '0 auto 16px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '32px',
                 fontWeight: 'bold',
                 fontFamily: 'Outfit, sans-serif',
-                color: 'white',
-                boxShadow: 'var(--shadow-glow)',
-                border: '4px solid rgba(255, 255, 255, 0.1)',
+                color: 'var(--text-primary)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
                 position: 'relative',
                 overflow: 'hidden'
               }}
@@ -169,6 +187,54 @@ const Profile = () => {
                 user?.name ? user.name.charAt(0).toUpperCase() : 'U'
               )}
             </div>
+
+            <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginTop: '-4px', marginBottom: '20px', position: 'relative', zIndex: 3 }}>
+              <button 
+                type="button"
+                onClick={() => document.getElementById('avatar-upload').click()}
+                className="premium-logout-btn" 
+                style={{ 
+                  margin: 0, 
+                  padding: '6px 12px', 
+                  fontSize: '11px', 
+                  borderRadius: '12px',
+                  borderColor: 'rgba(255, 255, 255, 0.12)',
+                  color: 'var(--text-primary)',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  textTransform: 'none',
+                  letterSpacing: 'normal'
+                }}
+              >
+                {profileImage ? 'Change Photo' : 'Add Photo'}
+              </button>
+              {profileImage && (
+                <button 
+                  type="button"
+                  onClick={handleRemoveImage}
+                  className="premium-logout-btn" 
+                  style={{ 
+                    margin: 0, 
+                    padding: '6px 12px', 
+                    fontSize: '11px', 
+                    borderRadius: '12px',
+                    borderColor: 'rgba(239, 68, 68, 0.25)',
+                    color: '#f87171',
+                    background: 'rgba(239, 68, 68, 0.08)',
+                    textTransform: 'none',
+                    letterSpacing: 'normal'
+                  }}
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+            <input 
+              type="file" 
+              id="avatar-upload" 
+              accept="image/*" 
+              style={{ display: 'none' }} 
+              onChange={handleImageChange} 
+            />
             
             <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', color: 'var(--text-primary)' }}>
               {user?.name}
