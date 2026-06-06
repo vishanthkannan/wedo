@@ -688,14 +688,21 @@ const Dashboard = () => {
           </div>
           
           <form className="add-task-form" onSubmit={handleAddTask} style={{ gap: '16px', alignItems: 'center' }}>
-            <input
-              type="text"
-              placeholder="What is your next habit?"
-              value={newTaskTitle}
-              onChange={(e) => setNewTaskTitle(e.target.value)}
-              className="premium-input add-task-input"
-              required
-            />
+            <div className="form-control">
+              <input
+                type="text"
+                required
+                value={newTaskTitle}
+                onChange={(e) => setNewTaskTitle(e.target.value)}
+              />
+              <label>
+                {Array.from("What is your next habit?").map((char, index) => (
+                  <span key={index} style={{ transitionDelay: `${index * 25}ms` }}>
+                    {char === ' ' ? '\u00a0' : char}
+                  </span>
+                ))}
+              </label>
+            </div>
             <select 
               value={newTaskTopic} 
               onChange={(e) => setNewTaskTopic(e.target.value)}

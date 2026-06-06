@@ -663,12 +663,50 @@ select.premium-input option {
   margin-bottom: 32px;
 }
 
-.add-task-input {
+.form-control {
+  position: relative;
   flex: 1;
-  height: 48px;
-  padding: 0 20px;
-  box-sizing: border-box;
-  font-size: 15px;
+}
+
+.form-control input {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 2px var(--border-color) solid;
+  display: block;
+  width: 100%;
+  padding: 12px 0;
+  font-size: 16px;
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.3s ease;
+}
+
+.form-control input:focus,
+.form-control input:valid {
+  outline: 0;
+  border-bottom-color: var(--accent-color);
+}
+
+.form-control label {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  pointer-events: none;
+}
+
+.form-control label span {
+  display: inline-block;
+  font-size: 16px;
+  min-width: 5px;
+  color: var(--text-secondary);
+  font-family: 'Inter', sans-serif;
+  transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.form-control input:focus + label span,
+.form-control input:valid + label span {
+  color: var(--accent-color);
+  transform: translateY(-28px);
 }
 
 .add-task-type,
