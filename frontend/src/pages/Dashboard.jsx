@@ -587,17 +587,7 @@ const Dashboard = () => {
         <div className="user-info">
           <div className="user-details" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
             <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{ width: '42px', height: '42px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-                <div className="pyramid-loader" style={{ position: 'absolute', transform: 'scale(1.2) rotateX(-20deg)', transformOrigin: 'center' }}>
-                  <div className="wrapper">
-                    <span className="side side1"></span>
-                    <span className="side side2"></span>
-                    <span className="side side3"></span>
-                    <span className="side side4"></span>
-                    <span className="shadow"></span>
-                  </div>  
-                </div>
-              </div>
+
               <div className="liquid-text-container">
                 <span>{user?.name?.split(' ')[0]}</span>
                 <span>{user?.name?.split(' ')[0]}</span>
