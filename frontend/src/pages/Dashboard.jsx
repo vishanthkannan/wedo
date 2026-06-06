@@ -666,7 +666,7 @@ const Dashboard = () => {
                 <option value="alpha">Alphabetical (A-Z)</option>
                 <option value="priority-desc">Priority (High to Low)</option>
                 <option value="priority-asc">Priority (Low to High)</option>
-                <option value="type">Type</option>
+                <option value="type">Domain Name</option>
                 <option value="completion">Completion Rate</option>
               </select>
             </div>
