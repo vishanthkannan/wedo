@@ -2,7 +2,7 @@
 
 A full-stack Todo Web Application with a premium, modern, product-level UI. Built with React (Vite), Node.js, Express, and MongoDB.
 
-## 🎨 Design System
+## Design System
 
 **Primary Palette:**
 * `#09090B` (Main Background)
@@ -10,7 +10,7 @@ A full-stack Todo Web Application with a premium, modern, product-level UI. Buil
 * `#27272A` (Borders / Subtle Sections)
 * `#00c6ff` to `#0072ff` (Vibrant Accent Gradient)
 
-## 🏗️ Folder Structure
+## Folder Structure
 
 ```
 TODO/
@@ -50,7 +50,7 @@ TODO/
     │   └── index.css         # Custom CSS Design System
 ```
 
-## 🗄️ MongoDB Schemas
+## MongoDB Schemas
 
 ### User Schema (`backend/models/User.js`)
 * `name` (String, Required)
@@ -67,7 +67,7 @@ TODO/
 * `completed` (Boolean, Default: false)
 * `date` (String, Format: YYYY-MM-DD)
 
-## 📡 API Routes
+## API Routes
 
 ### Authentication (`/api/auth`)
 * `POST /register`: Create a new account
@@ -81,7 +81,7 @@ TODO/
 * `DELETE /:id`: Delete a task
 * `GET /analytics/weekly`: Returns weekly completion percentage, chart data, and current streak
 
-## ✨ Key Features Logic
+## Key Features Logic
 
 1. **Authentication:** 
    - Uses JWT stored in `localStorage`. Automatically attaches token to subsequent Axios requests.
