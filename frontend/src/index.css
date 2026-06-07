@@ -2908,7 +2908,7 @@ input:-webkit-autofill:active {
   stroke: #00c6ff; /* Vibrant blue / cyan wave */
   stroke-dasharray: 20, 80;
   stroke-dashoffset: 100;
-  animation: dash_wave 0.8s linear infinite; /* Increased speed of the wave */
+  animation: dash_wave 1.6s linear infinite; /* Half speed (1.6s instead of 0.8s) */
 }
 
 @keyframes dash_wave {
@@ -2922,7 +2922,7 @@ input:-webkit-autofill:active {
   height: 18px;
   margin: 0 9px;
   border-radius: 10px;
-  animation: loading_5192 0.6s ease-in-out infinite; /* Increased speed of the wave */
+  animation: loading_5192 1.2s ease-in-out infinite; /* Half speed (1.2s instead of 0.6s) */
   background-color: #00c6ff; /* Blue/cyan matching the theme */
 }
 
@@ -2931,15 +2931,15 @@ input:-webkit-autofill:active {
 }
 
 .bar:nth-child(2) {
-  animation-delay: 0.06s;
+  animation-delay: 0.1s;
 }
 
 .bar:nth-child(3) {
-  animation-delay: 0.12s;
+  animation-delay: 0.2s;
 }
 
 .bar:nth-child(4) {
-  animation-delay: 0.18s;
+  animation-delay: 0.3s;
 }
 
 @keyframes loading_5192 {
