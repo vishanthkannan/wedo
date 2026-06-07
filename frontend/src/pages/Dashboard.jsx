@@ -642,7 +642,7 @@ const Dashboard = () => {
 
         {/* Main Tasks Section */}
         <div style={{ gridColumn: '1 / -1' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '28px', flexWrap: 'wrap', gap: '16px' }}>
             <h2 className="section-title" style={{ marginBottom: 0 }}>
               Your Habit Matrix
             </h2>
