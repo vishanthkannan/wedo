@@ -2325,7 +2325,8 @@ input:-webkit-autofill:active {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 10px;
+    align-items: center;
   }
 
   .add-task-form .form-control {
@@ -2335,17 +2336,30 @@ input:-webkit-autofill:active {
 
   .add-task-type,
   .add-task-priority {
-    flex: 1 1 calc(50% - 6px) !important;
+    flex: 1 1 0% !important;
+    min-width: 120px !important;
     width: auto !important;
-    height: 48px !important;
-    padding: 0 20px !important;
+    height: 38px !important;
+    padding: 0 12px !important;
+    font-size: 13px !important;
     box-sizing: border-box !important;
   }
 
   .add-item-btn {
-    flex: 1 1 calc(50% - 6px) !important;
-    width: auto !important;
+    flex: 0 0 120px !important;
+    width: 120px !important;
+    height: 38px !important;
     margin-top: 0;
+  }
+
+  .add-item-btn .button__text {
+    transform: translateX(15px) !important;
+    font-size: 13px !important;
+  }
+
+  .add-item-btn .button__icon {
+    transform: translateX(88px) !important;
+    width: 30px !important;
   }
 
   .chart-container {
@@ -2547,7 +2561,8 @@ input:-webkit-autofill:active {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 10px;
+    align-items: center;
   }
 
   .add-task-form .form-control {
@@ -2557,17 +2572,30 @@ input:-webkit-autofill:active {
 
   .add-task-type,
   .add-task-priority {
-    flex: 1 1 calc(50% - 6px) !important;
+    flex: 1 1 0% !important;
+    min-width: 120px !important;
     width: auto !important;
-    height: 48px !important;
-    padding: 0 20px !important;
+    height: 38px !important;
+    padding: 0 12px !important;
+    font-size: 13px !important;
     box-sizing: border-box !important;
   }
 
   .add-item-btn {
-    flex: 1 1 calc(50% - 6px) !important;
-    width: auto !important;
+    flex: 0 0 120px !important;
+    width: 120px !important;
+    height: 38px !important;
     margin-top: 0;
+  }
+
+  .add-item-btn .button__text {
+    transform: translateX(15px) !important;
+    font-size: 13px !important;
+  }
+
+  .add-item-btn .button__icon {
+    transform: translateX(88px) !important;
+    width: 30px !important;
   }
 
   .chart-container {
