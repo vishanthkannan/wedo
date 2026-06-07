@@ -5,10 +5,10 @@ A full-stack Todo Web Application with a premium, modern, product-level UI. Buil
 ## 🎨 Design System
 
 **Primary Palette:**
-* `#FBF8F1` (Main background)
-* `#F7ECDE` (Secondary background / cards)
-* `#E9DAC1` (Borders / subtle sections)
-* `#54BAB9` (Primary accent / actions)
+* `#09090B` (Main Background)
+* `#121214` (Secondary Background / Cards)
+* `#27272A` (Borders / Subtle Sections)
+* `#00c6ff` to `#0072ff` (Vibrant Accent Gradient)
 
 ## 🏗️ Folder Structure
 
@@ -31,11 +31,15 @@ TODO/
     ├── src/
     │   ├── components/       # Reusable UI components
     │   │   ├── ProductivityChart.jsx # Recharts line chart
-    │   │   └── TaskItem.jsx  # Individual task row with animations
+    │   │   ├── BackgroundPattern.jsx # Background video control component
+    │   │   ├── MidnightSkyBackground.jsx # Background stars/twinkle component
+    │   │   └── WedoButton.jsx    # Custom glowing action button
     │   ├── context/          # React Context
-    │   │   └── AuthContext.jsx # JWT State management
+    │   │   ├── AuthContext.jsx   # JWT State management
+    │   │   └── ThemeContext.jsx  # Active color theme context
     │   ├── pages/            # Main application pages
     │   │   ├── Dashboard.jsx # Main view with task lists & chart
+    │   │   ├── Profile.jsx   # Profile details, security, and settings page
     │   │   ├── Login.jsx     # Login page
     │   │   └── Register.jsx  # Sign-up page
     │   ├── utils/            # Helper functions
@@ -45,27 +49,6 @@ TODO/
     │   ├── main.jsx          # React entrypoint
     │   └── index.css         # Custom CSS Design System
 ```
-
-## 🛠️ Setup Steps
-
-### 1. Start Database
-Ensure MongoDB is running locally on port 27017 or update the `MONGO_URI` in `backend/.env`.
-
-### 2. Run Backend
-```bash
-cd backend
-npm install
-node server.js
-```
-The server will start on `http://localhost:5000`.
-
-### 3. Run Frontend
-```bash
-cd frontend
-npm install
-npm run dev
-```
-The client will be accessible at `http://localhost:5173`.
 
 ## 🗄️ MongoDB Schemas
 
