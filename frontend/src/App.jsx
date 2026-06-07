@@ -42,9 +42,9 @@ const AppContent = () => {
 
       {/* Conditionally render profile background at root level (truly static/fixed) */}
       {isProfilePage && (
-        <div 
+        <div
           className="profile-video-bg"
-          style={{ 
+          style={{
             position: 'fixed',
             top: 0,
             left: 0,
@@ -56,11 +56,11 @@ const AppContent = () => {
             background: 'radial-gradient(circle at center, #0a0a0f 0%, #030305 100%)'
           }}
         >
-          <video 
+          <video
             key={profileBgVideo}
-            autoPlay 
-            loop 
-            muted 
+            autoPlay
+            loop
+            muted
             playsInline
             style={{
               width: '100%',
@@ -77,9 +77,9 @@ const AppContent = () => {
 
       {/* Conditionally render login background at root level (truly static/fixed) */}
       {isLoginPage && (
-        <div 
+        <div
           className="login-video-bg"
-          style={{ 
+          style={{
             position: 'fixed',
             top: 0,
             left: 0,
@@ -91,16 +91,16 @@ const AppContent = () => {
             background: 'radial-gradient(circle at center, #0a0a0f 0%, #030305 100%)'
           }}
         >
-          <video 
-            autoPlay 
-            loop 
-            muted 
+          <video
+            autoPlay
+            loop
+            muted
             playsInline
             style={{
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              opacity: 0.20, // Extremely subtle transparency
+              opacity: 0.50, // Extremely subtle transparency
               filter: 'brightness(0.7) contrast(1.1)'
             }}
           >
@@ -112,27 +112,27 @@ const AppContent = () => {
       <AnimatePresence>
         {showIntro && <IntroScreen key="intro" />}
       </AnimatePresence>
-      
+
       <div style={{ opacity: showIntro ? 0 : 1, transition: 'opacity 0.5s ease', pointerEvents: showIntro ? 'none' : 'auto' }}>
         {!loading && (
           <Routes>
             <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
             <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
-            <Route 
-              path="/" 
+            <Route
+              path="/"
               element={
                 <ProtectedRoute>
                   <Dashboard />
                 </ProtectedRoute>
-              } 
+              }
             />
-            <Route 
-              path="/profile" 
+            <Route
+              path="/profile"
               element={
                 <ProtectedRoute>
                   <Profile />
                 </ProtectedRoute>
-              } 
+              }
             />
           </Routes>
         )}
