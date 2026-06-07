@@ -1,6 +1,6 @@
 import React from 'react';
 
-const UiverseButton = ({ text = "SIGN IN", onClick, disabled }) => {
+const WedoButton = ({ text = "SIGN IN", onClick, disabled }) => {
   return (
     <button 
       type="submit" 
@@ -22,4 +22,4 @@ const UiverseButton = ({ text = "SIGN IN", onClick, disabled }) => {
   );
 };
 
-export default UiverseButton;
+export default WedoButton;

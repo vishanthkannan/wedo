@@ -3,7 +3,6 @@ import { ThemeContext } from '../context/ThemeContext';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../utils/api';
-import TaskItem from '../components/TaskItem';
 import ProductivityChart from '../components/ProductivityChart';
 import MidnightSkyBackground from '../components/MidnightSkyBackground';
 import { playSound } from '../utils/audio';

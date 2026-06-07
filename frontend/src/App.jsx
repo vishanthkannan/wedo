@@ -66,7 +66,7 @@ const AppContent = () => {
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              opacity: 0.20, // Extremely subtle transparency
+              opacity: 'var(--profile-video-opacity)', // Configurable transparency from CSS
               filter: 'brightness(0.7) contrast(1.1)'
             }}
           >
@@ -100,7 +100,7 @@ const AppContent = () => {
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              opacity: 0.50, // Extremely subtle transparency
+              opacity: 'var(--login-video-opacity)', // Configurable transparency from CSS
               filter: 'brightness(0.7) contrast(1.1)'
             }}
           >

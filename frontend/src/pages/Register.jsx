@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import UiverseButton from '../components/UiverseButton';
+import WedoButton from '../components/WedoButton';
 import { GoogleLogin } from '@react-oauth/google';
 
 const Register = () => {
@@ -118,7 +118,7 @@ const Register = () => {
             <label htmlFor="password" className="form__label">Password</label>
           </div>
           
-          <UiverseButton disabled={loading} text="SIGN UP" />
+          <WedoButton disabled={loading} text="SIGN UP" />
         </form>
 
         <div className="auth-divider">or</div>

@@ -344,8 +344,7 @@ const Profile = () => {
                   const videos = [
                     '/video/profile.mp4',
                     '/video/girl-profile.mp4',
-                    '/video/profile1.mp4',
-                    '/video/profile2.mp4'
+                    '/video/profile1.mp4'
                   ];
                   const currentIndex = videos.indexOf(profileBgVideo);
                   const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % videos.length;
@@ -460,7 +459,7 @@ const Profile = () => {
               {!showProfileEdit && (
                 <button 
                   onClick={() => setShowProfileEdit(true)} 
-                  className="uiverse-btn"
+                  className="wedo-btn"
                 >
                   Edit Details
                 </button>
@@ -537,7 +536,7 @@ const Profile = () => {
                   <div style={{ display: 'flex', gap: '12px' }}>
                     <button 
                       type="submit" 
-                      className="uiverse-btn" 
+                      className="wedo-btn" 
                       disabled={loadingProfile}
                     >
                       <Save size={16} />
@@ -568,7 +567,7 @@ const Profile = () => {
               {!showPasswordEdit && (
                 <button 
                   onClick={() => setShowPasswordEdit(true)} 
-                  className="uiverse-btn"
+                  className="wedo-btn"
                 >
                   Change Password
                 </button>
@@ -667,7 +666,7 @@ const Profile = () => {
                   <div style={{ display: 'flex', gap: '12px' }}>
                     <button 
                       type="submit" 
-                      className="uiverse-btn" 
+                      className="wedo-btn" 
                       disabled={loadingPassword}
                     >
                       <Lock size={16} />

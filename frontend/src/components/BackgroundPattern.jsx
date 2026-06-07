@@ -44,7 +44,7 @@ const BackgroundPattern = ({ alwaysOn = false }) => {
 
   return (
     <div 
-      className="jp-matrix-wrapper" 
+      className="wedo-video-wrapper" 
       style={{ 
         opacity: showVideo ? (alwaysOn ? (window.innerWidth < 768 ? 0.4 : 0.7) : 1) : 0,
         transition: 'opacity 0.8s ease-in-out',
