@@ -1000,7 +1000,7 @@ select.premium-input option {
 
 .tracker-header.tracker-task-name {
   z-index: 60; /* Highest priority: top-left corner */
-  background-color: var(--tracker-header-bg-solid) !important;
+  background-color: var(--bg-secondary) !important; /* Solid background to prevent day cells overlapping */
   left: 0;
   top: 0;
 }
@@ -2322,20 +2322,30 @@ input:-webkit-autofill:active {
   }
 
   .add-task-form {
-    flex-direction: column;
-    gap: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .add-task-form .form-control {
+    flex: 1 1 100%;
+    width: 100%;
   }
 
   .add-task-type,
   .add-task-priority {
-    width: 100% !important;
+    flex: 1 1 calc(50% - 6px) !important;
+    width: auto !important;
     height: 48px !important;
     padding: 0 20px !important;
     box-sizing: border-box !important;
   }
 
   .add-item-btn {
-    width: 100%;
+    flex: 1 1 calc(50% - 6px) !important;
+    width: auto !important;
+    margin-top: 0;
   }
 
   .chart-container {
@@ -2534,20 +2544,30 @@ input:-webkit-autofill:active {
   }
 
   .add-task-form {
-    flex-direction: column;
-    gap: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .add-task-form .form-control {
+    flex: 1 1 100%;
+    width: 100%;
   }
 
   .add-task-type,
   .add-task-priority {
-    width: 100% !important;
+    flex: 1 1 calc(50% - 6px) !important;
+    width: auto !important;
     height: 48px !important;
     padding: 0 20px !important;
     box-sizing: border-box !important;
   }
 
   .add-item-btn {
-    width: 100%;
+    flex: 1 1 calc(50% - 6px) !important;
+    width: auto !important;
+    margin-top: 0;
   }
 
   .chart-container {
