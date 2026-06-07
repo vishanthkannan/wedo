@@ -1150,32 +1150,7 @@ select.premium-input option {
   cursor: grab;
 }
 
-/* --- Pulse Logo Loader --- */
-.loading svg polyline {
-  fill: none;
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke: var(--text-secondary);
-}
-
-.loading svg polyline#back {
-  fill: none;
-  opacity: 0.2;
-}
-
-.loading svg polyline#front {
-  fill: none;
-  stroke: var(--accent-color);
-  stroke-dasharray: 48, 144;
-  stroke-dashoffset: 192;
-  animation: dash_682 1.4s linear infinite;
-}
-
-@keyframes dash_682 {
-  72.5% { opacity: 0; }
-  to { stroke-dashoffset: 0; }
-}
+/* --- Pulse Logo Loader is now replaced by the custom heartbeat wave loader at the end of the file --- */
 
 /* --- Premium Add Button --- */
 .add-item-btn {
@@ -2907,34 +2882,77 @@ input:-webkit-autofill:active {
   }
 }
 
-/* --- Polyline/Heartbeat Loading Loader --- */
-.loading svg polyline {
+/* --- Custom Heartbeat/Wave SVG & Bar Loader --- */
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader svg {
+  width: 280px;
+  height: auto;
+}
+
+.loader svg path {
   fill: none;
-  stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-.loading svg polyline#back {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.15);
+.loader svg path#back {
+  stroke: rgba(0, 198, 255, 0.12); /* Faint blue silhouette */
 }
 
-.loading svg polyline#front {
-  fill: none;
-  stroke: #0fd850;
-  stroke-dasharray: 48, 144;
-  stroke-dashoffset: 192;
-  animation: dash_682 1.4s linear infinite;
+.loader svg path#front {
+  stroke: #00c6ff; /* Vibrant blue / cyan wave */
+  stroke-dasharray: 20, 80;
+  stroke-dashoffset: 100;
+  animation: dash_wave 0.8s linear infinite; /* Increased speed of the wave */
 }
 
-@keyframes dash_682 {
-  72.5% {
-    opacity: 0;
+@keyframes dash_wave {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+.bar {
+  width: 7px;
+  height: 18px;
+  margin: 0 9px;
+  border-radius: 10px;
+  animation: loading_5192 0.6s ease-in-out infinite; /* Increased speed of the wave */
+  background-color: #00c6ff; /* Blue/cyan matching the theme */
+}
+
+.bar:nth-child(1) {
+  animation-delay: 0.01s;
+}
+
+.bar:nth-child(2) {
+  animation-delay: 0.06s;
+}
+
+.bar:nth-child(3) {
+  animation-delay: 0.12s;
+}
+
+.bar:nth-child(4) {
+  animation-delay: 0.18s;
+}
+
+@keyframes loading_5192 {
+  0% {
+    transform: scale(1);
   }
 
-  to {
-    stroke-dashoffset: 0;
+  20% {
+    transform: scale(1, 2.5);
+  }
+
+  40% {
+    transform: scale(1);
   }
 }
 
