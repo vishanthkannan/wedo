@@ -571,7 +571,7 @@ const Dashboard = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="loader">
+            <div className="dashboard-loader">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="550"

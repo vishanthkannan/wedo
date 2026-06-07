@@ -2883,28 +2883,28 @@ input:-webkit-autofill:active {
 }
 
 /* --- Custom Heartbeat/Wave SVG & Bar Loader --- */
-.loader {
+.dashboard-loader {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.loader svg {
+.dashboard-loader svg {
   width: 280px;
   height: auto;
 }
 
-.loader svg path {
+.dashboard-loader svg path {
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-.loader svg path#back {
+.dashboard-loader svg path#back {
   stroke: rgba(0, 198, 255, 0.12); /* Faint blue silhouette */
 }
 
-.loader svg path#front {
+.dashboard-loader svg path#front {
   stroke: #00c6ff; /* Vibrant blue / cyan wave */
   stroke-dasharray: 20, 80;
   stroke-dashoffset: 100;
