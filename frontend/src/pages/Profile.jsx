@@ -79,6 +79,51 @@ const Profile = () => {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [profileMessage, setProfileMessage] = useState({ text: '', type: '' });
   const [passwordMessage, setPasswordMessage] = useState({ text: '', type: '' });
+  const [loadingReportToggle, setLoadingReportToggle] = useState(false);
+  const [sendingTestReport, setSendingTestReport] = useState(false);
+  const [emailPreferencesMessage, setEmailPreferencesMessage] = useState({ text: '', type: '' });
+
+  const handleToggleMonthlyReport = async () => {
+    setEmailPreferencesMessage({ text: '', type: '' });
+    setLoadingReportToggle(true);
+    try {
+      playSound('click', soundEnabled);
+      const updatedStatus = !user?.monthlyReportEnabled;
+      const res = await api.put('/auth/profile', { monthlyReportEnabled: updatedStatus });
+      setUser({ ...user, monthlyReportEnabled: res.data.monthlyReportEnabled });
+      setEmailPreferencesMessage({ 
+        text: `Monthly reports ${res.data.monthlyReportEnabled ? 'enabled' : 'disabled'} successfully!`, 
+        type: 'success' 
+      });
+      setTimeout(() => playSound('reward', soundEnabled), 300);
+    } catch (err) {
+      console.error(err);
+      const msg = err.response?.data?.message || 'Failed to update email preferences.';
+      setEmailPreferencesMessage({ text: msg, type: 'error' });
+    } finally {
+      setLoadingReportToggle(false);
+    }
+  };
+
+  const handleSendTestReport = async () => {
+    setEmailPreferencesMessage({ text: '', type: '' });
+    setSendingTestReport(true);
+    try {
+      playSound('click', soundEnabled);
+      const res = await api.post('/auth/send-test-report');
+      setEmailPreferencesMessage({ 
+        text: res.data.message || 'Test report sent successfully! Check your inbox.', 
+        type: 'success' 
+      });
+      setTimeout(() => playSound('reward', soundEnabled), 300);
+    } catch (err) {
+      console.error(err);
+      const msg = err.response?.data?.message || 'Failed to send test report.';
+      setEmailPreferencesMessage({ text: msg, type: 'error' });
+    } finally {
+      setSendingTestReport(false);
+    }
+  };
   const [loadingProfile, setLoadingProfile] = useState(false);
   const [loadingPassword, setLoadingPassword] = useState(false);
   const [analytics, setAnalytics] = useState(null);
@@ -553,6 +598,110 @@ const Profile = () => {
                     </button>
                   </div>
                 </motion.form>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Email Preferences Card */}
+          <div className="premium-card profile-card-transparent" style={{ padding: '32px' }}>
+            <h3 style={{ fontSize: '20px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px', margin: 0 }}>
+              <Mail size={22} style={{ color: 'var(--accent-color)' }} />
+              Email Preferences
+            </h3>
+            
+            <p style={{ color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '1.5', marginTop: '12px', marginBottom: '24px' }}>
+              Receive a monthly summary of your habit tracker stats, task completion rates, and streaks sent directly to your email at the end of each month.
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px', background: 'rgba(0, 0, 0, 0.2)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(255, 255, 255, 0.02)' }}>
+                <div>
+                  <h4 style={{ fontSize: '15px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '4px' }}>
+                    Monthly Progress Report
+                  </h4>
+                  <p style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                    Sent on the last day of every month.
+                  </p>
+                </div>
+                
+                {/* Toggle Button */}
+                <button
+                  type="button"
+                  onClick={handleToggleMonthlyReport}
+                  disabled={loadingReportToggle}
+                  className="premium-logout-btn"
+                  style={{
+                    margin: 0,
+                    padding: '8px 16px',
+                    borderRadius: '20px',
+                    background: user?.monthlyReportEnabled ? 'rgba(0, 198, 255, 0.08)' : 'rgba(255, 255, 255, 0.03)',
+                    borderColor: user?.monthlyReportEnabled ? 'rgba(0, 198, 255, 0.25)' : 'rgba(255, 255, 255, 0.1)',
+                    color: user?.monthlyReportEnabled ? 'var(--accent-color)' : 'var(--text-secondary)',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: user?.monthlyReportEnabled ? 'var(--accent-color)' : 'var(--text-secondary)', boxShadow: user?.monthlyReportEnabled ? '0 0 8px var(--accent-color)' : 'none' }}></span>
+                  <span>{user?.monthlyReportEnabled ? 'Enabled' : 'Disabled'}</span>
+                </button>
+              </div>
+
+              {user?.monthlyReportEnabled && (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px', background: 'rgba(0, 198, 255, 0.03)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(0, 198, 255, 0.08)' }}>
+                  <div>
+                    <h4 style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '2px' }}>
+                      Want to see it in action?
+                    </h4>
+                    <p style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                      Send a test report to your email now to preview.
+                    </p>
+                  </div>
+                  
+                  <button
+                    type="button"
+                    onClick={handleSendTestReport}
+                    disabled={sendingTestReport}
+                    className="wedo-btn"
+                    style={{
+                      margin: 0,
+                      padding: '8px 16px',
+                      fontSize: '13px',
+                      borderRadius: 'var(--radius-sm)'
+                    }}
+                  >
+                    {sendingTestReport ? 'Sending...' : 'Send Test Report'}
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Status messages for email configurations */}
+            <AnimatePresence mode="wait">
+              {emailPreferencesMessage.text && (
+                <motion.div 
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className={emailPreferencesMessage.type === 'error' ? 'error-banner' : 'error-banner success-banner'}
+                  style={{ 
+                    marginTop: '20px', 
+                    background: emailPreferencesMessage.type === 'error' ? 'rgba(239, 68, 68, 0.08)' : 'rgba(34, 197, 94, 0.08)',
+                    borderColor: emailPreferencesMessage.type === 'error' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(34, 197, 94, 0.2)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '12px 16px',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid'
+                  }}
+                >
+                  <AlertCircle size={16} style={{ color: emailPreferencesMessage.type === 'error' ? '#ef4444' : '#22c55e', flexShrink: 0 }} />
+                  <span style={{ color: emailPreferencesMessage.type === 'error' ? 'var(--text-primary)' : '#86efac', fontSize: '13px' }}>
+                    {emailPreferencesMessage.text}
+                  </span>
+                </motion.div>
               )}
             </AnimatePresence>
           </div>
