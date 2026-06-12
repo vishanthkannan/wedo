@@ -7,7 +7,8 @@ const UserSchema = new mongoose.Schema({
   profileImage: { type: String, default: '' },
   dailyStreak: { type: Number, default: 0 },
   longestStreak: { type: Number, default: 0 },
-  lastLoginDate: { type: Date }
+  lastLoginDate: { type: Date },
+  monthlyReportEnabled: { type: Boolean, default: false }
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', UserSchema);

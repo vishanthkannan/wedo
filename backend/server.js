@@ -24,6 +24,9 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Something went wrong on the server!' });
 });
 
+// Initialize background scheduler
+require('./services/scheduler');
+
 // Database and Server
 const PORT = process.env.PORT || 5000;
 
