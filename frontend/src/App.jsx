@@ -36,9 +36,9 @@ const AppContent = () => {
 
   return (
     <>
-      {/* Conditionally render dashboard backgrounds */}
-      {!isProfilePage && !isLoginPage && <BackgroundPattern />}
-      {!isProfilePage && !isLoginPage && <MidnightSkyBackground />}
+      {/* Conditionally render dashboard and login backgrounds */}
+      {!isProfilePage && <BackgroundPattern />}
+      {!isProfilePage && <MidnightSkyBackground />}
 
       {/* Conditionally render profile background at root level (truly static/fixed) */}
       {isProfilePage && (
@@ -72,16 +72,6 @@ const AppContent = () => {
           >
             <source src={profileBgVideo} type="video/mp4" />
           </video>
-        </div>
-      )}
-
-      {/* Conditionally render login background at root level (truly static/fixed) */}
-      {isLoginPage && (
-        <div className="login-stars-container">
-          <div id="stars"></div>
-          <div id="stars2"></div>
-          <div id="stars3"></div>
-          <div></div>
         </div>
       )}
 
