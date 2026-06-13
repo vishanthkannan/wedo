@@ -1,59 +1,6 @@
-const nodemailer = require('nodemailer');
 const Task = require('../models/Task');
 const User = require('../models/User');
 const PDFDocument = require('pdfkit');
-
-// Globally force IPv4 for Google SMTP servers to resolve the ENETUNREACH IPv6 issue
-const dns = require('dns');
-const originalLookup = dns.lookup;
-dns.lookup = (hostname, options, callback) => {
-  if (typeof options === 'function') {
-    callback = options;
-    options = {};
-  }
-  options = options || {};
-  if (hostname.includes('gmail.com') || hostname.includes('google.com')) {
-    options.family = 4;
-  }
-  return originalLookup(hostname, options, callback);
-};
-
-/**
- * Connect to or create a nodemailer transporter
- */
-async function createTransporter() {
-  if (process.env.SMTP_USER && process.env.SMTP_PASS) {
-    return nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'smtp.gmail.com',
-      port: parseInt(process.env.SMTP_PORT || '587'),
-      secure: process.env.SMTP_SECURE === 'true',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-      connectionTimeout: 15000,
-      greetingTimeout: 15000,
-      socketTimeout: 15000,
-      dnsLookup: (hostname, options, callback) => {
-        const dns = require('dns');
-        dns.lookup(hostname, { family: 4 }, callback);
-      }
-    });
-  } else {
-    // Generate test SMTP service account from ethereal.email
-    const testAccount = await nodemailer.createTestAccount();
-    console.log(`[EMAIL] Created test Ethereal account: ${testAccount.user}`);
-    return nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
-      secure: false,
-      auth: {
-        user: testAccount.user,
-        pass: testAccount.pass,
-      },
-    });
-  }
-}
 
 /**
  * Query stats for a specific user for the last 30 days
@@ -532,7 +479,6 @@ async function generatePDFReport(stats, userId) {
  */
 async function sendMonthlyReport(user) {
   const stats = await getUserStats(user._id);
-  const transporter = await createTransporter();
   const htmlContent = generateEmailHTML(stats);
   const pdfBuffer = await generatePDFReport(stats, user._id);
 
@@ -565,32 +511,43 @@ async function sendMonthlyReport(user) {
     console.error('[EMAIL] Failed to write local preview files:', err);
   }
 
-  const mailOptions = {
-    from: process.env.SMTP_FROM || '"Wedo Reports" <reports@wedo-app.com>',
-    to: stats.email,
-    subject: `Your Wedo Monthly Productivity Report 📊`,
-    html: htmlContent,
-    attachments: [
-      {
-        filename: `Wedo-Monthly-Report-${stats.name.replace(/\s+/g, '-')}.pdf`,
-        content: pdfBuffer,
-        contentType: 'application/pdf'
-      }
-    ]
-  };
+  // If RESEND_API_KEY is not configured, fall back immediately to local previews
+  if (!process.env.RESEND_API_KEY) {
+    console.warn('[EMAIL] RESEND_API_KEY is not configured. Falling back to local previews.');
+    return { 
+      success: true, 
+      smtpFailed: true, 
+      localPreview: localHtmlPath,
+      localPdf: localPdfPath
+    };
+  }
 
   try {
-    const info = await transporter.sendMail(mailOptions);
-    
-    // Ethereal Mail logging for developer preview
-    if (nodemailer.getTestMessageUrl(info)) {
-      const previewUrl = nodemailer.getTestMessageUrl(info);
-      console.log(`[EMAIL] Ethereal Preview URL: ${previewUrl}`);
-      return { success: true, previewUrl, localPreview: localHtmlPath, localPdf: localPdfPath };
+    const { Resend } = require('resend');
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const fromAddress = process.env.RESEND_FROM || 'Wedo <onboarding@resend.dev>';
+
+    const response = await resend.emails.send({
+      from: fromAddress,
+      to: stats.email,
+      subject: `Your Wedo Monthly Productivity Report 📊`,
+      html: htmlContent,
+      attachments: [
+        {
+          filename: `Wedo-Monthly-Report-${stats.name.replace(/\s+/g, '-')}.pdf`,
+          content: pdfBuffer,
+        }
+      ]
+    });
+
+    if (response.error) {
+      throw new Error(response.error.message || JSON.stringify(response.error));
     }
+
+    console.log(`[EMAIL] Email sent successfully via Resend API. ID: ${response.data.id}`);
     return { success: true, localPreview: localHtmlPath, localPdf: localPdfPath };
   } catch (error) {
-    console.warn('[EMAIL] SMTP Delivery failed. Local preview files are available.', error.message);
+    console.warn('[EMAIL] Resend API Delivery failed. Local preview files are available.', error.message);
     return { 
       success: true, 
       smtpFailed: true, 

@@ -77,35 +77,11 @@ const AppContent = () => {
 
       {/* Conditionally render login background at root level (truly static/fixed) */}
       {isLoginPage && (
-        <div
-          className="login-video-bg"
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            zIndex: -2,
-            overflow: 'hidden',
-            pointerEvents: 'none',
-            background: 'radial-gradient(circle at center, #0a0a0f 0%, #030305 100%)'
-          }}
-        >
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              opacity: 'var(--login-video-opacity)', // Configurable transparency from CSS
-              filter: 'brightness(0.7) contrast(1.1)'
-            }}
-          >
-            <source src="/video/login.mp4" type="video/mp4" />
-          </video>
+        <div className="login-stars-container">
+          <div id="stars"></div>
+          <div id="stars2"></div>
+          <div id="stars3"></div>
+          <div></div>
         </div>
       )}
 

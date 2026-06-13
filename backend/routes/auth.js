@@ -195,7 +195,7 @@ router.post('/send-test-report', protect, async (req, res) => {
     if (result.previewUrl) {
       message = `Test report sent successfully! Preview link: ${result.previewUrl}`;
     } else if (result.smtpFailed) {
-      message = `Test report compiled successfully! Outgoing mail failed (connection timed out). PDF saved locally: ${result.localPdf}`;
+      message = `Test report compiled successfully! Outgoing mail failed (API key missing or delivery error). PDF saved locally: ${result.localPdf}`;
     } else if (result.localPdf) {
       message = `Test report compiled successfully! PDF saved to: ${result.localPdf}`;
     }
