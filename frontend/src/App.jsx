@@ -29,10 +29,8 @@ const AppContent = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Show intro if auth is still loading OR if the minimum 2.5s animation time hasn't finished
   const showIntro = loading || !minTimePassed;
   const isProfilePage = location.pathname === '/profile';
-  const isLoginPage = location.pathname === '/login' || location.pathname === '/register';
 
   return (
     <>
