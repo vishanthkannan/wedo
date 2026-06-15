@@ -511,50 +511,95 @@ async function sendMonthlyReport(user) {
     console.error('[EMAIL] Failed to write local preview files:', err);
   }
 
-  // If RESEND_API_KEY is not configured, fall back immediately to local previews
-  if (!process.env.RESEND_API_KEY) {
-    console.warn('[EMAIL] RESEND_API_KEY is not configured. Falling back to local previews.');
-    return { 
-      success: true, 
-      smtpFailed: true, 
-      localPreview: localHtmlPath,
-      localPdf: localPdfPath
-    };
-  }
+  // 1. Check if SMTP configuration is provided
+  if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+    try {
+      const nodemailer = require('nodemailer');
+      const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
+      const smtpPort = parseInt(process.env.SMTP_PORT) || 587;
+      
+      const transporter = nodemailer.createTransport({
+        host: smtpHost,
+        port: smtpPort,
+        secure: smtpPort === 465,
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS,
+        },
+      });
 
-  try {
-    const { Resend } = require('resend');
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    const fromAddress = process.env.RESEND_FROM || 'Wedo <onboarding@resend.dev>';
+      const mailOptions = {
+        from: `Wedo <${process.env.SMTP_USER}>`,
+        to: stats.email,
+        subject: `Your Wedo Monthly Productivity Report 📊`,
+        html: htmlContent,
+        attachments: [
+          {
+            filename: `Wedo-Monthly-Report-${stats.name.replace(/\s+/g, '-')}.pdf`,
+            content: pdfBuffer,
+          }
+        ]
+      };
 
-    const response = await resend.emails.send({
-      from: fromAddress,
-      to: stats.email,
-      subject: `Your Wedo Monthly Productivity Report 📊`,
-      html: htmlContent,
-      attachments: [
-        {
-          filename: `Wedo-Monthly-Report-${stats.name.replace(/\s+/g, '-')}.pdf`,
-          content: pdfBuffer,
-        }
-      ]
-    });
-
-    if (response.error) {
-      throw new Error(response.error.message || JSON.stringify(response.error));
+      const info = await transporter.sendMail(mailOptions);
+      console.log(`[EMAIL] Email sent successfully via SMTP (${smtpHost}). Message ID: ${info.messageId}`);
+      return { success: true, localPreview: localHtmlPath, localPdf: localPdfPath };
+    } catch (error) {
+      console.warn('[EMAIL] SMTP Delivery failed. Local preview files are available.', error.message);
+      return { 
+        success: true, 
+        smtpFailed: true, 
+        localPreview: localHtmlPath,
+        localPdf: localPdfPath
+      };
     }
-
-    console.log(`[EMAIL] Email sent successfully via Resend API. ID: ${response.data.id}`);
-    return { success: true, localPreview: localHtmlPath, localPdf: localPdfPath };
-  } catch (error) {
-    console.warn('[EMAIL] Resend API Delivery failed. Local preview files are available.', error.message);
-    return { 
-      success: true, 
-      smtpFailed: true, 
-      localPreview: localHtmlPath,
-      localPdf: localPdfPath
-    };
   }
+
+  // 2. Fall back to Resend API if configured
+  if (process.env.RESEND_API_KEY) {
+    try {
+      const { Resend } = require('resend');
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      const fromAddress = process.env.RESEND_FROM || 'Wedo <onboarding@resend.dev>';
+
+      const response = await resend.emails.send({
+        from: fromAddress,
+        to: stats.email,
+        subject: `Your Wedo Monthly Productivity Report 📊`,
+        html: htmlContent,
+        attachments: [
+          {
+            filename: `Wedo-Monthly-Report-${stats.name.replace(/\s+/g, '-')}.pdf`,
+            content: pdfBuffer,
+          }
+        ]
+      });
+
+      if (response.error) {
+        throw new Error(response.error.message || JSON.stringify(response.error));
+      }
+
+      console.log(`[EMAIL] Email sent successfully via Resend API. ID: ${response.data.id}`);
+      return { success: true, localPreview: localHtmlPath, localPdf: localPdfPath };
+    } catch (error) {
+      console.warn('[EMAIL] Resend API Delivery failed. Local preview files are available.', error.message);
+      return { 
+        success: true, 
+        smtpFailed: true, 
+        localPreview: localHtmlPath,
+        localPdf: localPdfPath
+      };
+    }
+  }
+
+  // 3. Neither SMTP nor Resend configured -> Fall back to local previews
+  console.warn('[EMAIL] Neither SMTP credentials nor RESEND_API_KEY are configured. Falling back to local previews.');
+  return { 
+    success: true, 
+    smtpFailed: true, 
+    localPreview: localHtmlPath,
+    localPdf: localPdfPath
+  };
 }
 
 module.exports = {
